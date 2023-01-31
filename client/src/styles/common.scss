@@ -1,0 +1,29 @@
+// @mixin m
+
+.home-button-section {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  button {
+    font-size: 1.075rem;
+    width: 100%;
+    height: 4rem;
+    border-radius: 0.625rem;
+    border: none;
+    box-shadow: 2px 2px 2px -2px $gray-color;
+  }
+
+  .login-button {
+    color: $white-color;
+    background-color: $login-button-color;
+    margin-bottom: 1rem;
+  }
+
+  .signup-button {
+    color: $gray900;
+    background-color: $white-color;
+  }
+}
