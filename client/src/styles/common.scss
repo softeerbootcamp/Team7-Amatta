@@ -1,5 +1,3 @@
-// @mixin m
-
 .home-button-section {
   width: 100%;
   display: flex;
@@ -23,7 +21,7 @@
   }
 
   .signup-button {
-    color: $gray900;
-    background-color: $white-color;
+    color: $login-button-color;
+    background-color: $gray100;
   }
 }
