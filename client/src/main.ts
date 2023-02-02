@@ -40,12 +40,12 @@ signUpButton?.addEventListener('click', (event) => {
     !(event.target instanceof HTMLElement)
   )
     return;
+  event.preventDefault();
 
   const target = event.target;
   const path = target.getAttribute('href')!;
 
   navigate(path);
-  event.preventDefault();
 });
 
 window.addEventListener('popstate', () => render());
