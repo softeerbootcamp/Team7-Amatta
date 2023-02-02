@@ -4,6 +4,7 @@ import com.amatta.amatta_server.user.dto.UserJoinReq;
 import com.amatta.amatta_server.user.dto.UserJoinRes;
 import com.amatta.amatta_server.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -48,8 +49,8 @@ public class UserController {
         return new ResponseEntity<>(Objects.requireNonNull(e.getBindingResult().getFieldError()).getDefaultMessage(), HttpStatus.BAD_REQUEST);
     }
 
-    @ExceptionHandler(SQLIntegrityConstraintViolationException.class)
-    public ResponseEntity<?> sqlIntegrityConstraintViolationExceptionHandler() {
+    @ExceptionHandler(DuplicateKeyException.class)
+    public ResponseEntity<?> duplicateKeyExceptionHandler() {
         return new ResponseEntity<>("중복된 항목이 있습니다.", HttpStatus.BAD_REQUEST);
     }
 
