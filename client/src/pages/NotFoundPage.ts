@@ -1,12 +1,11 @@
-const generateElement = (domString: string) => {
-  const $temp = document.createElement('template');
-  $temp.innerHTML = domString;
+import { generateElement } from '@/utils';
 
-  return $temp.content;
+const NotFound = () => {
+  const NotFoundTemplate = generateElement(`
+    <h1>404 Not Found!</h1>
+  `);
+
+  return NotFoundTemplate;
 };
 
-export default function NotFound() {
-  return generateElement(`
-        <h1>404 Not Found!</h1>
-      `);
-}
+export default NotFound;
