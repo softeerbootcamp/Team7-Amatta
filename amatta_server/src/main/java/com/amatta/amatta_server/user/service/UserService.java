@@ -2,7 +2,6 @@ package com.amatta.amatta_server.user.service;
 
 import com.amatta.amatta_server.user.dto.UserJoinReq;
 import com.amatta.amatta_server.user.dto.UserJoinRes;
-import com.amatta.amatta_server.user.model.Users;
 import com.amatta.amatta_server.user.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
