@@ -6,7 +6,6 @@ import com.amatta.amatta_server.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,6 +20,18 @@ public class UserController {
     @Autowired
     public UserController(UserService userService) {
         this.userService = userService;
+    }
+
+    @GetMapping("/join/exist/email")
+    public ResponseEntity<?> checkEmailDuplicate(@RequestParam String email) {
+        boolean check = userService.checkEmailDuplicated(email);
+        return new ResponseEntity<>(check, HttpStatus.OK);
+    }
+
+    @GetMapping("/join/exist/phoneNum")
+    public ResponseEntity<?> checkPhoneNumDuplicate(@RequestParam String phoneNumber) {
+        boolean check = userService.checkPhoneNumDuplicated(phoneNumber);
+        return new ResponseEntity<>(check, HttpStatus.OK);
     }
 
     @PostMapping("/join")
