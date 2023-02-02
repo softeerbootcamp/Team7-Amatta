@@ -18,7 +18,7 @@ public class UserService {
 
     public UserJoinRes signUp(UserJoinReq userJoinReq) {
 
-        userRepository.addUser(userJoinReq);
+        userRepository.addUser(userJoinReq.getEmail(), userJoinReq.getPassword(), userJoinReq.getName(), userJoinReq.getPhoneNumber());
         UserJoinRes userJoinRes = new UserJoinRes();
         userJoinRes.setSuccess(true);
         return userJoinRes;
