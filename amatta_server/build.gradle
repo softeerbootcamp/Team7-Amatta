@@ -24,6 +24,10 @@ dependencies {
 	testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
 
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
+
+	implementation 'org.springframework.boot:spring-boot-starter-aop'
+	runtimeOnly 'org.aspectj:aspectjweaver:1.9.9.1'
+	runtimeOnly 'org.aspectj:aspectjrt:1.9.9.1'
 }
 
 tasks.named('test') {
