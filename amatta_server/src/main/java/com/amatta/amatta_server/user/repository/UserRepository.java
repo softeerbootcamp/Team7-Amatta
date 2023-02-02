@@ -1,6 +1,7 @@
 package com.amatta.amatta_server.user.repository;
 
 import com.amatta.amatta_server.user.dto.UserJoinReq;
+import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -20,10 +21,9 @@ public class UserRepository {
 
     public void addUser(UserJoinReq userJoinReq) {
         this.jdbcTemplate.update(
-                "insert into users(email, password, name, phoneNumber) values (?, hex(aes_encrypt(?, ?)), ?, ?)",
+                "insert into users(email, password, name, phoneNumber) values (?, ?, ?, ?)",
                 userJoinReq.getEmail(),
-                userJoinReq.getPassword(),
-                key,
+                BCrypt.hashpw(userJoinReq.getPassword(), BCrypt.gensalt()),
                 userJoinReq.getName(),
                 userJoinReq.getPhoneNumber()
         );
