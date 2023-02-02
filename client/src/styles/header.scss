@@ -1,0 +1,27 @@
+.header-article {
+  width: 100%;
+  height: 4.5rem;
+  background-color: $primary-color;
+  position: fixed;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  top: 0;
+
+  .small-logo-white {
+    height: 2rem;
+    margin-left: 5%;
+  }
+
+  .header-button-section {
+    justify-content: space-between;
+    margin-right: 5%;
+  }
+
+  .search-button {
+    height: 2rem;
+    width: 2rem;
+    filter: invert(100%) sepia(0%) saturate(0%) hue-rotate(113deg)
+      brightness(104%) contrast(101%);
+  }
+}

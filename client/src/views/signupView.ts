@@ -5,19 +5,26 @@ export function showSignup() {
     homeMain.style.backgroundColor = 'white';
 
     homeMain.innerHTML = `
-            <article class = 'register-article'>
-                <section class = 'register-header-section'>
-                    <img class='small-logo-mint' src='https://amatta-icons.s3.ap-northeast-2.amazonaws.com/logo/logo-mint+.png' alt='small-logo-mint' />
-                    <div class='register-words'> 회원가입 </div>
-                </section>
-                <section class='register-form-section'>
-                    <form>
-                        <label for='email-input'> 이메일
-                        <input type='text' name='email-input'/>
-                    </form>
-                </section>
-            </article>
+            <article class = 'signup-article'>
+              <img class='small-logo-pink' src='https://amatta-icons.s3.ap-northeast-2.amazonaws.com/logo/logo-pink.png' alt='small-logo-pink' />
+              <section class='signup-form-section'>
+                  <form>
+                      <label for='email-input' class='input-label'> 이메일 <br>
+                      <input type='text' class='text-input' name='email-input'/> <br>
+                      <label for='phone-input' class='input-label'> 전화번호 <br>
+                      <input type='text' class='text-input' name='phone-input'/> <br>
+                      <label for='password-input' class='input-label'> 비밀번호 <br>
+                      <input type='text' class='text-input' name='password-input'/> <br>
+                      <label for='password-check-input' class='input-label'> 비밀번호 확인 <br>
+                      <input type='text' class='text-input' name='password-check-input'/>
 
+                      <div class='signup-button-container'>
+                        <input type='submit' class='auth-button' id='signup-button' name='signup-button' value='회원가입' />
+                        <input type='submit' class='auth-button' id='cancel-button' name='cancel-button' value='취소' />
+                      </div>
+                  </form>
+              </section>
+            </article>
         `;
   }
 }
