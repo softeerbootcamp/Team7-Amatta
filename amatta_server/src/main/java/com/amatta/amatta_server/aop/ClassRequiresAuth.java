@@ -6,6 +6,6 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 @Retention(value = RetentionPolicy.RUNTIME)
-@Target({ElementType.METHOD})
-public @interface MethodRequiresAuth {
+@Target({ElementType.TYPE})
+public @interface ClassRequiresAuth {
 }
