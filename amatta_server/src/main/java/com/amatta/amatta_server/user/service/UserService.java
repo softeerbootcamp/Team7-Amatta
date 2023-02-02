@@ -6,6 +6,8 @@ import com.amatta.amatta_server.user.model.Users;
 import com.amatta.amatta_server.user.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.Objects;
+
 @Service
 public class UserService {
 
@@ -16,9 +18,6 @@ public class UserService {
     }
 
     public UserJoinRes signUp(UserJoinReq userJoinReq) {
-        // TODO : 이메일 중복 처리
-
-        // TODO : 전화번호 중복 처리
 
         userRepository.addUser(userJoinReq);
         UserJoinRes userJoinRes = new UserJoinRes();
@@ -27,4 +26,11 @@ public class UserService {
     }
 
 
+    public boolean checkEmailDuplicated(String email) {
+        return Objects.nonNull(userRepository.findByEmail(email));
+    }
+
+    public boolean checkPhoneNumDuplicated(String phoneNumber) {
+        return Objects.nonNull(userRepository.findByPhoneNum(phoneNumber));
+    }
 }
