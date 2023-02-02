@@ -10,6 +10,8 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.sql.SQLIntegrityConstraintViolationException;
+import java.util.Objects;
 
 @RestController
 @RequestMapping("/user")
@@ -42,8 +44,13 @@ public class UserController {
 
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<?> methodValidException(MethodArgumentNotValidException e) {
-        return new ResponseEntity<>(e.getBindingResult().getFieldError().getDefaultMessage(), HttpStatus.BAD_REQUEST);
+    public ResponseEntity<?> methodArgumentNotValidExceptionHandler(MethodArgumentNotValidException e) {
+        return new ResponseEntity<>(Objects.requireNonNull(e.getBindingResult().getFieldError()).getDefaultMessage(), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(SQLIntegrityConstraintViolationException.class)
+    public ResponseEntity<?> sqlIntegrityConstraintViolationExceptionHandler() {
+        return new ResponseEntity<>("중복된 항목이 있습니다.", HttpStatus.BAD_REQUEST);
     }
 
 }
