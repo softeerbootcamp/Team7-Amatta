@@ -1,6 +1,7 @@
 package com.amatta.amatta_server.aop;
 
 import com.amatta.amatta_server.exception.NotAuthenticatedException;
+import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.slf4j.Logger;
@@ -17,8 +18,14 @@ import java.util.Objects;
 public class AuthorizationAop {
     private static final Logger logger = LoggerFactory.getLogger(AuthorizationAop.class);
 
-    @Before("@annotation(com.amatta.amatta_server.aop.RequiresAuth)")
-    public void authorize() throws NotAuthenticatedException, NullPointerException {
+    @Before("within(@com.amatta.amatta_server.aop.ClassRequiresAuth *)")
+    public void authorizeClass() throws NotAuthenticatedException, NullPointerException {
+        logger.info("AuthorizationAop.authorize");
+        HttpServletRequest request = ((ServletRequestAttributes) Objects.requireNonNull(RequestContextHolder.getRequestAttributes())).getRequest();
+    }
+
+    @Before("@annotation(com.amatta.amatta_server.aop.MethodRequiresAuth)")
+    public void authorizeMethod() throws NotAuthenticatedException, NullPointerException {
         logger.info("AuthorizationAop.authorize");
         HttpServletRequest request = ((ServletRequestAttributes) Objects.requireNonNull(RequestContextHolder.getRequestAttributes())).getRequest();
     }
