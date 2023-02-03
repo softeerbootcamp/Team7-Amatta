@@ -19,6 +19,38 @@
         margin-top: 10rem;
         width: 80%;
       }
+
+      .home-button-section {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+
+        a {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          font-size: 1.075rem;
+          width: 100%;
+          height: 4rem;
+          border-radius: 0.625rem;
+          border: none;
+          box-shadow: 2px 2px 2px -2px $gray-color;
+          text-decoration: none;
+        }
+
+        .login-button {
+          color: $white-color;
+          background-color: $login-button-color;
+          margin-bottom: 1rem;
+        }
+
+        .signup-button {
+          color: $login-button-color;
+          background-color: $gray100;
+        }
+      }
     }
   }
 }

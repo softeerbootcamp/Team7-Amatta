@@ -1,11 +1,11 @@
-/* ####### */
+/* ####### signUp Section ####### */
 .signup-article {
   display: flex;
   flex-direction: column;
-  // justify-content: center;
+  justify-content: center;
   align-items: center;
-  width: 80%;
-  height: 80%;
+  padding: 10%;
+  padding-top: 7rem;
 
   .small-logo-pink {
     width: 10.5rem;
@@ -25,7 +25,7 @@
 
     input:focus {
       outline: none;
-      border-bottom: 1px solid $primary-color;
+      border-bottom: 2px solid $primary-color;
     }
 
     .text-input {
