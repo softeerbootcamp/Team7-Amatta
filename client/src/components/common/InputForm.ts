@@ -1,5 +1,3 @@
-// import { generateElement } from '@/utils';
-
 interface InputProps {
   type: string;
   name: string;
