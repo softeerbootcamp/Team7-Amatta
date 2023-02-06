@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
+@RequestMapping("/gifticon")
 @CrossOrigin
 public class GifticonController {
     private final GifticonService gifticonService;
@@ -19,12 +20,12 @@ public class GifticonController {
         this.gifticonService = gifticonService;
     }
 
-    @PostMapping("/gift/text")
+    @PostMapping("/text")
     public ResponseEntity<?> gifticonTextExtract(@RequestBody GifticonImageDto dto) {
         return gifticonService.extractGifticonText(dto);
     }
 
-    @PostMapping("/gift")
+    @PostMapping("")
     public ResponseEntity<?> gifticonAdd(@RequestBody GifticonTextDto dto) {
         System.out.println(dto.getTexts());
         return null;
