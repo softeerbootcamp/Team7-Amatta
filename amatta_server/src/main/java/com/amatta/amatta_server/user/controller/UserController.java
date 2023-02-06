@@ -34,8 +34,8 @@ public class UserController {
 
     @GetMapping("/join/exist/phoneNum")
     public ResponseEntity<?> checkPhoneNumDuplicate(@RequestParam String phoneNumber) {
-        boolean check = userService.checkPhoneNumDuplicated(phoneNumber);
-        return new ResponseEntity<>(check, HttpStatus.OK);
+        UserPhoneNumExistRes userPhoneNumExistRes = userService.checkPhoneNumDuplicated(phoneNumber);
+        return new ResponseEntity<>(userPhoneNumExistRes, HttpStatus.OK);
     }
 
     @PostMapping("/join")

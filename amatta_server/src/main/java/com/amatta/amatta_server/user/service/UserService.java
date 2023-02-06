@@ -1,9 +1,6 @@
 package com.amatta.amatta_server.user.service;
 
-import com.amatta.amatta_server.user.dto.UserEmailExistRes;
-import com.amatta.amatta_server.user.dto.UserJoinReq;
-import com.amatta.amatta_server.user.dto.UserJoinRes;
-import com.amatta.amatta_server.user.dto.UserLoginReq;
+import com.amatta.amatta_server.user.dto.*;
 import com.amatta.amatta_server.user.model.Users;
 import com.amatta.amatta_server.user.repository.UserRepository;
 import org.mindrot.jbcrypt.BCrypt;
@@ -37,8 +34,11 @@ public class UserService {
         return new UserEmailExistRes(false, mailService.sendEmail(email));
     }
 
-    public boolean checkPhoneNumDuplicated(String phoneNumber) {
-        return Objects.nonNull(userRepository.findByPhoneNum(phoneNumber));
+    public UserPhoneNumExistRes checkPhoneNumDuplicated(String phoneNumber) {
+        if(Objects.nonNull(userRepository.findByPhoneNum(phoneNumber))) {
+            return new UserPhoneNumExistRes(true);
+        }
+        return new UserPhoneNumExistRes(false);
     }
 
     public Users login(UserLoginReq userLoginReq) {
