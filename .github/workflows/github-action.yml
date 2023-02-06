@@ -58,7 +58,7 @@ jobs:
       id: deploy-dev
       if: contains(github.ref, 'dev')
       with:
-        host: ${{ secrets.HOST_DEV }}
+        host: ${{ secrets.HOST }}
         username: ${{ secrets.USERNAME }}
         password: ${{ secrets.PASSWORD }}
         port: 22
