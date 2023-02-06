@@ -57,12 +57,12 @@ public class UserController {
     }
 
     @PostMapping("/logout")
-    public String logout(HttpServletRequest request) {
+    public ResponseEntity<?> logout(HttpServletRequest request) {
         HttpSession session = request.getSession(false);
         if (session != null) {
             session.invalidate();
         }
-        return "redirect:/";
+        return new ResponseEntity<>(new UserLogoutRes(true), HttpStatus.OK);
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
