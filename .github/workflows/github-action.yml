@@ -60,7 +60,7 @@ jobs:
       with:
         host: ${{ secrets.HOST }}
         username: ${{ secrets.USERNAME }}
-        password: ${{ secrets.PASSWORD }}
+        key: ${{ secrets.AWS_PEM_KEY }}
         port: 22
         script: |
             sudo docker rm -f $(docker ps -qa)
