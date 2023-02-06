@@ -21,6 +21,17 @@ public class UserJoinReq {
     @Pattern(regexp = "^01(?:0|1|[6-9])[.-]?(\\d{3}|\\d{4})[.-]?(\\d{4})$", message = "전화번호 형식에 맞지 않습니다.")
     private String phoneNumber;
 
+    public UserJoinReq() {
+
+    }
+
+    public UserJoinReq(String email, String password, String name, String phoneNumber) {
+        this.email = email;
+        this.password = password;
+        this.name = name;
+        this.phoneNumber = phoneNumber;
+    }
+
     public String getEmail() {
         return email;
     }
