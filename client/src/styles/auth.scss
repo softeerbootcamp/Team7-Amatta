@@ -1,5 +1,5 @@
 /* ####### signUp Section ####### */
-.signup-article {
+.auth-article {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -12,7 +12,7 @@
     padding-bottom: 30%;
   }
 
-  .signup-form-section {
+  .auth-form-section {
     width: 100%;
 
     .input-label {
@@ -37,7 +37,7 @@
       font-size: 1.5rem;
     }
 
-    .signup-button-container {
+    .auth-button-container {
       margin-top: 1rem;
       display: flex;
 
@@ -48,7 +48,7 @@
         justify-content: space-between;
       }
 
-      #signup-button {
+      #auth-button {
         background-color: $pink-color;
         color: $white-color;
         margin-right: 5px;

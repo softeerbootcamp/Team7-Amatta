@@ -10,7 +10,7 @@ const HomePage = () => {
         <img class="logo-white" src="${logoUrl}" alt="amatta-logo" />
         <section class="home-button-section">
           <a class="login-button" href='/'>로그인</a>
-          <a class="signup-button" href='/register'>회원가입</a>
+          <a class="auth-button" href='/register'>회원가입</a>
         </section>
       </section>
     </main>

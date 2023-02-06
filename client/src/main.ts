@@ -31,7 +31,7 @@ const navigate = (path: string) => {
 
 navigate(window.location.pathname);
 
-const signUpButton = document.querySelector('.signup-button');
+const signUpButton = document.querySelector('.auth-button');
 
 signUpButton?.addEventListener('click', (event) => {
   if (
