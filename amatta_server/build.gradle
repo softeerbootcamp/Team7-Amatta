@@ -30,6 +30,10 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-aop'
 	runtimeOnly 'org.aspectj:aspectjweaver:1.9.9.1'
 	runtimeOnly 'org.aspectj:aspectjrt:1.9.9.1'
+
+	annotationProcessor('org.projectlombok:lombok')
+	testAnnotationProcessor('org.projectlombok:lombok')
+	compileOnly group: 'org.projectlombok', name: 'lombok', version: '1.18.24'
 }
 
 tasks.named('test') {
