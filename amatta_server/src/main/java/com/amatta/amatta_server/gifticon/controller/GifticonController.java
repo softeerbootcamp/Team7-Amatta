@@ -1,18 +1,16 @@
 package com.amatta.amatta_server.gifticon.controller;
 
 import com.amatta.amatta_server.exception.NotAuthenticatedException;
-import com.amatta.amatta_server.gifticon.model.Gifticon;
+import com.amatta.amatta_server.gifticon.dto.GifticonImageDto;
+import com.amatta.amatta_server.gifticon.dto.GifticonTextDto;
 import com.amatta.amatta_server.gifticon.service.GifticonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
+@CrossOrigin
 public class GifticonController {
     private final GifticonService gifticonService;
 
@@ -21,10 +19,17 @@ public class GifticonController {
         this.gifticonService = gifticonService;
     }
 
+    @PostMapping("/gift/text")
+    public ResponseEntity<?> gifticonTextExtract(@RequestBody GifticonImageDto dto) {
+        return gifticonService.extractGifticonText(dto);
+    }
+
     @PostMapping("/gift")
-    public ResponseEntity<?> gifticonAdd() {
-        List<Gifticon> gifticonList = gifticonService.findGifticonList();
-        return new ResponseEntity<>(gifticonList, HttpStatus.OK);
+    public ResponseEntity<?> gifticonAdd(@RequestBody GifticonTextDto dto) {
+        System.out.println(dto.getTexts());
+        return null;
+        //List<Gifticon> gifticonList = gifticonService.findGifticonList();
+        //return new ResponseEntity<>(gifticonList, HttpStatus.OK);
     }
 
     @ExceptionHandler(NotAuthenticatedException.class)
