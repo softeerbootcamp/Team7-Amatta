@@ -1,7 +1,10 @@
 package com.amatta.amatta_server.gifticon.model;
 
+import lombok.Builder;
+
 import java.time.LocalDateTime;
 
+@Builder
 public class Gifticon {
 
     private long id;
