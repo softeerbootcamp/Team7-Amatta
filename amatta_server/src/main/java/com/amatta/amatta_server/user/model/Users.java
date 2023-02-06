@@ -5,14 +5,14 @@ public class Users {
     private String email;
     private String password;
     private String name;
-    private String phoneNumber;
+    private String phonenumber;
 
-    public Users(long id, String email, String password, String name, String phoneNumber) {
+    public Users(long id, String email, String password, String name, String phonenumber) {
         this.id = id;
         this.email = email;
         this.password = password;
         this.name = name;
-        this.phoneNumber = phoneNumber;
+        this.phonenumber = phonenumber;
     }
 
     public long getId() {
@@ -32,7 +32,7 @@ public class Users {
     }
 
     public String getPhoneNumber() {
-        return phoneNumber;
+        return phonenumber;
     }
 
 }
