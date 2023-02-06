@@ -1,9 +1,6 @@
 package com.amatta.amatta_server.user.controller;
 
-import com.amatta.amatta_server.user.dto.UserEmailExistRes;
-import com.amatta.amatta_server.user.dto.UserJoinReq;
-import com.amatta.amatta_server.user.dto.UserJoinRes;
-import com.amatta.amatta_server.user.dto.UserLoginReq;
+import com.amatta.amatta_server.user.dto.*;
 import com.amatta.amatta_server.user.model.Users;
 import com.amatta.amatta_server.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,12 +48,21 @@ public class UserController {
     public ResponseEntity<?> login(@Valid @RequestBody UserLoginReq userLoginReq, HttpServletRequest httpServletRequest) {
         Users loginUser = userService.login(userLoginReq);
         if (Objects.isNull(loginUser)) {
-            return new ResponseEntity<>("로그인 실패", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new UserLoginRes(false), HttpStatus.BAD_REQUEST);
         }
 
         HttpSession httpSession = httpServletRequest.getSession(true);
         httpSession.setAttribute("User", loginUser);
-        return new ResponseEntity<>("로그인 성공", HttpStatus.OK);
+        return new ResponseEntity<>(new UserLoginRes(true), HttpStatus.OK);
+    }
+
+    @PostMapping("/logout")
+    public String logout(HttpServletRequest request) {
+        HttpSession session = request.getSession(false);
+        if (session != null) {
+            session.invalidate();
+        }
+        return "redirect:/";
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
