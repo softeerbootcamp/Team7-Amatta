@@ -16,6 +16,7 @@ import javax.validation.Valid;
 import java.util.Objects;
 
 @RestController
+@CrossOrigin
 @RequestMapping("/user")
 public class UserController {
 
@@ -63,6 +64,12 @@ public class UserController {
             session.invalidate();
         }
         return new ResponseEntity<>(new UserLogoutRes(true), HttpStatus.OK);
+    }
+
+    @PostMapping("/find/email")
+    public ResponseEntity<?> findEmail(@RequestBody UserFindEmailReq userFindEmailReq) {
+        UserFindEmailRes userFindEmailRes = userService.findEmail(userFindEmailReq);
+        return new ResponseEntity<>(userFindEmailRes, HttpStatus.OK);
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
