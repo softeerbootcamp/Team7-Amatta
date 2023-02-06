@@ -43,9 +43,17 @@ public class UserService {
 
     public Users login(UserLoginReq userLoginReq) {
         Users users = userRepository.findByEmail(userLoginReq.getEmail());
-        if(Objects.nonNull(users) && BCrypt.checkpw(userLoginReq.getPassword(), users.getPassword())) {
+        if (Objects.nonNull(users) && BCrypt.checkpw(userLoginReq.getPassword(), users.getPassword())) {
             return users;
         }
         return null;
+    }
+
+    public UserFindEmailRes findEmail(UserFindEmailReq userFindEmailReq) {
+        Users users = userRepository.findByNameAndPhoneNum(userFindEmailReq.getName(), userFindEmailReq.getPhoneNumber());
+        if (Objects.nonNull(users)) {
+            return new UserFindEmailRes(true, users.getEmail());
+        }
+        return new UserFindEmailRes(false, "");
     }
 }
