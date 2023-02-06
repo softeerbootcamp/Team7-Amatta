@@ -16,7 +16,7 @@ const findRoute = (path: string) =>
 
 const render = async (path = window.location.pathname) => {
   const { component } = findRoute(path);
-
+  console.log(component());
   return rootElement.replaceChildren(component());
 };
 
