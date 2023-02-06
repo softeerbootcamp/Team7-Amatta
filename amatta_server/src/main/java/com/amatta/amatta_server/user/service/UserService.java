@@ -1,5 +1,6 @@
 package com.amatta.amatta_server.user.service;
 
+import com.amatta.amatta_server.user.dto.UserEmailExistRes;
 import com.amatta.amatta_server.user.dto.UserJoinReq;
 import com.amatta.amatta_server.user.dto.UserJoinRes;
 import com.amatta.amatta_server.user.dto.UserLoginReq;
@@ -15,8 +16,11 @@ public class UserService {
 
     private final UserRepository userRepository;
 
-    public UserService(UserRepository userRepository) {
+    private final MailService mailService;
+
+    public UserService(UserRepository userRepository, MailService mailService) {
         this.userRepository = userRepository;
+        this.mailService = mailService;
     }
 
     public UserJoinRes signUp(UserJoinReq userJoinReq) {
@@ -26,8 +30,11 @@ public class UserService {
         return userJoinRes;
     }
 
-    public boolean checkEmailDuplicated(String email) {
-        return Objects.nonNull(userRepository.findByEmail(email));
+    public UserEmailExistRes checkEmailDuplicated(String email) {
+        if(Objects.nonNull(userRepository.findByEmail(email))) {
+            return new UserEmailExistRes(true, "");
+        }
+        return new UserEmailExistRes(false, mailService.sendEmail(email));
     }
 
     public boolean checkPhoneNumDuplicated(String phoneNumber) {
