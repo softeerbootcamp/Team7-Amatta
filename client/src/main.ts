@@ -1,6 +1,6 @@
-import './styles/main.scss';
+import './styles/style.scss';
 import { setScreenSize } from './utils';
-import { HomePage, AuthPage, NotFound } from './pages';
+import { HomePage, AuthPage, NotFound, MainPage } from './pages';
 
 interface Route {
   path: string;
@@ -10,6 +10,7 @@ interface Route {
 const routes: Route[] = [
   { path: '/', component: HomePage },
   { path: '/register', component: AuthPage },
+  { path: '/card', component: MainPage },
 ];
 
 const rootElement = document.querySelector('#root');
@@ -31,7 +32,7 @@ const navigate = (path: string) => {
 
 navigate(window.location.pathname);
 
-const signUpButton = document.querySelector('.auth-button');
+const signUpButton = document.querySelector('.auth-button');
 
 signUpButton?.addEventListener('click', (event) => {
   if (

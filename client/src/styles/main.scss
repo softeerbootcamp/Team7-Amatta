@@ -1,14 +1,100 @@
-@import url('https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700&display=swap');
-@import './color.scss';
-@import './common.scss';
-@import './util.scss';
-@import './home.scss';
-@import './auth.scss';
-@import './header.scss';
+.main-card-article {
+  margin: 5%;
 
-* {
-  font-size: 14px;
-  margin: 0;
-  padding: 0;
-  font-family: 'Nanum Gothic', sans-serif;
+  .main-button-container {
+    display: flex;
+    justify-content: space-between;
+    height: 2rem;
+    margin-bottom: 10%;
+
+    .show-card-section {
+      .one-card-button,
+      .list-card-button {
+        height: 100%;
+        margin-right: 0.5rem;
+      }
+    }
+
+    .main-dropdown-section {
+      // width: 10rem;
+
+      .main-dropdown-button {
+        display: flex;
+        height: 100%;
+        // text-align: center;
+        align-items: center;
+        justify-content: center;
+        background-color: white;
+        border-radius: 5px;
+        border: 1px solid $primary-color;
+        width: 5rem;
+
+        .main-dropdown-image {
+          height: 100%;
+        }
+      }
+    }
+  }
+
+  .one-card-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    .card-image {
+      margin-bottom: 5%;
+    }
+
+    .card-text {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+
+      .item-name {
+        font-weight: 300;
+        font-size: 2rem;
+        margin-top: 0.5rem;
+        margin-bottom: 1rem;
+      }
+
+      .date-of-use {
+        font-size: 1.25rem;
+      }
+    }
+
+    .more-icon {
+      height: 2rem;
+      margin-top: 10%;
+      margin-bottom: 15%;
+    }
+
+    .mark-used-button {
+      font-size: 1.25rem;
+      width: 10rem;
+      height: 4.5rem;
+      border-radius: 10px;
+      border: none;
+      background-color: $primary-color;
+      color: white;
+    }
+  }
+
+  #plus-button {
+    position: absolute;
+    right: 2rem;
+    bottom: 2rem;
+    background-color: $pink-color;
+    border: none;
+    width: 5rem;
+    height: 5rem;
+    border-radius: 50%;
+
+    .plus-button-image {
+      width: 2.5rem;
+      filter: invert(100%) sepia(0%) saturate(0%) hue-rotate(113deg)
+        brightness(104%) contrast(101%);
+    }
+  }
 }
