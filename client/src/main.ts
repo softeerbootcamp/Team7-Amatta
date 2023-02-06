@@ -5,9 +5,9 @@ import { routes, navigate } from './core/router';
 
 routes.push(
   { path: '/', component: HomePage },
-  { path: '/register', component: AuthPage }
+  { path: '/auth', component: AuthPage }
 );
 
-navigate(window.location.pathname);
+navigate(window.location.pathname, window.history.state);
 
 window.addEventListener('resize', setScreenSize);

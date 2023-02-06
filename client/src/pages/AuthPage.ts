@@ -1,9 +1,10 @@
 import { SERVER_URL } from '@/constants/constant';
 import { generateElement } from '@/utils';
-import { InputForm } from '@/components/common';
+import { loginTemplate, registerTemplate } from '@/components/auth';
 
 const AuthPage = () => {
   const logoUrl = `${SERVER_URL.IMG}logo/logo-pink.png`;
+  const { componentName } = window.history.state;
 
   const inputs = [
     {
@@ -16,6 +17,12 @@ const AuthPage = () => {
       type: 'tel',
       name: 'phone-input',
       label: '전화번호',
+      required: true,
+    },
+    {
+      type: 'verificationCode',
+      name: 'verification-code',
+      label: '인증번호',
       required: true,
     },
     {
@@ -32,14 +39,13 @@ const AuthPage = () => {
     },
   ];
 
-  const { pageName, buttonType } = window.history.state;
-
   const status = () => {
-    if (pageName === 'register') {
-      return inputs.map((input) => InputForm(input)).join('');
-    } else if (pageName === 'login') {
-      const loginInputs = [inputs[0], inputs[2]];
-      return loginInputs.map((input) => InputForm(input)).join('');
+    if (componentName === 'register') {
+      return registerTemplate(inputs);
+    } else if (componentName === 'login') {
+      const loginInputs = [inputs[0], inputs[3]];
+
+      return loginTemplate(loginInputs);
     }
 
     return;
@@ -52,8 +58,7 @@ const AuthPage = () => {
         <form>
           ${status()}
           <div class="auth-button-container">
-            <input type="submit" class="auth-button" name="auth-button" value="${buttonType}" />
-            <input type="reset" class="auth-button" name="cancel-button" value="취소" />
+            <input type="submit" class="auth-button" name="auth-button" value="완료" />
           </div>
         </form>
       </section>

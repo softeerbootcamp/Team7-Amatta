@@ -1,9 +1,10 @@
 import { NotFound } from '@/pages';
 
-interface Route {
+type Route = {
   path: string;
   component: () => DocumentFragment;
-}
+};
+
 const routes: Route[] = [];
 const rootElement = document.querySelector('#root');
 if (!rootElement) throw new Error('#root Error');
@@ -13,19 +14,20 @@ const findRoute = (path: string) =>
     component: NotFound,
   };
 
-const render = (path = window.location.pathname) => {
+const render = async (path = window.location.pathname) => {
   const { component } = findRoute(path);
-  rootElement.replaceChildren(component());
+
+  return rootElement.replaceChildren(component());
 };
 
-const navigate = (path: string, data = {}) => {
+const navigate = async (path: string, data?: {}) => {
   window.history.pushState(data, '', path);
-  render(path);
+  await render(path);
 };
 
-const onClickNavigateButton = (target: HTMLElement) => {
+const onClickNavigateButton = (target: HTMLElement, data?: {}) => {
   target.addEventListener('click', (event: MouseEvent) => {
-    const closestTarget = (event.target as HTMLInputElement).closest(
+    const closestTarget = (event.target as HTMLInputElement)?.closest(
       '[data-link]'
     );
     if (!closestTarget) return;
@@ -33,7 +35,7 @@ const onClickNavigateButton = (target: HTMLElement) => {
     event.preventDefault();
 
     const path = closestTarget.getAttribute('data-link')!;
-    navigate(path);
+    navigate(path, data);
   });
 };
 
