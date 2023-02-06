@@ -15,7 +15,7 @@ public class IndexController {
     @GetMapping("/redirect")
     public ResponseEntity<?> redirect() {
         HttpHeaders headers = new HttpHeaders();
-        headers.setLocation(URI.create("/"));
+        headers.setLocation(URI.create("localhost:5173/"));
         return new ResponseEntity<>(headers, HttpStatus.MOVED_PERMANENTLY);
     }
 }
