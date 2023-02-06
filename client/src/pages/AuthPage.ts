@@ -32,15 +32,28 @@ const AuthPage = () => {
     },
   ];
 
+  const { pageName, buttonType } = window.history.state;
+
+  const status = () => {
+    if (pageName === 'register') {
+      return inputs.map((input) => InputForm(input)).join('');
+    } else if (pageName === 'login') {
+      const loginInputs = [inputs[0], inputs[2]];
+      return loginInputs.map((input) => InputForm(input)).join('');
+    }
+
+    return;
+  };
+
   const authTemplate = generateElement(`
-    <article class="signup-article">
+    <article class="auth-article">
       <img class="small-logo-pink" src="${logoUrl}" alt="small-logo-pink" />
-      <section class="signup-form-section">
+      <section class="auth-form-section">
         <form>
-          ${inputs.map((input) => InputForm(input)).join('')}
-          <div class="signup-button-container">
-            <input type="submit" class="auth-button" id="signup-button" name="signup-button" value="회원가입" />
-            <input type="reset" class="auth-button" id="cancel-button" name="cancel-button" value="취소" />
+          ${status()}
+          <div class="auth-button-container">
+            <input type="submit" class="auth-button" name="auth-button" value="${buttonType}" />
+            <input type="reset" class="auth-button" name="cancel-button" value="취소" />
           </div>
         </form>
       </section>
