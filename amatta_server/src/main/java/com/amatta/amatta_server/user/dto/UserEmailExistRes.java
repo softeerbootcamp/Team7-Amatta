@@ -8,4 +8,12 @@ public class UserEmailExistRes {
         this.isExist = isExist;
         this.certificationNum = certificationNum;
     }
+
+    public boolean isExist() {
+        return isExist;
+    }
+
+    public String getCertificationNum() {
+        return certificationNum;
+    }
 }

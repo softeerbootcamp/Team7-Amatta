@@ -1,5 +1,6 @@
 package com.amatta.amatta_server.user.controller;
 
+import com.amatta.amatta_server.user.dto.UserEmailExistRes;
 import com.amatta.amatta_server.user.dto.UserJoinReq;
 import com.amatta.amatta_server.user.dto.UserJoinRes;
 import com.amatta.amatta_server.user.dto.UserLoginReq;
@@ -30,8 +31,8 @@ public class UserController {
 
     @GetMapping("/join/exist/email")
     public ResponseEntity<?> checkEmailDuplicate(@RequestParam String email) {
-        boolean check = userService.checkEmailDuplicated(email);
-        return new ResponseEntity<>(check, HttpStatus.OK);
+        UserEmailExistRes userEmailExistRes = userService.checkEmailDuplicated(email);
+        return new ResponseEntity<>(userEmailExistRes, HttpStatus.OK);
     }
 
     @GetMapping("/join/exist/phoneNum")
