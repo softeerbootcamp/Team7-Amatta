@@ -1,5 +1,9 @@
 .main-card-article {
   margin: 5%;
+  width: 90%;
+  height: 90%;
+  margin: 6% auto;
+  overflow-x: hidden;
 
   .main-button-container {
     display: flex;
@@ -21,7 +25,6 @@
       .main-dropdown-button {
         display: flex;
         height: 100%;
-        // text-align: center;
         align-items: center;
         justify-content: center;
         background-color: white;
@@ -36,48 +39,58 @@
     }
   }
 
-  .one-card-section {
+  .cards-section {
     display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+    transition: 0.3s ease-out;
+    height: 80%;
+    // width: 500%;
 
-    .card-image {
-      margin-bottom: 5%;
-    }
-
-    .card-text {
+    .one-card-section {
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
+      margin-right: 5%;
+      margin-left: 5%;
 
-      .item-name {
-        font-weight: 300;
-        font-size: 2rem;
-        margin-top: 0.5rem;
-        margin-bottom: 1rem;
+      .card-image {
+        margin-bottom: 5%;
       }
 
-      .date-of-use {
+      .card-text {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+
+        .item-name {
+          font-weight: 300;
+          font-size: 2rem;
+          margin-top: 0.5rem;
+          margin-bottom: 1rem;
+        }
+
+        .date-of-use {
+          font-size: 1.25rem;
+        }
+      }
+
+      .more-icon {
+        height: 2rem;
+        margin-top: 10%;
+        margin-bottom: 15%;
+      }
+
+      .mark-used-button {
         font-size: 1.25rem;
+        width: 10rem;
+        height: 4.5rem;
+        border-radius: 10px;
+        border: none;
+        background-color: $primary-color;
+        color: white;
       }
-    }
-
-    .more-icon {
-      height: 2rem;
-      margin-top: 10%;
-      margin-bottom: 15%;
-    }
-
-    .mark-used-button {
-      font-size: 1.25rem;
-      width: 10rem;
-      height: 4.5rem;
-      border-radius: 10px;
-      border: none;
-      background-color: $primary-color;
-      color: white;
     }
   }
 

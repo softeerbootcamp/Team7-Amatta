@@ -1,13 +1,37 @@
-import Header from '@/components/common/header';
+import { Header } from '@/components/common';
 import { SERVER_URL } from '@/constants/constant';
 import { generateElement } from '@/utils';
+import { CardDetail } from '@/components/common';
 
 const MainPage = () => {
   const oneCardIconUrl = `${SERVER_URL.IMG}icon/image.svg`;
   const listIconUrl = `${SERVER_URL.IMG}icon/list.svg`;
   const dropdownIconUrl = `${SERVER_URL.IMG}icon/angle-down.svg`;
-  const moreIconUrl = `${SERVER_URL.IMG}icon/dots.svg`;
   const plusIconUrl = `${SERVER_URL.IMG}icon/plus.svg`;
+
+  const cards = [
+    {
+      image:
+        'https://amatta-icons.s3.ap-northeast-2.amazonaws.com/icon/gifticonSample.jpeg',
+      shopName: 'twosome place',
+      itemName: 'Americano & Tiramisu',
+      dateOfUse: '2023.07.07 까지',
+    },
+    {
+      image:
+        'https://amatta-icons.s3.ap-northeast-2.amazonaws.com/icon/gifticonSample.jpeg',
+      shopName: 'starbucks',
+      itemName: 'Latte',
+      dateOfUse: '2023.07.07 까지',
+    },
+    {
+      image:
+        'https://amatta-icons.s3.ap-northeast-2.amazonaws.com/icon/gifticonSample.jpeg',
+      shopName: 'The venti',
+      itemName: 'Vanilla Latte',
+      dateOfUse: '2023.07.07 까지',
+    },
+  ];
 
   const mainCardTemplate = generateElement(`
     ${Header}
@@ -24,15 +48,8 @@ const MainPage = () => {
           </button>
         </section>
       </div>
-      <section class='one-card-section'>
-        <img class='card-image' src='../src/assets/gifticonSample.jpeg' alt='card-image' />
-        <section class='card-text'>
-          <div class='shop-name'> Twosome Place </div>
-          <div class='item-name'> Americano + Tiramisu </div>
-          <div class='date-of-use'> 2023.07.07 </div>
-        </section>
-        <img class='more-icon' src='${moreIconUrl}' alt='more-dots-icon' />
-        <input type="submit" class='mark-used-button' name='mark-used-button' value='사용 완료' />
+      <section class='cards-section'>
+        ${cards.map((detail) => CardDetail(detail)).join('')}
       </section>
       <button type="button" id="plus-button">
         <img class='plus-button-image' src='${plusIconUrl}' alt='plus-button' />
