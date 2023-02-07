@@ -9,7 +9,7 @@ public class Gifticon {
 
     private long id;
     private long uid;
-    private String image;
+    private byte[] image;
     private String brandName;
     private String itemName;
     private String barcode;
@@ -25,7 +25,7 @@ public class Gifticon {
         return uid;
     }
 
-    public String getImage() {
+    public byte[] getImage() {
         return image;
     }
 
