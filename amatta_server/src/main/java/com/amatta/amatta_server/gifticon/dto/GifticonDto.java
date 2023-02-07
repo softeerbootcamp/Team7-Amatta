@@ -1,15 +1,22 @@
 package com.amatta.amatta_server.gifticon.dto;
 
-import lombok.Builder;
 import lombok.Getter;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 @Getter
-@Builder
 public class GifticonDto {
-    private String ItemName;
+    @NotNull
+    private long uid;
+    @NotEmpty
+    private String itemName;
+    @NotEmpty
     private String brandName;
-    private byte[] image;
+    @NotEmpty
+    private String image;
+    @NotEmpty
     private String barcode;
-    private String expiresAtString;
+    @NotEmpty
+    private String expiresAtInString;
     private int price;
 }
