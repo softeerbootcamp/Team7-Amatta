@@ -29,12 +29,32 @@ public class KakaoGifticonMapper implements GifticonMapper {
         String brandName = list.get(brandNameIndex+1);
         LocalDateTime expirationDate = getExpirationDate(list, expirationDateIndex, orderIdIndex);
         String itemName = getItemName(list, brandName);
+        String barcode = getBarcode(list, brandNameIndex);
 
         return Gifticon.builder()
                 .brandName(brandName)
                 .expiresAt(expirationDate)
                 .itemName(itemName)
+                .barcode(barcode)
                 .build();
+    }
+
+    private String getBarcode(List<String> list, int brandNameIndex) {
+        int barcodeStartIdx = 0;
+        for(int i = brandNameIndex - 1; i >= 0; i--) {
+            if(list.get(i).matches("^\\d{4}$")) {
+                barcodeStartIdx = i;
+            }
+            if(!list.get(i).matches("^\\d{4}$")) {
+                break;
+            }
+        }
+
+        StringBuilder st = new StringBuilder();
+        for(int i = barcodeStartIdx; i < brandNameIndex; i++) {
+            st.append(list.get(i));
+        }
+        return st.toString();
     }
 
     private LocalDateTime getExpirationDate(List<String> list, int expirationDateIndex, int orderIdIndex) throws IndexOutOfBoundsException {
