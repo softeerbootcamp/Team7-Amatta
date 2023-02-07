@@ -12,6 +12,7 @@ public class Gifticon {
     private String image;
     private String brandName;
     private String itemName;
+    private String barcode;
     private LocalDateTime expiresAt;
     private LocalDateTime usedAt;
     private int price;
@@ -34,6 +35,10 @@ public class Gifticon {
 
     public String getItemName() {
         return itemName;
+    }
+
+    public String getBarcode() {
+        return barcode;
     }
 
     public LocalDateTime getExpiresAt() {
