@@ -18,12 +18,19 @@ HomePage.temp = `
 `;
 
 // prettier-ignore
-const navigateHome = () =>
+HomePage.render =
   new Promise((resolve) =>
     _.go(
-      HomePage.temp, 
-      $.el, 
+      HomePage.temp,
+      $.el,
       $.replace($.qs('#root')),
-      () =>resolve($.qs('.signup-button'))));
+      _ => resolve($.qsa('[data-link]'))));
+
+// prettier-ignore
+const navigateHome = () => 
+  new Promise (async (resolve) => 
+    _.go(
+      await HomePage.render,
+      resolve));
 
 export default navigateHome;

@@ -10,26 +10,39 @@ const findRoute = (path) =>
     component: NotFound,
   };
 
-const render = ({ component }) => {
-  component() instanceof Promise
-    ? component().then((target) => onClickNavigateButton(target))
+// prettier-ignore
+const render = ({ component }) =>
+  component() instanceof Promise 
+    ? component().then((targets) => addNavigateEvent(targets))
     : component();
-};
 
 // prettier-ignore
 const reRender = () => 
-      _.go(
-        findRoute(window.location.pathname),
-        render);
+  _.go(
+    findRoute(window.location.pathname),
+    render);
 
 const pushState = (path, data) => window.history.pushState(data, '', path);
 
-const navigate = (path, data = {}) => {
+const navigate = (data) => (path) => {
   pushState(path, data);
   return path;
 };
 
-const init = (path) => _.go(path, navigate, findRoute, render);
+// prettier-ignore
+const init = 
+  (path, data = {}) =>
+    _.go(
+      path, navigate(data),
+      findRoute,
+      render);
+
+const isIterable = (a) => a !== null && !!a[Symbol.iterator];
+
+const addNavigateEvent = (targets) => {
+  isIterable(targets) && targets.forEach((target) => onClickNavigateButton(target));
+  !isIterable(targets) && onClickNavigateButton(targets);
+};
 
 const onClickNavigateButton = (target) => {
   target.addEventListener('click', (event) => {
