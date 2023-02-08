@@ -15,7 +15,6 @@ jobs:
       working-directory: ./amatta_server
     
     steps:
-
     ## jdk setting
     - uses: actions/checkout@v3
     - name: Set up JDK 11
@@ -67,3 +66,4 @@ jobs:
             sudo docker pull ${{ secrets.DOCKER_REPO }}
             docker-compose up -d
             docker image prune -f
+            /home/ubuntu/server.sh
