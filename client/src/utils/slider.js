@@ -13,7 +13,7 @@ const slider = () => {
   console.log(mainArticle.clientWidth);
 
   const getInterval = setInterval(() => {
-    currentIndex++;
+    currentIndex += 1;
     currentIndex = currentIndex >= oneCardSection.length ? 0 : currentIndex;
     cardsSection.style.marginLeft = `-${mainArticle.clientWidth * currentIndex + 39}px`;
   }, 2000);

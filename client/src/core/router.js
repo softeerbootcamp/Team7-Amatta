@@ -1,6 +1,6 @@
 /* eslint-disable no-use-before-define */
 /* eslint-disable no-unused-expressions */
-import { NotFound } from '@/pages/index';
+import { NotFound } from '@/pages';
 import { _ } from '@/utils/customFx';
 
 const routes = [];
@@ -11,10 +11,12 @@ const findRoute = (path) =>
   };
 
 // prettier-ignore
-const render = ({ component }) =>
-  component() instanceof Promise 
-    ? component().then((targets) => addNavigateEvent(targets))
-    : component();
+const render = ({ component }) => {
+  const temp = component();
+  return temp instanceof Promise 
+          ? temp.then((targets) => addNavigateEvent(targets))
+          : temp;
+}
 
 // prettier-ignore
 const reRender = () => 
@@ -24,40 +26,38 @@ const reRender = () =>
 
 const pushState = (path, data) => window.history.pushState(data, '', path);
 
-const navigate = (data) => (path) => {
+const setData = (data) => (path) => {
   pushState(path, data);
+
   return path;
 };
 
 // prettier-ignore
-const init = 
+const navigate = 
   (path, data = {}) =>
     _.go(
-      path, navigate(data),
+      path,
+      setData(data),
       findRoute,
       render);
 
-const isIterable = (a) => a !== null && !!a[Symbol.iterator];
-
 const addNavigateEvent = (targets) => {
-  isIterable(targets) && targets.forEach((target) => onClickNavigateButton(target));
-  !isIterable(targets) && onClickNavigateButton(targets);
+  _.isIterable(targets) && targets.forEach((target) => onClickNavigateButton(target));
+  !_.isIterable(targets) && onClickNavigateButton(targets);
 };
 
-const onClickNavigateButton = (target) => {
-  target.addEventListener('click', (event) => {
-    const closestTarget = event.target.closest('[data-link]');
-    if (!closestTarget) return;
+const link = (event) => {
+  const closestTarget = _.findClosest(event.target, '[data-link]');
+  if (!closestTarget) return;
+  const path = _.getDataset(closestTarget, 'data-link');
 
-    event.preventDefault();
-
-    const path = closestTarget.getAttribute('data-link');
-
-    init(path);
-  });
+  event.preventDefault();
+  navigate(path);
 };
+
+const onClickNavigateButton = (target) => target.addEventListener('click', link);
 
 window.addEventListener('popstate', reRender);
 window.addEventListener('DOMContentLoaded', reRender);
 
-export { init, routes };
+export { navigate, routes, addNavigateEvent };
