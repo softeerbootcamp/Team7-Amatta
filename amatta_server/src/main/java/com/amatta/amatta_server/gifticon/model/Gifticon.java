@@ -1,14 +1,18 @@
 package com.amatta.amatta_server.gifticon.model;
 
+import lombok.Builder;
+
 import java.time.LocalDateTime;
 
+@Builder
 public class Gifticon {
 
     private long id;
     private long uid;
-    private String image;
+    private byte[] image;
     private String brandName;
     private String itemName;
+    private String barcode;
     private LocalDateTime expiresAt;
     private LocalDateTime usedAt;
     private int price;
@@ -21,7 +25,7 @@ public class Gifticon {
         return uid;
     }
 
-    public String getImage() {
+    public byte[] getImage() {
         return image;
     }
 
@@ -31,6 +35,10 @@ public class Gifticon {
 
     public String getItemName() {
         return itemName;
+    }
+
+    public String getBarcode() {
+        return barcode;
     }
 
     public LocalDateTime getExpiresAt() {

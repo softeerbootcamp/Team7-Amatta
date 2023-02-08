@@ -1,8 +1,6 @@
 package com.amatta.amatta_server.user.service;
 
-import com.amatta.amatta_server.user.dto.UserJoinReq;
-import com.amatta.amatta_server.user.dto.UserJoinRes;
-import com.amatta.amatta_server.user.dto.UserLoginReq;
+import com.amatta.amatta_server.user.dto.*;
 import com.amatta.amatta_server.user.model.Users;
 import com.amatta.amatta_server.user.repository.UserRepository;
 import org.mindrot.jbcrypt.BCrypt;
@@ -15,8 +13,11 @@ public class UserService {
 
     private final UserRepository userRepository;
 
-    public UserService(UserRepository userRepository) {
+    private final MailService mailService;
+
+    public UserService(UserRepository userRepository, MailService mailService) {
         this.userRepository = userRepository;
+        this.mailService = mailService;
     }
 
     public UserJoinRes signUp(UserJoinReq userJoinReq) {
@@ -26,19 +27,33 @@ public class UserService {
         return userJoinRes;
     }
 
-    public boolean checkEmailDuplicated(String email) {
-        return Objects.nonNull(userRepository.findByEmail(email));
+    public UserEmailExistRes checkEmailDuplicated(String email) {
+        if(Objects.nonNull(userRepository.findByEmail(email))) {
+            return new UserEmailExistRes(true, "");
+        }
+        return new UserEmailExistRes(false, mailService.sendEmail(email));
     }
 
-    public boolean checkPhoneNumDuplicated(String phoneNumber) {
-        return Objects.nonNull(userRepository.findByPhoneNum(phoneNumber));
+    public UserPhoneNumExistRes checkPhoneNumDuplicated(String phoneNumber) {
+        if(Objects.nonNull(userRepository.findByPhoneNum(phoneNumber))) {
+            return new UserPhoneNumExistRes(true);
+        }
+        return new UserPhoneNumExistRes(false);
     }
 
     public Users login(UserLoginReq userLoginReq) {
         Users users = userRepository.findByEmail(userLoginReq.getEmail());
-        if(Objects.nonNull(users) && BCrypt.checkpw(userLoginReq.getPassword(), users.getPassword())) {
+        if (Objects.nonNull(users) && BCrypt.checkpw(userLoginReq.getPassword(), users.getPassword())) {
             return users;
         }
         return null;
+    }
+
+    public UserFindEmailRes findEmail(UserFindEmailReq userFindEmailReq) {
+        Users users = userRepository.findByNameAndPhoneNum(userFindEmailReq.getName(), userFindEmailReq.getPhoneNumber());
+        if (Objects.nonNull(users)) {
+            return new UserFindEmailRes(true, users.getEmail());
+        }
+        return new UserFindEmailRes(false, "");
     }
 }
