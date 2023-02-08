@@ -1,6 +1,7 @@
 package com.amatta.amatta_server.gifticon.controller;
 
 import com.amatta.amatta_server.exception.DuplicateGifticonException;
+import com.amatta.amatta_server.exception.GifticonNotSupportedException;
 import com.amatta.amatta_server.exception.NotAuthenticatedException;
 import com.amatta.amatta_server.gifticon.dto.GifticonDto;
 import com.amatta.amatta_server.gifticon.dto.GifticonImageDto;
@@ -43,13 +44,18 @@ public class GifticonController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    @GetMapping("/list/{uid}")
+    public ResponseEntity<?> gifticonList(@PathVariable Long uid) {
+        return new ResponseEntity<>(gifticonService.findGifticons(uid), HttpStatus.OK);
+    }
+
     @ExceptionHandler(NotAuthenticatedException.class)
     public ResponseEntity<?> notAuthenticatedExceptionHandler() {
         return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
     }
 
-    @ExceptionHandler(NullPointerException.class)
-    public ResponseEntity<?> nullPointerExceptionHandler() {
+    @ExceptionHandler(GifticonNotSupportedException.class)
+    public ResponseEntity<?> gifticonNotSupportedExceptionHandler() {
         return new ResponseEntity<>("지원하지 않는 기프티콘", HttpStatus.BAD_REQUEST);
     }
 
