@@ -1,8 +1,8 @@
 import SERVER_URL from '@/constants/constant';
-import { Header } from '@/components/common';
+import { header } from '@/components/common';
 import { $ } from '@/utils/index';
 import { _ } from '@/utils/customFx';
-import { CardDetail } from '@/components/common';
+import { cardDetail } from '@/components/common';
 import { slider } from '@/utils';
 
 const oneCardIconUrl = `${SERVER_URL.IMG}icon/image.svg`;
@@ -12,22 +12,19 @@ const plusIconUrl = `${SERVER_URL.IMG}icon/plus.svg`;
 
 const cards = [
   {
-    image:
-      'https://amatta-icons.s3.ap-northeast-2.amazonaws.com/icon/gifticonSample.jpeg',
+    image: 'https://amatta-icons.s3.ap-northeast-2.amazonaws.com/icon/gifticonSample.jpeg',
     shopName: 'twosome place',
     itemName: 'Americano & Tiramisu',
     dateOfUse: '2023.07.07 까지',
   },
   {
-    image:
-      'https://amatta-icons.s3.ap-northeast-2.amazonaws.com/icon/gifticonSample.jpeg',
+    image: 'https://amatta-icons.s3.ap-northeast-2.amazonaws.com/icon/gifticonSample.jpeg',
     shopName: 'starbucks',
     itemName: 'Latte',
     dateOfUse: '2023.07.07 까지',
   },
   {
-    image:
-      'https://amatta-icons.s3.ap-northeast-2.amazonaws.com/icon/gifticonSample.jpeg',
+    image: 'https://amatta-icons.s3.ap-northeast-2.amazonaws.com/icon/gifticonSample.jpeg',
     shopName: 'The venti',
     itemName: 'Vanilla Latte',
     dateOfUse: '2023.07.07 까지',
@@ -36,7 +33,7 @@ const cards = [
 const MainPage = {};
 
 MainPage.temp = `
-    ${Header}
+    ${header}
     <article class = 'main-card-article'>
       <div class='main-button-container'>
         <section class = 'show-card-section'>
@@ -51,7 +48,7 @@ MainPage.temp = `
         </section>
       </div>
       <section class='cards-section'>
-        ${cards.map((detail) => CardDetail(detail)).join('')}
+        ${cards.map((detail) => cardDetail(detail)).join('')}
       </section>
       <button type="button" id="plus-button">
         <img class='plus-button-image' src='${plusIconUrl}' alt='plus-button' />

@@ -1,4 +1,4 @@
-const InputForm = (props) => {
+const inputForm = (props) => {
   const { type, name, label, required } = props;
 
   const inputFormTemplate = `
@@ -11,4 +11,4 @@ const InputForm = (props) => {
   return inputFormTemplate;
 };
 
-export default InputForm;
+export default inputForm;

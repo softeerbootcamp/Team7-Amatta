@@ -1,3 +1,3 @@
-export { default as Header } from './Header';
-export { default as InputForm } from './InputForm';
-export { default as CardDetail } from './CardDetail';
+export { default as header } from './header';
+export { default as inputForm } from './inputForm';
+export { default as cardDetail } from './cardDetail';

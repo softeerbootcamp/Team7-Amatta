@@ -1,6 +1,6 @@
 import SERVER_URL from '@/constants/constant.js';
 
-const CardDetail = (props) => {
+const cardDetail = (props) => {
   const { image, shopName, itemName, dateOfUse, required } = props;
 
   const moreIconUrl = `${SERVER_URL.IMG}icon/dots.svg`;
@@ -21,4 +21,4 @@ const CardDetail = (props) => {
   return cardDetailTemplate;
 };
 
-export default CardDetail;
+export default cardDetail;
