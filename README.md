@@ -28,6 +28,8 @@
 
 ## BE
 
+- [API 명세서](https://viridian-canvas-adb.notion.site/API-b21612efb02445ccb16a34baeebc83ce)
+
 <img width="700" alt="ERD" src="https://user-images.githubusercontent.com/65708461/215433375-81f7ac6e-00bd-406f-8a11-8b5cd05272e4.png">
 
 ## Github
