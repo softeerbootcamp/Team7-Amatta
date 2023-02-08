@@ -31,7 +31,7 @@ public class UserService {
         if(Objects.nonNull(userRepository.findByEmail(email))) {
             return new UserEmailExistRes(true, "");
         }
-        return new UserEmailExistRes(false, mailService.sendEmail(email));
+        return new UserEmailExistRes(false, mailService.sendJoinEmail(email));
     }
 
     public UserPhoneNumExistRes checkPhoneNumDuplicated(String phoneNumber) {
@@ -55,5 +55,14 @@ public class UserService {
             return new UserFindEmailRes(true, users.getEmail());
         }
         return new UserFindEmailRes(false, "");
+    }
+
+    public UserFindPasswordByEmailRes findPasswordByEmail(UserFindPasswordByEmailReq userFindPasswordByEmailReq) {
+        Users users = userRepository.findByNameAndEmail(userFindPasswordByEmailReq.getName(), userFindPasswordByEmailReq.getEmail());
+        if (Objects.nonNull(users)) {
+            userRepository.changePassword(users.getEmail(), BCrypt.hashpw(mailService.sendPasswordFindEmail(users.getEmail()), BCrypt.gensalt()));
+            return new UserFindPasswordByEmailRes(true);
+        }
+        return new UserFindPasswordByEmailRes(false);
     }
 }

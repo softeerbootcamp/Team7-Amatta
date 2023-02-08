@@ -20,9 +20,17 @@ public interface UserRepository extends CrudRepository<Users, Long> {
     @Query("SELECT * FROM users WHERE name = :name AND phoneNumber = :phoneNumber")
     Users findByNameAndPhoneNum(@Param("name") String name, @Param("phoneNumber") String phoneNumber);
 
+    @Query("SELECT * FROM users WHERE name = :name AND email = :email")
+    Users findByNameAndEmail(@Param("name") String name, @Param("email") String email);
+
     @Modifying
     @Transactional
     @Query("INSERT INTO users(email, password, name, phoneNumber) VALUES (:email, :password, :name, :phoneNumber)")
     void addUser(@Param("email") String email, @Param("password") String password, @Param("name") String name, @Param("phoneNumber") String phoneNumber);
+
+    @Modifying
+    @Transactional
+    @Query("UPDATE users SET password = :password WHERE email = :email")
+    void changePassword(@Param("email") String email, @Param("password") String password);
 
 }

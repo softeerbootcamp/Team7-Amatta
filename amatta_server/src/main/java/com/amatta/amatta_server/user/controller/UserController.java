@@ -72,6 +72,12 @@ public class UserController {
         return new ResponseEntity<>(userFindEmailRes, HttpStatus.OK);
     }
 
+    @PostMapping("/find/password/email")
+    public ResponseEntity<?> findPasswordByEmail(@RequestBody UserFindPasswordByEmailReq userFindPasswordByEmailReq) {
+        UserFindPasswordByEmailRes userFindPasswordByEmailRes = userService.findPasswordByEmail(userFindPasswordByEmailReq);
+        return new ResponseEntity<>(userFindPasswordByEmailRes, HttpStatus.OK);
+    }
+
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<?> methodArgumentNotValidExceptionHandler(MethodArgumentNotValidException e) {
         return new ResponseEntity<>(Objects.requireNonNull(e.getBindingResult().getFieldError()).getDefaultMessage(), HttpStatus.BAD_REQUEST);
