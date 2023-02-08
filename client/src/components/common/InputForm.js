@@ -1,11 +1,4 @@
-interface InputProps {
-  type: string;
-  name: string;
-  label: string;
-  required: boolean;
-}
-
-const InputForm = (props: InputProps) => {
+const InputForm = (props) => {
   const { type, name, label, required } = props;
 
   const inputFormTemplate = `
