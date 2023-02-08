@@ -1,9 +1,8 @@
 import SERVER_URL from '@/constants/constant';
-import { header } from '@/components/common';
-import { $ } from '@/utils/index';
+import { header, cardDetail } from '@/components/common';
+import { $, slider } from '@/utils';
 import { _ } from '@/utils/customFx';
-import { cardDetail } from '@/components/common';
-import { slider } from '@/utils';
+// import { slider } from '@/utils';
 
 const oneCardIconUrl = `${SERVER_URL.IMG}icon/image.svg`;
 const listIconUrl = `${SERVER_URL.IMG}icon/list.svg`;
@@ -57,7 +56,7 @@ MainPage.temp = `
   `;
 
 // prettier-ignore
-MainPage.render =
+MainPage.render = () =>
     _.go(
       MainPage.temp,
       $.el,
@@ -66,7 +65,7 @@ MainPage.render =
 // prettier-ignore
 const navigateMain = () => 
     _.go(
-      MainPage.render,
+      MainPage.render(),
       slider);
 
 export default navigateMain;

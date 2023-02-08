@@ -1,4 +1,4 @@
-import { generateElement } from '@/utils/index';
+import { generateElement } from '@/utils';
 
 const NotFound = () => {
   const NotFoundTemplate = generateElement(`

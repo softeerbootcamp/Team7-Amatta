@@ -1,7 +1,7 @@
 import SERVER_URL from '@/constants/constant';
-import { loginTemplate, registerTemplate } from '@/components/auth/index';
-import { $ } from '@/utils/index';
+import { loginTemplate, registerTemplate } from '@/components/auth';
 import { _ } from '@/utils/customFx';
+import { $ } from '@/utils';
 
 const AuthPage = {};
 const logoUrl = `${SERVER_URL.IMG}logo/logo-pink.png`;
@@ -73,6 +73,6 @@ const navigateAuth = () =>
       AuthPage.temp, 
       $.el, 
       $.replace($.qs('#root')),
-      () =>resolve($.qs('.auth-button'))));
+      () => resolve($.qs('.auth-button'))));
 
 export default navigateAuth;
