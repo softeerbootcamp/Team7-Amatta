@@ -2,6 +2,7 @@ import { Header } from '@/components/common';
 import { SERVER_URL } from '@/constants/constant';
 import { generateElement } from '@/utils';
 import { CardDetail } from '@/components/common';
+import { getInterval } from '@/utils/slider';
 
 const MainPage = () => {
   const oneCardIconUrl = `${SERVER_URL.IMG}icon/image.svg`;
@@ -56,6 +57,8 @@ const MainPage = () => {
       </button>
     </article>
   `);
+
+  getInterval();
 
   return mainCardTemplate;
 };

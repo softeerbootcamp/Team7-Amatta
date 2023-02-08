@@ -5,7 +5,7 @@ const Header = () => {
   const logoUrl = `${SERVER_URL.IMG}logo/logo-white.png`;
   const iconUrl = `${SERVER_URL.IMG}icon/search.svg`;
 
-  const headerTemplat = generateElement(`
+  const headerTemplate = generateElement(`
     <article class = 'header-article'>
         <img class='small-logo-white' src='${logoUrl}' alt='amatta-small-logo'/>
         <section class='header-button-section'>
@@ -19,7 +19,7 @@ const Header = () => {
     </article>
   `);
 
-  return headerTemplat;
+  return headerTemplate;
 };
 
 export default Header;
