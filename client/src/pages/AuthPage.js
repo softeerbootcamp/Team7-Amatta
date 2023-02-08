@@ -5,6 +5,8 @@ import { _ } from '@/utils/customFx';
 
 const AuthPage = {};
 const logoUrl = `${SERVER_URL.IMG}logo/logo-pink.png`;
+const mintLogoUrl = `${SERVER_URL.IMG}logo/logo-mint+.png`;
+const backIconUrl = `${SERVER_URL.IMG}icon/back.svg`;
 
 const inputs = [
   {
@@ -41,7 +43,10 @@ const inputs = [
 
 const status = (componentName) => {
   if (componentName === 'register') {
-    return registerTemplate(inputs);
+    const signupInputs = [inputs[0], inputs[1], inputs[3], inputs[4]];
+
+    // return registerTemplate(inputs);
+    return registerTemplate(signupInputs);
   }
   if (componentName === 'login') {
     const loginInputs = [inputs[0], inputs[3]];
@@ -54,7 +59,12 @@ const status = (componentName) => {
 
 AuthPage.temp = `
   <article class="auth-article">
-    <img class="small-logo-pink" src="${logoUrl}" alt="small-logo-pink" />
+    <section class="back-header-section">
+      <img class="back-button" src="${backIconUrl}" alt="back-button" /> 
+      <section class="logo-section">
+        <img class="small-logo-mint" src="${mintLogoUrl}" alt="small-logo-mint" />
+      </section>
+    </section>
     <section class="auth-form-section">
       <form>
         ${status('register')}

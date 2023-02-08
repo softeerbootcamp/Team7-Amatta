@@ -1,8 +1,7 @@
 import SERVER_URL from '@/constants/constant';
-import { header } from '@/components/common';
+import { header, cardDetail } from '@/components/common';
 import { $ } from '@/utils/index';
 import { _ } from '@/utils/customFx';
-import { cardDetail } from '@/components/common';
 import { slider } from '@/utils';
 
 const oneCardIconUrl = `${SERVER_URL.IMG}icon/image.svg`;
@@ -57,7 +56,7 @@ MainPage.temp = `
   `;
 
 // prettier-ignore
-MainPage.render =
+MainPage.render = () =>
     _.go(
       MainPage.temp,
       $.el,
