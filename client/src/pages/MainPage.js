@@ -12,22 +12,19 @@ const plusIconUrl = `${SERVER_URL.IMG}icon/plus.svg`;
 
 const cards = [
   {
-    image:
-      'https://amatta-icons.s3.ap-northeast-2.amazonaws.com/icon/gifticonSample.jpeg',
+    image: 'https://amatta-icons.s3.ap-northeast-2.amazonaws.com/icon/gifticonSample.jpeg',
     shopName: 'twosome place',
     itemName: 'Americano & Tiramisu',
     dateOfUse: '2023.07.07 까지',
   },
   {
-    image:
-      'https://amatta-icons.s3.ap-northeast-2.amazonaws.com/icon/gifticonSample.jpeg',
+    image: 'https://amatta-icons.s3.ap-northeast-2.amazonaws.com/icon/gifticonSample.jpeg',
     shopName: 'starbucks',
     itemName: 'Latte',
     dateOfUse: '2023.07.07 까지',
   },
   {
-    image:
-      'https://amatta-icons.s3.ap-northeast-2.amazonaws.com/icon/gifticonSample.jpeg',
+    image: 'https://amatta-icons.s3.ap-northeast-2.amazonaws.com/icon/gifticonSample.jpeg',
     shopName: 'The venti',
     itemName: 'Vanilla Latte',
     dateOfUse: '2023.07.07 까지',
@@ -60,11 +57,29 @@ MainPage.temp = `
   `;
 
 // prettier-ignore
-const navigateMain = () =>
+MainPage.render =
+  new Promise((resolve) =>
     _.go(
-      MainPage.temp, 
+      MainPage.temp,
       $.el,
-      $.replace($.qs('#root')));
+      $.replace($.qs('#root')),
+      _ => resolve($.qsa('[data-link]'))));
+
+// prettier-ignore
+const navigateMain = () => 
+  new Promise (async (resolve) => 
+    _.go(
+      await MainPage.render,
+      resolve,
+      slider));
+
+// // prettier-ignore
+// const navigateMain = () =>
+//     _.go(
+//       MainPage.temp,
+//       $.el,
+//       $.replace($.qs('#root')))
+// slider());
 
 // slider();
 
