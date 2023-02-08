@@ -16,6 +16,7 @@
 ### 🧬 Our Architecture
 
 추후에 삽입 예정
+
 <br>
 
 ## 🍭 FE
@@ -24,15 +25,18 @@
 <img src="https://img.shields.io/badge/SASS-CC6699?style=for-the-badge&logo=SASS&logoColor=white">
 <img src="https://img.shields.io/badge/VITE-646CFF?style=for-the-badge&logo=VITE&logoColor=white">
 <img src="https://img.shields.io/badge/AmazonS3-569A31?style=for-the-badge&logo=AmazonS3&logoColor=white">
+
 <br>
 
 ## 🍬 BE
 
 - [API 명세서](https://viridian-canvas-adb.notion.site/API-b21612efb02445ccb16a34baeebc83ce)
+  <br>
   <img src="https://amatta-icons.s3.ap-northeast-2.amazonaws.com/images/api.png" width="700" alt="api-document">
 
-- [ERD]
-  <img width="700" alt="ERD" src="https://user-images.githubusercontent.com/65708461/215433375-81f7ac6e-00bd-406f-8a11-8b5cd05272e4.png">
+- <h3>ERD</h3>
+  <br>
+    <img width="700" alt="ERD" src="https://user-images.githubusercontent.com/65708461/215433375-81f7ac6e-00bd-406f-8a11-8b5cd05272e4.png">
 
 ## Github
 
