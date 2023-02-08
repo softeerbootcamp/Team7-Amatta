@@ -43,6 +43,7 @@
     display: flex;
     transition: 0.3s ease-out;
     height: 80%;
+    margin-left: 5%;
     // width: 500%;
 
     .one-card-section {
@@ -50,8 +51,8 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      margin-right: 5%;
-      margin-left: 5%;
+      margin-right: 6%;
+      // margin-left: 5%;
 
       .card-image {
         margin-bottom: 5%;
@@ -106,8 +107,7 @@
 
     .plus-button-image {
       width: 2.5rem;
-      filter: invert(100%) sepia(0%) saturate(0%) hue-rotate(113deg)
-        brightness(104%) contrast(101%);
+      filter: invert(100%) sepia(0%) saturate(0%) hue-rotate(113deg) brightness(104%) contrast(101%);
     }
   }
 }

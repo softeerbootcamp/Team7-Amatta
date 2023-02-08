@@ -8,18 +8,14 @@ const slider = () => {
   //   inner.style.width = `${mainArticle.clientWidth}px`; // inner의 width를 모두 outer의 width로 만들기
   // })
 
-  cardsSection.style.width = `${
-    mainArticle.clientWidth * oneCardSection.length
-  }px`; // innerList의 width를 inner의 width * inner의 개수로 만들기
+  cardsSection.style.width = `${mainArticle.clientWidth * oneCardSection.length}px`; // innerList의 width를 inner의 width * inner의 개수로 만들기
 
-  console.log(cardsSection.style.width);
+  console.log(mainArticle.clientWidth);
 
   const getInterval = setInterval(() => {
     currentIndex++;
     currentIndex = currentIndex >= oneCardSection.length ? 0 : currentIndex;
-    cardsSection.style.marginLeft = `-${
-      mainArticle.clientWidth * currentIndex
-    }px`;
+    cardsSection.style.marginLeft = `-${mainArticle.clientWidth * currentIndex + 39}px`;
   }, 2000);
 
   return getInterval;

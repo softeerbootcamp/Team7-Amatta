@@ -57,12 +57,16 @@ MainPage.temp = `
   `;
 
 // prettier-ignore
-const navigateMain = () =>
+MainPage.render =
     _.go(
-      MainPage.temp, 
+      MainPage.temp,
       $.el,
       $.replace($.qs('#root')));
 
-// slider();
+// prettier-ignore
+const navigateMain = () => 
+    _.go(
+      MainPage.render,
+      slider);
 
 export default navigateMain;
