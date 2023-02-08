@@ -1,6 +1,7 @@
 package com.amatta.amatta_server.aop;
 
 import com.amatta.amatta_server.exception.NotAuthenticatedException;
+import com.amatta.amatta_server.user.model.Users;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.slf4j.Logger;
@@ -9,8 +10,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.Objects;
 
 @Component
@@ -23,9 +24,10 @@ public class AuthorizationAop {
         logger.info("AuthorizationAop.authorize");
 
         HttpServletRequest request = ((ServletRequestAttributes) Objects.requireNonNull(RequestContextHolder.getRequestAttributes())).getRequest();
-        Cookie[] cookies = request.getCookies();
+        HttpSession session = request.getSession(false);
 
-        if(cookies == null || cookies.length == 0) {
+        Users user = (Users) session.getAttribute("User");
+        if(user == null) {
             throw new NotAuthenticatedException();
         }
     }
@@ -35,9 +37,10 @@ public class AuthorizationAop {
         logger.info("AuthorizationAop.authorize");
 
         HttpServletRequest request = ((ServletRequestAttributes) Objects.requireNonNull(RequestContextHolder.getRequestAttributes())).getRequest();
-        Cookie[] cookies = request.getCookies();
+        HttpSession session = request.getSession(false);
 
-        if(cookies == null || cookies.length == 0) {
+        Users user = (Users) session.getAttribute("User");
+        if(user == null) {
             throw new NotAuthenticatedException();
         }
     }
