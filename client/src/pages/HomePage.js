@@ -1,6 +1,9 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable no-async-promise-executor */
 import SERVER_URL from '@/constants/constant';
-import { $ } from '@/utils/index';
+import { addNavigateEvent } from '@/core/router';
 import { _ } from '@/utils/customFx';
+import { $ } from '@/utils';
 
 const HomePage = {};
 const logoUrl = `${SERVER_URL.IMG}logo/logo-white.png`;
@@ -18,19 +21,17 @@ HomePage.temp = `
 `;
 
 // prettier-ignore
-HomePage.render =
-  new Promise((resolve) =>
+HomePage.render = () =>
     _.go(
       HomePage.temp,
       $.el,
-      $.replace($.qs('#root')),
-      _ => resolve($.qsa('[data-link]'))));
+      $.replace($.qs('#root')));
 
 // prettier-ignore
 const navigateHome = () => 
-  new Promise (async (resolve) => 
     _.go(
-      await HomePage.render,
-      resolve));
+      HomePage.render(),
+      $.findAll('[data-link]'),
+      addNavigateEvent);
 
 export default navigateHome;
