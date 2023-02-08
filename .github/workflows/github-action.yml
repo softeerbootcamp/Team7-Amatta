@@ -66,4 +66,4 @@ jobs:
             sudo docker pull ${{ secrets.DOCKER_REPO }}
             docker-compose up -d
             docker image prune -f
-            /home/ubuntu/server.sh
+            sudo sh /home/ubuntu/server.sh
