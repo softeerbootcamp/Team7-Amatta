@@ -1,10 +1,9 @@
 import SERVER_URL from '@/constants/constant';
 
-const header = () => {
-  const logoUrl = `${SERVER_URL.IMG}logo/logo-white.png`;
-  const iconUrl = `${SERVER_URL.IMG}icon/search.svg`;
+const logoUrl = `${SERVER_URL.IMG}logo/logo-white.png`;
+const iconUrl = `${SERVER_URL.IMG}icon/search.svg`;
 
-  const headerTemplate = `
+const headerTemplate = `
     <article class = 'header-article'>
         <img class='small-logo-white' src='${logoUrl}' alt='amatta-small-logo'/>
         <section class='header-button-section'>
@@ -18,7 +17,4 @@ const header = () => {
     </article>
   `;
 
-  return headerTemplate;
-};
-
-export default header;
+export default headerTemplate;

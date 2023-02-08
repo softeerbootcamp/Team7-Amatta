@@ -1,0 +1,77 @@
+@include mobile {
+  .post-main {
+    height: calc(calc(var(--vh, 1vh) * 100) - 4.5rem);
+    padding: 4.5rem 10% 0 10%;
+    display: flex;
+    flex-direction: column;
+
+    .post-info-section {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+
+      .post-upload-section {
+        display: flex;
+        align-content: center;
+        justify-content: center;
+        width: 15rem;
+        height: 15rem;
+        border-radius: 50%;
+        border: 1px solid $white-color;
+        margin: 4rem 0;
+        background-color: $gray300;
+
+        img {
+          width: 30%;
+        }
+
+        input {
+          display: none;
+        }
+      }
+
+      .input-info-section {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+
+        input {
+          border: none;
+          height: 1.5rem;
+          border-bottom: 1px solid $gray400;
+          margin-bottom: 2.25rem;
+          outline: none;
+          padding: 0 0 0.5rem 0.25rem;
+          font-size: 1rem;
+          color: $gray700;
+        }
+
+        label {
+          margin-left: 0.25rem;
+          font-size: 1.125rem;
+          margin-bottom: 1rem;
+        }
+      }
+    }
+
+    .post-button {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 2rem;
+
+      button {
+        width: 48%;
+        height: 4.5rem;
+        border: none;
+        border-radius: 0.75rem;
+        font-size: 1.125rem;
+      }
+
+      .submit {
+        color: $white-color;
+        background-color: $primary-color;
+      }
+    }
+  }
+}
