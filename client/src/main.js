@@ -1,11 +1,17 @@
-import '@/styles/main.scss';
+import '@/styles/style.scss';
 import { setScreenSize } from '@/utils/index';
-import { navigateHome, navigateAuth } from '@/pages/index';
+import {
+  navigateHome,
+  navigateAuth,
+  SlidePage,
+  navigateMain,
+} from '@/pages/index';
 import { routes, init } from '@/core/router';
 
 routes.push(
   { path: '/', component: navigateHome },
   { path: '/register', component: navigateAuth },
+  { path: '/card', component: navigateMain },
 );
 const path = window.location.pathname;
 
