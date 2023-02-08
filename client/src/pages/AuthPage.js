@@ -57,7 +57,7 @@ AuthPage.temp = `
     <img class="small-logo-pink" src="${logoUrl}" alt="small-logo-pink" />
     <section class="auth-form-section">
       <form>
-        ${status(window.history.state)}
+        ${status('register')}
         <div class="auth-button-container">
           <input type="submit" class="auth-button" name="auth-button" value="완료" />
         </div>

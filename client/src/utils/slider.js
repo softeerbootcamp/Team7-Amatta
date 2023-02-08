@@ -1,27 +1,31 @@
-const mainArticle = document.querySelector('.main-card-article');
-const cardsSection = document.querySelector('.cards-section');
-const oneCardSection = document.querySelectorAll('.one-card-section');
-let currentIndex = 0; // 현재 슬라이드 화면 인덱스
+const slider = () => {
+  const mainArticle = document.querySelector('.main-card-article');
+  const cardsSection = document.querySelector('.cards-section');
+  const oneCardSection = document.querySelectorAll('.one-card-section');
+  let currentIndex = 0; // 현재 슬라이드 화면 인덱스
 
-// oneCardSection.forEach((inner) => {
-//   inner.style.width = `${mainArticle.clientWidth}px`; // inner의 width를 모두 outer의 width로 만들기
-// })
+  // oneCardSection.forEach((inner) => {
+  //   inner.style.width = `${mainArticle.clientWidth}px`; // inner의 width를 모두 outer의 width로 만들기
+  // })
 
-cardsSection.style.width = `${
-  mainArticle.clientWidth * oneCardSection.length
-}px`; // innerList의 width를 inner의 width * inner의 개수로 만들기
+  cardsSection.style.width = `${
+    mainArticle.clientWidth * oneCardSection.length
+  }px`; // innerList의 width를 inner의 width * inner의 개수로 만들기
 
-console.log(cardsSection.style.width);
+  console.log(cardsSection.style.width);
 
-export const getInterval = () => {
-  return setInterval(() => {
+  const getInterval = setInterval(() => {
     currentIndex++;
     currentIndex = currentIndex >= oneCardSection.length ? 0 : currentIndex;
     cardsSection.style.marginLeft = `-${
       mainArticle.clientWidth * currentIndex
     }px`;
   }, 2000);
+
+  return getInterval;
 };
+
+export default slider;
 /*
   버튼에 이벤트 등록하기
 */
