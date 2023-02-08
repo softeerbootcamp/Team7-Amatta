@@ -7,4 +7,5 @@ const client = axios.create({
   baseURL,
 });
 
+client.defaults.withCredentials = true;
 export default client;

@@ -1,5 +1,5 @@
-import { InputForm } from '@/components/common/index';
+import { inputForm } from '@/components/common/index';
 
-const loginTemplate = (inputs) => inputs.map((input) => InputForm(input)).join('');
+const loginTemplate = (inputs) => inputs.map((input) => inputForm(input)).join('');
 
 export default loginTemplate;

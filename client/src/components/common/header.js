@@ -1,7 +1,7 @@
 import SERVER_URL from '@/constants/constant';
 import { generateElement } from '@/utils/index';
 
-const Header = () => {
+const header = () => {
   const logoUrl = `${SERVER_URL.IMG}logo/logo-white.png`;
   const iconUrl = `${SERVER_URL.IMG}icon/search.svg`;
 
@@ -22,4 +22,4 @@ const Header = () => {
   return headerTemplate;
 };
 
-export default Header;
+export default header;
