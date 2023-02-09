@@ -93,6 +93,17 @@ public class GifticonService {
         return gifticonRepository.findByUid(user.getId());
     }
 
+    @Transactional
+    public void useGifticon() {
+        Users user = getUserBySessionId();
+        if(user == null) {
+            throw new NotAuthenticatedException();
+        }
+        LocalDate current = LocalDate.now();
+        gifticonRepository.useGifticon(user.getId(), current);
+    }
+
+
     private Users getUserBySessionId() {
         HttpServletRequest request = ((ServletRequestAttributes) Objects.requireNonNull(RequestContextHolder.getRequestAttributes())).getRequest();
         HttpSession session = request.getSession(false);

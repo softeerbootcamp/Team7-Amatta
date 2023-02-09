@@ -1,13 +1,15 @@
 package com.amatta.amatta_server;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 
 import com.amatta.amatta_server.gifticon.controller.GifticonController;
+import com.amatta.amatta_server.gifticon.model.Gifticon;
+import com.amatta.amatta_server.gifticon.repository.GifticonRepository;
 import com.amatta.amatta_server.user.controller.UserController;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +21,8 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
+
 @SpringBootTest
 public class GifticonControllerTest {
     @Autowired
@@ -26,6 +30,9 @@ public class GifticonControllerTest {
 
     @Autowired
     public UserController userController;
+
+    @Autowired
+    public GifticonRepository gifticonRepository;
 
     private MockMvc gMock;
 
@@ -151,6 +158,51 @@ public class GifticonControllerTest {
                         .session(session)
                         .accept(MediaType.APPLICATION_JSON)
                         .contentType(MediaType.APPLICATION_JSON)).andExpect(status().is2xxSuccessful()).andDo(print());
+    }
+
+    @Test
+    @Transactional
+    public void GifticonUseTest() throws Exception {
+        MockHttpSession session = new MockHttpSession();
+        RegisterAndLoginSetup(session);
+        String requestBody =
+                "{" +
+                        "\"itemName\": \"아메리카노\", " +
+                        "\"brandName\": \"스타벅스\", " +
+                        "\"image\": \"adfadf\", " +
+                        "\"price\": \"3000\", " +
+                        "\"barcode\": \"12341234000\", " +
+                        "\"expiresAtInString\": \"2023/11/11\"" +
+                        "}";
+        gMock.perform(post("/gifticon")
+                .session(session)
+                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(requestBody)).andDo(print());
+
+        long id = gifticonRepository.findLastInsertId();
+
+        Gifticon gifticonBefore = gifticonRepository.findById(id).orElse(null);
+        if(gifticonBefore == null) {
+            Assertions.fail();
+        }
+        if(gifticonBefore.getUsedAt().before(java.sql.Date.valueOf(LocalDate.now()))) {
+            Assertions.fail();
+        }
+
+        gMock.perform(put("/gifticon/used")
+                .session(session)
+                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(requestBody)).andExpect(status().is2xxSuccessful()).andDo(print());
+
+        Gifticon gifticonAfter = gifticonRepository.findById(id).orElse(null);
+        if(gifticonAfter == null) {
+            Assertions.fail();
+        }
+        if(gifticonAfter.getUsedAt().after(java.sql.Date.valueOf(LocalDate.now()))) {
+            Assertions.fail();
+        }
     }
 
     private void RegisterAndLoginSetup(MockHttpSession session) throws Exception{
