@@ -1,21 +1,21 @@
 package com.amatta.amatta_server.index;
 
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.net.URI;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 @RestController
-@CrossOrigin
+@CrossOrigin(origins = "http://15.164.13.149:5173/", allowCredentials = "true")
 public class IndexController {
-    @GetMapping("/redirect")
-    public ResponseEntity<?> redirect() {
-        HttpHeaders headers = new HttpHeaders();
-        headers.setLocation(URI.create("localhost:5173/"));
-        return new ResponseEntity<>(headers, HttpStatus.MOVED_PERMANENTLY);
+    @GetMapping("/cookie")
+    public ResponseEntity<?> redirect(HttpServletRequest httpServletRequest) {
+        HttpSession httpSession = httpServletRequest.getSession(true);
+        httpSession.setAttribute("Cookie", "cookie");
+        return new ResponseEntity<>("쿠키 생성", HttpStatus.OK);
     }
 }
