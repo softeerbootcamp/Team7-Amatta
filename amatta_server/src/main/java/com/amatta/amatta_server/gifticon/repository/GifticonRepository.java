@@ -13,8 +13,24 @@ import java.util.Optional;
 
 @Repository
 public interface GifticonRepository extends CrudRepository<Gifticon, Long> {
+    @Query("SELECT LAST_INSERT_ID()")
+    long findLastInsertId();
+
     @Query("SELECT * FROM gifticon WHERE barcode = :barcode")
     Optional<Gifticon> findByBarcode(@Param("barcode") String barcode);
+
+    @Query("SELECT " +
+            "id, " +
+            "uid, " +
+            "itemName, " +
+            "brandName, " +
+            "image,  " +
+            "barcode, " +
+            "price, " +
+            "expiresAt, " +
+            "usedAt, " +
+            "price FROM gifticon WHERE id = :id")
+    Optional<Gifticon> findById(@Param("id") long id);
 
     @Modifying
     @Query("INSERT INTO gifticon(uid, image, brandName, itemName, barcode, expiresAt, usedAt, price)" +
@@ -42,4 +58,8 @@ public interface GifticonRepository extends CrudRepository<Gifticon, Long> {
             "usedAt, " +
             "price FROM gifticon WHERE uid = :uid")
     List<Gifticon> findByUid(@Param("uid") long uid);
+
+    @Modifying
+    @Query( "UPDATE gifticon SET usedAt = :usedAt WHERE uid = :uid")
+    void useGifticon(@Param("uid") long uid, @Param("usedAt") LocalDate usedAt);
 }
