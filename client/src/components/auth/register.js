@@ -2,7 +2,7 @@ import { inputForm } from '@/components/common';
 import { regiseterUser } from '@/apis/auth';
 import { navigate } from '@/core/router';
 import { INPUT } from '@/constants/constant';
-import { $ } from '@/utils';
+import { timer, $ } from '@/utils';
 import { _ } from '@/utils/customFx';
 
 const register = () => {
@@ -28,32 +28,53 @@ const register = () => {
   const setUserData = ({ target }, targets) => {
     const dataType = _.getDataset(target, 'data-input');
     const newUserData = { ...userData };
-    checkValidateAll(targets);
 
     if (!target.validity.valid) return;
 
     newUserData[dataType] = target.value;
     userData = newUserData;
+    checkValidateAll(targets);
 
     return userData;
   };
 
   const checkValidateAll = (targets) => {
-    if (![...targets].every((target) => target.validity.valid)) return;
+    const $target = $.qs('.auth-button').classList;
 
-    $.qs('.auth-button').classList.add('active');
+    if (![...targets].every((target) => target.validity.valid)) return $target.remove('active');
+    if (userData.password !== userData.passwordCheck) return $target.remove('active');
+
+    $target.add('active');
   };
+
+  const closeCodeForm = (target) => () => target.classList.remove('visible');
 
   const addCodeForm = (e, resolve) => {
     const formTarget = $.qs('#verification-code-input-section');
+    const buttonTarget = $.qs('.confirm-button');
 
     formTarget.classList.add('visible');
+    timer(180, '#verification-code-input-section', closeCodeForm(formTarget));
+
+    $.on('click', () => closeCodeForm(formTarget)())(buttonTarget);
     resolve(() => $.qs('#root'));
   };
 
   const changeButtonStatus = (type, isValidate) => {
     const buttonTarget = $.qs(type);
     buttonTarget.disabled = !isValidate;
+  };
+
+  const changeVisibility = ({ target }) => {
+    const inputTarget = target.closest('.input-section').querySelector('input');
+
+    if (target.src.includes('open')) {
+      target.src = target.src.replace('open', 'close');
+      inputTarget.type = 'password';
+    } else {
+      target.src = target.src.replace('close', 'open');
+      inputTarget.type = 'text';
+    }
   };
 
   const putAutoHyphen = (target) => {
@@ -71,7 +92,6 @@ const register = () => {
   };
 
   const handleClickSubmitButton = (e) => {
-    console.log(e);
     e.stopPropagation();
     e.preventDefault();
 
@@ -95,6 +115,13 @@ const register = () => {
       $.on('click', () => navigate('/')))(target);
 
   // prettier-ignore
+  const handleClickEye = (target) => 
+    _.pipe(
+      $.findAll('.eye-icon'),
+      (targets) => _.map((f) => $.on('click', changeVisibility)(f), targets),
+      ([f]) => f)(target);
+
+  // prettier-ignore
   const validateEmail = (target) =>
     _.pipe(
       $.find('#email-input'),
@@ -104,7 +131,7 @@ const register = () => {
   const validatePhone = (target) =>
     _.pipe(
       $.find('#phone-input'),
-      $.on('input', (e) => testValidation(e, '.verify-button', emailReg)))(target);
+      $.on('input', (e) => testValidation(e, '.phone', emailReg)))(target);
 
   // prettier-ignore
   const sendVerificationCode = () =>
@@ -146,6 +173,7 @@ const register = () => {
       render(),
       handleChangeInput,
       handleClickGoBack,
+      handleClickEye,
       validateEmail,
       validatePhone,
       sendVerificationCode(),

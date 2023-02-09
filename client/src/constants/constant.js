@@ -6,6 +6,7 @@ const SERVER_URL = {
 const EMAIL_REG = '^[a-zA-Z0-9+-_.]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-.]+$';
 const CODE_REG = '^[0-9]{6}$';
 const PHONE_REG = '^(\\d{3})-(\\d{4})-(\\d{4})$';
+const NAME_REG = '^[ㄱ-ㅎ|가-힣|a-z|A-Z|]+$';
 
 const INPUT = [
   {
@@ -37,6 +38,7 @@ const INPUT = [
     label: '인증번호',
     required: true,
     dataType: 'verificationCode',
+    maxlength: 6,
     pattern: CODE_REG,
   },
   {
@@ -52,7 +54,8 @@ const INPUT = [
     name: 'user-name-input',
     label: '이름',
     required: true,
-    dataType: 'userName',
+    dataType: 'name',
+    pattern: NAME_REG,
   },
 ];
 

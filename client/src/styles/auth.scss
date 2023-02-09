@@ -60,10 +60,18 @@
         transition: all 0.3s;
 
         &.visible {
+          position: relative;
           visibility: visible;
           transform: scaleY(1);
           height: inherit;
           margin-bottom: 2rem;
+
+          .timer {
+            position: absolute;
+            right: calc(1.5% + 5rem);
+            bottom: 0.875rem;
+            color: $primary-color;
+          }
         }
       }
     }
@@ -72,6 +80,15 @@
       position: relative;
       margin-bottom: 2rem;
       padding: 0 2.5%;
+
+      .eye-icon {
+        position: absolute;
+        bottom: 0.5rem;
+        right: 1rem;
+        width: 1.325rem;
+        filter: invert(80%) sepia(11%) saturate(18%) hue-rotate(319deg) brightness(79%)
+          contrast(82%);
+      }
 
       .input-label {
         position: absolute;
