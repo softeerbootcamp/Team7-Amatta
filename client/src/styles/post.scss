@@ -1,0 +1,128 @@
+@include mobile {
+  .post-main {
+    position: relative;
+    height: calc(calc(var(--vh, 1vh) * 100) - 4.5rem);
+    padding: 4.5rem 10% 0 10%;
+    display: flex;
+    flex-direction: column;
+
+    .test {
+      position: absolute;
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+
+      .test2 {
+        position: relative;
+        margin: 0 auto;
+        width: 80%;
+        max-height: 60%;
+
+        img {
+          width: 100%;
+          height: 100%;
+          object-fit: fill;
+        }
+
+        div {
+          position: absolute;
+          width: 40vw;
+          height: 40vw;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          background-color: rgba(0, 0, 0, 0.5);
+          border-radius: 0.75rem;
+          box-sizing: border-box;
+        }
+      }
+
+      button {
+        width: 80%;
+        margin: 2rem auto 0 auto;
+        height: 4.5rem;
+        border: none;
+        border-radius: 0.75rem;
+        font-size: 1.125rem;
+        color: $white-color;
+        background-color: $primary-color;
+      }
+    }
+
+    .post-info-section {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+
+      .post-upload-section {
+        display: flex;
+        align-content: center;
+        justify-content: center;
+        width: 17.5rem;
+        height: 17.5rem;
+        border-radius: 50%;
+        border: 1px solid $white-color;
+        margin: 3.5rem 0;
+        background-color: $gray300;
+        overflow: hidden;
+
+        img {
+          width: 30%;
+          object-fit: scale-down;
+        }
+
+        input {
+          display: none;
+        }
+      }
+
+      .input-info-section {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+
+        input {
+          border: 1px solid $gray400;
+          border-radius: 0.5rem;
+          height: 2rem;
+          margin-bottom: 2rem;
+          outline: none;
+          padding-left: 0.5rem;
+          font-size: 1rem;
+          color: $gray700;
+        }
+
+        label {
+          margin-left: 0.25rem;
+          font-size: 1.125rem;
+          margin-bottom: 1rem;
+        }
+      }
+    }
+
+    .post-button {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 2rem;
+
+      button {
+        width: 48%;
+        height: 4.5rem;
+        border: none;
+        border-radius: 0.75rem;
+        font-size: 1.125rem;
+      }
+
+      .submit {
+        color: $white-color;
+        background-color: $primary-color;
+      }
+    }
+  }
+}

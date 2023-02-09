@@ -25,6 +25,6 @@ $.closest = _.curry((sel, el) => el.closest(sel));
 
 $.remove = (el) => el.parentNode.removeChild(el);
 
-$.on = (event, target, f) => target.addEventListener(event, f);
+$.on = (event, f) => (target) => target.addEventListener(event, f);
 
 export default $;
