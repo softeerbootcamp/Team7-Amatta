@@ -14,11 +14,6 @@ _.curry =
   (a, ..._) =>
     _.length ? f(a, ..._) : (..._) => f(a, ..._);
 
-L.range = function* (l) {
-  let i = -1;
-  while (++i < l) yield i;
-};
-
 L.map = _.curry(function* (f, iter) {
   for (const a of iter) {
     yield f(a);
@@ -78,5 +73,11 @@ _.filter = _.curry(_.pipe(L.filter, _.takeAll));
 _.find = _.curry((f, iter) => _.go(iter, L.filter(f), _.take(1), ([a]) => a));
 
 _.strMap = _.curry(_.pipe(_.map, makeString));
+
+_.isIterable = (a) => a !== null && !!a[Symbol.iterator];
+
+_.getDataset = (target, dataset) => target.getAttribute(dataset);
+_.findClosest = (target, dataset) => target.closest(dataset);
+
 
 export { L, _ };

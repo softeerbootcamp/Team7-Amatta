@@ -1,12 +1,21 @@
 import SERVER_URL from '@/constants/constant';
-import { loginTemplate, registerTemplate } from '@/components/auth/index';
-import { $ } from '@/utils/index';
+import { loginTemplate, registerTemplate } from '@/components/auth';
 import { _ } from '@/utils/customFx';
+import { $ } from '@/utils';
 
 const AuthPage = {};
 const logoUrl = `${SERVER_URL.IMG}logo/logo-pink.png`;
 const mintLogoUrl = `${SERVER_URL.IMG}logo/logo-mint+.png`;
 const backIconUrl = `${SERVER_URL.IMG}icon/back.svg`;
+
+const email = [
+  {
+    type: 'email',
+    name: 'email-input',
+    label: '이메일',
+    required: true,
+  },
+];
 
 const inputs = [
   {
@@ -43,7 +52,7 @@ const inputs = [
 
 const status = (componentName) => {
   if (componentName === 'register') {
-    const signupInputs = [inputs[0], inputs[1], inputs[3], inputs[4]];
+    const signupInputs = [inputs[0], inputs[1], inputs[2], inputs[3]];
 
     // return registerTemplate(inputs);
     return registerTemplate(signupInputs);
@@ -83,6 +92,6 @@ const navigateAuth = () =>
       AuthPage.temp, 
       $.el, 
       $.replace($.qs('#root')),
-      () =>resolve($.qs('.auth-button'))));
+      () => resolve($.qs('.auth-button'))));
 
 export default navigateAuth;

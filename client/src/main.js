@@ -1,7 +1,7 @@
 import '@/styles/style.scss';
-import { setScreenSize } from '@/utils/index';
-import { navigateHome, navigateAuth, navigateMain } from '@/pages/index';
-import { routes, init } from '@/core/router';
+import { setScreenSize } from '@/utils';
+import { navigateHome, navigateAuth, navigateMain } from '@/pages';
+import { routes, navigate } from '@/core/router';
 
 routes.push(
   { path: '/', component: navigateHome },
@@ -10,6 +10,6 @@ routes.push(
 );
 const path = window.location.pathname;
 
-init(path);
+navigate(path);
 
 window.addEventListener('resize', setScreenSize);
