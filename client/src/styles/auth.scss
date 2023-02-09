@@ -5,12 +5,6 @@
   justify-content: center;
   align-items: center;
   padding: 5%;
-  //padding-top: 7rem;
-
-  // .small-logo-pink {
-  //   width: 10.5rem;
-  //   padding-bottom: 30%;
-  // }
 
   .white-header-section {
     width: 100vw;
@@ -37,6 +31,13 @@
 
   .auth-form-section {
     width: 100%;
+
+    .auth-text {
+      font-size: 3rem;
+      text-align: center;
+      margin-bottom: 5rem;
+      font-weight: normal;
+    }
 
     .input-label {
       font-size: 1rem;
@@ -83,7 +84,7 @@
     }
 
     .auth-button-container {
-      margin-top: 1rem;
+      margin-top: 3rem;
       display: flex;
 
       .auth-button {

@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-expressions */
 import { SERVER_URL } from '@/constants/constant';
 import { inputForm, header } from '@/components/common';
 import { $, drag } from '@/utils';

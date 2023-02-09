@@ -1,5 +1,3 @@
-/* eslint-disable no-use-before-define */
-/* eslint-disable no-unused-expressions */
 import { NotFound } from '@/pages';
 import { _ } from '@/utils/customFx';
 

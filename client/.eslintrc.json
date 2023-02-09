@@ -15,7 +15,16 @@
     "no-console": "off",
     "import/no-extraneous-dependencies": ["error", { "devDependencies": true }],
     "import/extensions": ["off"],
-    "no-shadow": 0,
-    "no-promise-executor-return": "off"
+    "no-shadow": "off",
+    "no-promise-executor-return": "off",
+    "no-return-assign": "off",
+    "no-param-reassign": "off",
+    "no-cond-assign": "off",
+    "guard-for-in": "off",
+    "no-plusplus": "off",
+    "func-names": "off",
+    "no-restricted-syntax": "off",
+    "no-use-before-define": "off",
+    "no-unused-expressions": "off"
   }
 }
