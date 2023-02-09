@@ -49,6 +49,12 @@ public class GifticonController {
         return new ResponseEntity<>(gifticonService.findGifticons(), HttpStatus.OK);
     }
 
+    @PutMapping("/used")
+    public ResponseEntity<?> useGifticon() {
+        gifticonService.useGifticon();
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
     @ExceptionHandler(NotAuthenticatedException.class)
     public ResponseEntity<?> notAuthenticatedExceptionHandler() {
         return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
