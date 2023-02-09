@@ -2,7 +2,7 @@ package com.amatta.amatta_server.gifticon.model;
 
 import lombok.Builder;
 
-import java.time.LocalDateTime;
+import java.sql.Date;
 
 @Builder
 public class Gifticon {
@@ -10,11 +10,11 @@ public class Gifticon {
     private long id;
     private long uid;
     private byte[] image;
-    private String brandName;
-    private String itemName;
+    private String brandname;
+    private String itemname;
     private String barcode;
-    private LocalDateTime expiresAt;
-    private LocalDateTime usedAt;
+    private Date expiresat;
+    private Date usedat;
     private int price;
 
     public long getId() {
@@ -30,23 +30,23 @@ public class Gifticon {
     }
 
     public String getBrandName() {
-        return brandName;
+        return brandname;
     }
 
     public String getItemName() {
-        return itemName;
+        return itemname;
     }
 
     public String getBarcode() {
         return barcode;
     }
 
-    public LocalDateTime getExpiresAt() {
-        return expiresAt;
+    public Date getExpiresAt() {
+        return expiresat;
     }
 
-    public LocalDateTime getUsedAt() {
-        return usedAt;
+    public Date getUsedAt() {
+        return usedat;
     }
 
     public int getPrice() {
