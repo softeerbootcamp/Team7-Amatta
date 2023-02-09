@@ -8,6 +8,7 @@ import com.amatta.amatta_server.user.dto.UserLoginReq;
 import com.amatta.amatta_server.user.model.Users;
 import com.amatta.amatta_server.user.repository.UserRepository;
 import com.amatta.amatta_server.user.service.UserService;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.DisplayName;
@@ -45,17 +46,33 @@ public class UserControllerTest {
 
     @Test
     @DisplayName("정상 회원가입 테스트")
-    void join1() {
+    void join1() throws Exception{
+        //given
+        String email = "ktykty0722@naver.com";
+        String password = "testPassword";
+        String name = "taewan";
+        String phoneNumber = "010-0000-0000";
         UserJoinReq userJoinReq = new UserJoinReq(
-                "test@test.com",
-                "testPassword",
-                "test",
-                "010-0000-0000"
+                email,
+                password,
+                name,
+                phoneNumber
         );
-        ResponseEntity<?> response = userController.join(userJoinReq);
-        UserJoinRes userJoinRes = (UserJoinRes) response.getBody();
-        assertEquals(response.getStatusCode(), HttpStatus.CREATED);
-        assertTrue(userJoinRes.getSuccess());
+
+        //when
+        mockMvc.perform(post("/user/join")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(userJoinReq)))
+                .andExpect(status().isCreated())
+                .andDo(print());
+
+        //then
+        Users joinUser = userRepository.findByEmail(userJoinReq.getEmail());
+        SoftAssertions softAssertions = new SoftAssertions();
+        softAssertions.assertThat(userJoinReq.getName()).isEqualTo(joinUser.getName());
+        softAssertions.assertThat(userJoinReq.getEmail()).isEqualTo(joinUser.getEmail());
+        softAssertions.assertThat(userJoinReq.getPhoneNumber()).isEqualTo(joinUser.getPhoneNumber());
+        softAssertions.assertAll();
     }
 
     @Test
@@ -104,25 +121,33 @@ public class UserControllerTest {
 
     @Test
     @DisplayName("정상 로그인 테스트")
-    void login1() {
-        String email = "test@test.com";
+    void login1() throws Exception {
+        //given
+        String email = "ktykty0722@naver.com";
         String password = "testPassword";
-        String name = "test";
+        String name = "taewan";
         String phoneNumber = "010-0000-0000";
-        UserJoinReq userJoinReq1 = new UserJoinReq(
+        UserJoinReq userJoinReq = new UserJoinReq(
                 email,
                 password,
                 name,
                 phoneNumber
         );
-        userController.join(userJoinReq1);
+        userController.join(userJoinReq);
+        UserLoginReq userLoginReq = new UserLoginReq("ktykty0722@naver.com", "testPassword");
 
-        UserLoginReq userLoginReq = new UserLoginReq(email, password);
+        //when
+        mockMvc.perform(post("/user/login")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(userLoginReq)))
+                .andExpect(status().isOk())
+                .andDo(print());
 
-        Users user = userService.login(userLoginReq);
-        assertEquals(user.getEmail(), email);
-        assertEquals(user.getName(), name);
-        assertEquals(user.getPhoneNumber(), phoneNumber);
+        //then
+        Users loginUser = userRepository.findByEmail(userLoginReq.getEmail());
+        SoftAssertions softAssertions = new SoftAssertions();
+        softAssertions.assertThat(userJoinReq.getEmail()).isEqualTo(loginUser.getEmail());
+        softAssertions.assertAll();
     }
 
     @Test
