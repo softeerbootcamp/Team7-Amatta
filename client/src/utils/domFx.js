@@ -21,6 +21,12 @@ $.replace = _.curry((parent, child) => {
   return parent;
 });
 
+$.prepend = _.curry((parent, child) => {
+  parent.prepend(child);
+
+  return parent;
+});
+
 $.closest = _.curry((sel, el) => el.closest(sel));
 
 $.remove = (el) => el.parentNode.removeChild(el);

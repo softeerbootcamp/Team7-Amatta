@@ -1,5 +1,5 @@
 import SERVER_URL from '@/constants/constant';
-import { headerTemplate, cardDetail } from '@/components/common';
+import { cardDetail } from '@/components/common';
 import { $, slider } from '@/utils';
 import { _ } from '@/utils/customFx';
 // import { slider } from '@/utils';
@@ -32,7 +32,6 @@ const cards = [
 const MainPage = {};
 
 MainPage.temp = `
-    ${headerTemplate}
     <article class = 'main-card-article'>
       <div class='main-button-container'>
         <section class = 'show-card-section'>
