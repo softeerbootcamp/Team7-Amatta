@@ -3,6 +3,7 @@ package com.amatta.amatta_server.gifticon.service;
 import com.amatta.amatta_server.aop.ClassRequiresAuth;
 import com.amatta.amatta_server.exception.DuplicateGifticonException;
 import com.amatta.amatta_server.exception.GifticonNotSupportedException;
+import com.amatta.amatta_server.exception.NotAuthenticatedException;
 import com.amatta.amatta_server.gifticon.dto.GifticonDto;
 import com.amatta.amatta_server.gifticon.dto.GifticonImageDto;
 import com.amatta.amatta_server.gifticon.dto.GifticonTextDto;
@@ -23,6 +24,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -57,13 +59,13 @@ public class GifticonService {
 
     @Transactional
     public void addGifticon(GifticonDto dto) throws DuplicateGifticonException {
-        long uid = dto.getUid();
+        long uid = getUserBySessionId().getId();
         byte[] image = dto.getImage().getBytes();
         String brandName = dto.getBrandName();
         String itemName = dto.getItemName();
         String barcode = dto.getBarcode();
-        LocalDateTime expiresAt = LocalDateTime.parse(dto.getExpiresAtInString().concat(" 00:00:00"), DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss"));
-        LocalDateTime usedAt = LocalDateTime.now().plusYears(100);
+        LocalDate expiresAt = LocalDate.parse(dto.getExpiresAtInString(), DateTimeFormatter.ofPattern("yyyy/MM/dd"));
+        LocalDate usedAt = LocalDate.now().plusYears(100);
         int price = dto.getPrice();
 
         if(gifticonRepository.findByBarcode(barcode).isPresent()) {
@@ -83,21 +85,17 @@ public class GifticonService {
     }
 
     @Transactional(readOnly = true)
-    public List<Gifticon> findGifticons(Long uid) {
-        if(!isRequestUidEqualsToSessionUid(uid)) {
-            //403 exception
+    public List<Gifticon> findGifticons() {
+        Users user = getUserBySessionId();
+        if(user == null) {
+            throw new NotAuthenticatedException();
         }
-        return gifticonRepository.findByUid(uid);
+        return gifticonRepository.findByUid(user.getId());
     }
 
-    public List<Gifticon> findGifticonList() {
-        return null;
-    }
-
-    private boolean isRequestUidEqualsToSessionUid(Long uid) {
+    private Users getUserBySessionId() {
         HttpServletRequest request = ((ServletRequestAttributes) Objects.requireNonNull(RequestContextHolder.getRequestAttributes())).getRequest();
         HttpSession session = request.getSession(false);
-        Users user = (Users) session.getAttribute("User");
-        return user != null && user.getId() == uid;
+        return (Users) session.getAttribute("User");
     }
 }
