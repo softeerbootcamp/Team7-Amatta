@@ -11,16 +11,8 @@ const register = () => {
 
     newForm.target = '.auth-form';
     inputForm(newForm)();
-    resolve(() => 'resolved');
+    resolve(() => $.qs('#root'));
   };
-
-  const sendVerificationCode = () =>
-    new Promise((resolve) =>
-      _.go(
-        $.qs('.verify-button'),
-        $.on('click', (e) => addCodeForm(e, resolve)),
-      ),
-    );
 
   const disableVerifyButton = () => {
     const verifyButton = $.qs('.verify-button');
@@ -47,6 +39,25 @@ const register = () => {
   };
 
   // prettier-ignore
+  const validateEmail = (target) =>
+    _.pipe(
+      $.find('#email-input'),
+      $.on('input', testValidEmail))(target);
+
+  // prettier-ignore
+  const sendVerificationCode = () =>
+    new Promise((resolve) =>
+      _.go(
+        $.qs('.verify-button'),
+        $.on('click', (e) => addCodeForm(e, resolve))));
+
+  // prettier-ignore
+  const validateCode = (target) => 
+    _.pipe(
+      $.find('#verification-code'),
+      $.on('input', testValidCode))(target);
+
+  // prettier-ignore
   const render = () =>
     new Promise(resolve =>
       _.go(
@@ -54,26 +65,16 @@ const register = () => {
         _.filter((input) => REGISTER_INPUT_TYPE.includes(input.type)),
         _.map((input) => inputForm({ ...input, target: '.auth-form' })),
         _.map(f => f()),
-        _.take(1),
         ([f]) => f,
         resolve));
 
   // prettier-ignore
-  const appendRegister = async () =>
+  const appendRegister = () =>
     _.go(
-      await render(),
-      () => console.log(2),
-      _.tap(
-        $.find('#email-input'),
-        $.on('input', testValidEmail),
-      ),
-      await sendVerificationCode(),
-      console.log)
-  // (a) => a.then((res) =>
-  //   console.log(res)
-  // ));
-  // $.find('#verification-code-input'),
-  // $.on('input', testValidCode));
+      render(),
+      validateEmail,
+      sendVerificationCode(),
+      validateCode);
 
   return appendRegister;
 };
