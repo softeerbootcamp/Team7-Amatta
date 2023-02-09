@@ -10,8 +10,6 @@ const slider = () => {
 
   cardsSection.style.width = `${mainArticle.clientWidth * oneCardSection.length}px`; // innerList의 width를 inner의 width * inner의 개수로 만들기
 
-  console.log(mainArticle.clientWidth);
-
   const getInterval = setInterval(() => {
     currentIndex += 1;
     currentIndex = currentIndex >= oneCardSection.length ? 0 : currentIndex;

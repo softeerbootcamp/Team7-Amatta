@@ -53,6 +53,7 @@ const register = () => {
     const formTarget = $.qs('#verification-code-input-section');
     const buttonTarget = $.qs('.confirm-button');
 
+    e.target.innerHTML = '재인증';
     formTarget.classList.add('visible');
     timer(180, '#verification-code-input-section', closeCodeForm(formTarget));
 
@@ -91,14 +92,15 @@ const register = () => {
     changeButtonStatus(type, isValidate);
   };
 
-  const handleClickSubmitButton = (e) => {
+  const handleClickSubmitButton = async (e) => {
     e.stopPropagation();
     e.preventDefault();
 
     const { name, email, password, phoneNumber } = userData;
     const data = { name, email, password, phoneNumber };
 
-    regiseterUser(data);
+    navigate('/card');
+    await regiseterUser(data);
   };
 
   // prettier-ignore
@@ -165,7 +167,7 @@ const register = () => {
           () => registerTemp,
           $.el,
           $.prepend($.qs('.auth-form-section'))),
-          resolve));
+        resolve));
 
   // prettier-ignore
   const appendRegister = () =>

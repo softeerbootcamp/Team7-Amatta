@@ -1,30 +1,11 @@
-import { SERVER_URL } from '@/constants/constant';
+import { SERVER_URL, INPUT } from '@/constants/constant';
 import { inputForm, header } from '@/components/common';
 import { $, drag } from '@/utils';
 import { _ } from '@/utils/customFx';
 
+const POST_INPUT_TYPE = ['menu', 'shop', 'price'];
 const PostPage = {};
 const iconURL = `${SERVER_URL.IMG}icon/camera.svg`;
-const inputs = [
-  {
-    type: 'text',
-    name: 'menu-input',
-    label: '상품 이름',
-    required: true,
-  },
-  {
-    type: 'text',
-    name: 'shop-input',
-    label: '가게 이름',
-    required: true,
-  },
-  {
-    type: 'text',
-    name: 'price-input',
-    label: '상품 가격',
-    required: true,
-  },
-];
 
 PostPage.temp = `
   <main class="post-main">
@@ -68,6 +49,12 @@ PostPage.render = () =>
       PostPage.temp,
       $.el,
       $.replace($.qs('#root')),
+      _.tap(
+        () => INPUT,
+        _.filter((input) => POST_INPUT_TYPE.includes(input.type)),
+        _.map((input) => inputForm({ ...input, target: '.input-info-section' })),
+        _.map(f => f()),
+        ([f]) => f),
       header({ color: 'mint', label: 'bb', target: '#root' }));
 
 // prettier-ignore

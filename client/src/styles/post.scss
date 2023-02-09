@@ -78,7 +78,8 @@
           z-index: -1;
           width: 30%;
           object-fit: scale-down;
-          filter: invert(74%) sepia(31%) saturate(201%) hue-rotate(119deg) brightness(90%) contrast(88%);
+          filter: invert(74%) sepia(31%) saturate(201%) hue-rotate(119deg) brightness(90%)
+            contrast(88%);
         }
 
         input {
@@ -90,6 +91,11 @@
         display: flex;
         flex-direction: column;
         width: 100%;
+
+        .input-section {
+          display: flex;
+          flex-direction: column-reverse;
+        }
 
         input {
           border: 1px solid $gray400;

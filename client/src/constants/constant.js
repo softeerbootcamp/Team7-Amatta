@@ -10,6 +10,24 @@ const NAME_REG = '^[ㄱ-ㅎ|가-힣|a-z|A-Z|]+$';
 
 const INPUT = [
   {
+    type: 'price',
+    name: 'price-input',
+    label: '상품 가격',
+    required: true,
+  },
+  {
+    type: 'shop',
+    name: 'shop-input',
+    label: '가게 이름',
+    required: true,
+  },
+  {
+    type: 'menu',
+    name: 'menu-input',
+    label: '상품 이름',
+    required: true,
+  },
+  {
     type: 'password',
     name: 'password-check-input',
     label: '비밀번호를 한번 더 입력해주세요.',
