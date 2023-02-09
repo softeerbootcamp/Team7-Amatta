@@ -20,7 +20,7 @@ const inputForm = (props) => {
     _.go(
       inputFormTemplate,
       $.el,
-      $.prepend(`${target}`));
+      $.prepend($.qs(`${target}`)));
 
   //prettier-ignore
   const appendForm = () =>

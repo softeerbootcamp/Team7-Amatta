@@ -5,18 +5,38 @@ import { _, L } from '@/utils/customFx';
 
 // const emailReg = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
 const register = (props) => {
-  // const {} = props;
+  const { target } = props;
+
+  const addCodeForm = () => {
+    const a = _.filter((input) => input.type === 'verificationCode', INPUT);
+    a[0].target = '.auth-form';
+
+    inputForm(...a)();
+  };
+  // const verifyEmail = () =>
 
   const registerTemp = `
-    ${_.go(L.filter((input) => input.type !== 'verificationCode', INPUT))}
+    ${_.map((input) => inputForm({ ...input, target: '.auth-form' }), INPUT)}
   `;
+
+  const te = new Promise((resolve) => resolve(_.map((input) => inputForm({ ...input, target: '.auth-form' })())));
 
   //prettier-ignore
   const render = () =>
     _.go(
       registerTemp,
       $.el,
-      $.prepend(`${target}`));
+      $.prepend($.qs(`${target}`)));
+
+  //prettier-ignore
+  const appendRegister = async () =>
+  _.go(
+    INPUT,
+    await te,
+    () => $.qs('.verify-button'),
+    $.on('click', addCodeForm));
+
+  return appendRegister;
 };
 
 export default register;

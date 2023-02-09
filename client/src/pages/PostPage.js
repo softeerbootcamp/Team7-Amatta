@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-expressions */
-import SERVER_URL from '@/constants/constant';
+import { SERVER_URL } from '@/constants/constant';
 import { inputForm, header } from '@/components/common';
 import { $, drag } from '@/utils';
 import { _ } from '@/utils/customFx';
@@ -41,7 +41,6 @@ PostPage.temp = `
         <input class="upload-image" type="file" accept="image/*" />
       </section>
       <section class="input-info-section">
-        ${_.strMap((input) => inputForm(input), inputs)}
       </section>
     </section>
     <section class="post-button">
@@ -50,6 +49,8 @@ PostPage.temp = `
     </section>
   </main>
 `;
+
+// ${_.strMap((input) => inputForm(input), inputs)}
 
 const test = (file) => {
   const reader = new FileReader();

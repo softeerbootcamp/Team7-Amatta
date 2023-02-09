@@ -11,12 +11,12 @@ const findRoute = (path) =>
   };
 
 // prettier-ignore
-const render = ({ component }) => {
-  const temp = component();
-  return temp instanceof Promise 
-          ? temp.then((targets) => addNavigateEvent(targets))
-          : temp;
-}
+const render = ({ component }) => component()
+
+// const temp = component();
+// return temp instanceof Promise
+//         ? temp.then((targets) => addNavigateEvent(targets))
+//         : temp;
 
 // prettier-ignore
 const reRender = () => 
