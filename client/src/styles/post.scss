@@ -18,13 +18,16 @@
       background-color: rgba(0, 0, 0, 0.5);
 
       .test2 {
+        display: flex;
+        align-content: center;
+        justify-content: center;
         position: relative;
-        margin: 0 auto;
-        width: 80%;
-        max-height: 60%;
+        width: 100%;
+        max-height: 80%;
 
         img {
-          width: 100%;
+          max-width: 100%;
+          min-width: 90%;
           height: 100%;
           object-fit: fill;
         }
@@ -66,15 +69,16 @@
         justify-content: center;
         width: 17.5rem;
         height: 17.5rem;
-        border-radius: 50%;
-        border: 1px solid $white-color;
+        border-radius: 0.75rem;
+        border: 1px solid $gray400;
         margin: 3.5rem 0;
-        background-color: $gray300;
         overflow: hidden;
 
         img {
+          z-index: -1;
           width: 30%;
           object-fit: scale-down;
+          filter: invert(74%) sepia(31%) saturate(201%) hue-rotate(119deg) brightness(90%) contrast(88%);
         }
 
         input {
