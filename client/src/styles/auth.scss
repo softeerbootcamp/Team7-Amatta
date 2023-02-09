@@ -64,6 +64,7 @@
         font-size: 1.5rem;
       }
 
+      .confirm-button,
       .verify-button {
         font-size: 0.875rem;
         width: 5.25rem;
@@ -74,6 +75,10 @@
         color: $primary-color;
         border-radius: 10%;
         border: 1px solid $primary-color;
+
+        &:disabled {
+          opacity: 0.5;
+        }
       }
     }
 

@@ -16,4 +16,4 @@ navigate(path);
 
 window.addEventListener('resize', setScreenSize);
 
-// client.post('user/login', { email: 'aa@naver.com', password: '1234' });
+// client.get('cookie');
