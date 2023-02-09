@@ -1,4 +1,4 @@
-import SERVER_URL from '@/constants/constant';
+import { SERVER_URL } from '@/constants/constant';
 import { loginTemplate, registerTemplate } from '@/components/auth';
 import { _ } from '@/utils/customFx';
 import { $ } from '@/utils';
@@ -8,51 +8,9 @@ const logoUrl = `${SERVER_URL.IMG}logo/logo-pink.png`;
 const mintLogoUrl = `${SERVER_URL.IMG}logo/logo-mint+.png`;
 const backIconUrl = `${SERVER_URL.IMG}icon/back.svg`;
 
-const email = [
-  {
-    type: 'email',
-    name: 'email-input',
-    label: '이메일',
-    required: true,
-  },
-];
-
-const inputs = [
-  {
-    type: 'email',
-    name: 'email-input',
-    label: '이메일',
-    required: true,
-  },
-  {
-    type: 'tel',
-    name: 'phone-input',
-    label: '전화번호',
-    required: true,
-  },
-  {
-    type: 'verificationCode',
-    name: 'verification-code',
-    label: '인증번호',
-    required: true,
-  },
-  {
-    type: 'password',
-    name: 'password-input',
-    label: '비밀번호',
-    required: true,
-  },
-  {
-    type: 'password',
-    name: 'password-check-input',
-    label: '비밀번호 확인',
-    required: true,
-  },
-];
-
 const status = (componentName) => {
   if (componentName === 'register') {
-    const signupInputs = [inputs[0], inputs[1], inputs[2], inputs[3]];
+    const signupInputs = [inputs[0], inputs[1], inputs[3], inputs[4]];
 
     // return registerTemplate(inputs);
     return registerTemplate(signupInputs);
@@ -68,7 +26,7 @@ const status = (componentName) => {
 
 AuthPage.temp = `
   <article class="auth-article">
-    <section class="back-header-section">
+    <section class="white-header-section">
       <img class="back-button" src="${backIconUrl}" alt="back-button" /> 
       <section class="logo-section">
         <img class="small-logo-mint" src="${mintLogoUrl}" alt="small-logo-mint" />

@@ -1,4 +1,4 @@
-import SERVER_URL from '@/constants/constant';
+import { SERVER_URL } from '@/constants/constant';
 
 const logoUrl = `${SERVER_URL.IMG}logo/logo-white.png`;
 const iconUrl = `${SERVER_URL.IMG}icon/search.svg`;

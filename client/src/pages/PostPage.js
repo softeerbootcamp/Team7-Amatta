@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-expressions */
-import SERVER_URL from '@/constants/constant';
+import { SERVER_URL } from '@/constants/constant';
 import { inputForm, headerTemplate } from '@/components/common';
 import { $, drag } from '@/utils';
 import { _ } from '@/utils/customFx';

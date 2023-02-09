@@ -1,4 +1,4 @@
-import SERVER_URL from '@/constants/constant';
+import { SERVER_URL } from '@/constants/constant';
 import { headerTemplate, cardDetail } from '@/components/common';
 import { $, slider } from '@/utils';
 import { _ } from '@/utils/customFx';
