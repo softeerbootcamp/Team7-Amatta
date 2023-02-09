@@ -44,9 +44,9 @@ public class GifticonController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @GetMapping("/list/{uid}")
-    public ResponseEntity<?> gifticonList(@PathVariable Long uid) {
-        return new ResponseEntity<>(gifticonService.findGifticons(uid), HttpStatus.OK);
+    @GetMapping("/list")
+    public ResponseEntity<?> gifticonList() {
+        return new ResponseEntity<>(gifticonService.findGifticons(), HttpStatus.OK);
     }
 
     @ExceptionHandler(NotAuthenticatedException.class)
