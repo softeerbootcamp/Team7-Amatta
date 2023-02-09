@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable no-async-promise-executor */
-import SERVER_URL from '@/constants/constant';
+import { SERVER_URL } from '@/constants/constant';
 import { addNavigateEvent } from '@/core/router';
 import { _ } from '@/utils/customFx';
 import { $ } from '@/utils';

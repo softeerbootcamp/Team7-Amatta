@@ -1,4 +1,4 @@
-import SERVER_URL from '@/constants/constant.js';
+import { SERVER_URL } from '@/constants/constant.js';
 
 const cardDetail = (props) => {
   const { image, shopName, itemName, dateOfUse, required } = props;

@@ -1,8 +1,7 @@
-import SERVER_URL from '@/constants/constant';
+import { SERVER_URL } from '@/constants/constant';
 import { cardDetail } from '@/components/common';
 import { $, slider } from '@/utils';
 import { _ } from '@/utils/customFx';
-// import { slider } from '@/utils';
 
 const oneCardIconUrl = `${SERVER_URL.IMG}icon/image.svg`;
 const listIconUrl = `${SERVER_URL.IMG}icon/list.svg`;
