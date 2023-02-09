@@ -47,6 +47,13 @@ const INPUT = [
     dataType: 'email',
     pattern: EMAIL_REG,
   },
+  {
+    type: 'userName',
+    name: 'user-name-input',
+    label: '이름',
+    required: true,
+    dataType: 'userName',
+  },
 ];
 
 export { SERVER_URL, INPUT };

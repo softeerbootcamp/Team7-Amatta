@@ -1,13 +1,17 @@
 import { inputForm } from '@/components/common';
+import { regiseterUser } from '@/apis/auth';
+import { navigate } from '@/core/router';
 import { INPUT } from '@/constants/constant';
 import { $ } from '@/utils';
 import { _ } from '@/utils/customFx';
 
 const register = () => {
-  const REGISTER_INPUT_TYPE = ['email', 'verificationCode', 'tel', 'password'];
+  const REGISTER_INPUT_TYPE = ['userName', 'email', 'verificationCode', 'tel', 'password'];
   const emailReg = /^[a-zA-Z0-9+-_.]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
   const codeReg = /^[0-9]{6}$/i;
+
   let userData = {
+    name: '',
     email: '',
     verificationCode: '',
     phoneNumber: '',
@@ -21,16 +25,23 @@ const register = () => {
     <h5>기프티콘을 효율적으로 관리해보세요.</h5>
   `;
 
-  const setUserData = ({ target }) => {
+  const setUserData = ({ target }, targets) => {
     const dataType = _.getDataset(target, 'data-input');
     const newUserData = { ...userData };
+    checkValidateAll(targets);
 
-    if (target.validity.valid) {
-      newUserData[dataType] = target.value;
-      userData = newUserData;
-    }
-    console.log(userData);
+    if (!target.validity.valid) return;
+
+    newUserData[dataType] = target.value;
+    userData = newUserData;
+
     return userData;
+  };
+
+  const checkValidateAll = (targets) => {
+    if (![...targets].every((target) => target.validity.valid)) return;
+
+    $.qs('.auth-button').classList.add('active');
   };
 
   const addCodeForm = (e, resolve) => {
@@ -53,22 +64,35 @@ const register = () => {
   };
 
   const testValidation = ({ target }, type, reg) => {
-    if (target.type === 'tel') {
-      return putAutoHyphen(target);
-    }
+    if (target.type === 'tel') return putAutoHyphen(target);
     const isValidate = reg.test(target.value);
 
     changeButtonStatus(type, isValidate);
+  };
+
+  const handleClickSubmitButton = (e) => {
+    console.log(e);
+    e.stopPropagation();
+    e.preventDefault();
+
+    const { name, email, password, phoneNumber } = userData;
+    const data = { name, email, password, phoneNumber };
+
+    regiseterUser(data);
   };
 
   // prettier-ignore
   const handleChangeInput = (target) => 
     _.pipe(
       $.findAll('.text-input'),
-      _.tap(
-        _.map((f) => $.on('change', setUserData)(f))
-        ),
-      console.log)(target);
+      (targets) => _.map((f) => $.on('input', (e) => setUserData(e, targets))(f), targets),
+      ([f]) => f)(target);
+
+  // prettier-ignore
+  const handleClickGoBack = (target) => 
+    _.pipe(
+      $.find('.left-arrow-button'),
+      $.on('click', () => navigate('/')))(target);
 
   // prettier-ignore
   const validateEmail = (target) =>
@@ -96,6 +120,12 @@ const register = () => {
       $.on('input', (e) => testValidation(e, '.confirm-button', codeReg)))(target);
 
   // prettier-ignore
+  const submitData = (target) => 
+    _.pipe(
+      $.find('.auth-button'),
+      $.on('click', (e) => handleClickSubmitButton(e)))(target);
+
+  // prettier-ignore
   const render = () =>
     new Promise(resolve =>
       _.go(
@@ -115,10 +145,12 @@ const register = () => {
     _.go(
       render(),
       handleChangeInput,
+      handleClickGoBack,
       validateEmail,
       validatePhone,
       sendVerificationCode(),
-      validateCode);
+      validateCode,
+      submitData);
 
   return appendRegister;
 };
