@@ -2,7 +2,8 @@ package com.amatta.amatta_server.gifticon.util;
 
 import com.amatta.amatta_server.gifticon.model.Gifticon;
 
-import java.time.LocalDateTime;
+import java.sql.Date;
+import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
@@ -27,14 +28,15 @@ public class KakaoGifticonMapper implements GifticonMapper {
         int orderIdIndex = list.lastIndexOf("주문번호");
 
         String brandName = list.get(brandNameIndex+1);
-        LocalDateTime expirationDate = getExpirationDate(list, expirationDateIndex, orderIdIndex);
         String itemName = getItemName(list, brandName);
         String barcode = getBarcode(list, brandNameIndex);
 
+        java.sql.Date expiretionDate = Date.valueOf(getExpirationDate(list, expirationDateIndex, orderIdIndex));
+
         return Gifticon.builder()
-                .brandName(brandName)
-                .expiresAt(expirationDate)
-                .itemName(itemName)
+                .brandname(brandName)
+                .expiresat(expiretionDate)
+                .itemname(itemName)
                 .barcode(barcode)
                 .build();
     }
@@ -57,15 +59,13 @@ public class KakaoGifticonMapper implements GifticonMapper {
         return st.toString();
     }
 
-    private LocalDateTime getExpirationDate(List<String> list, int expirationDateIndex, int orderIdIndex) throws IndexOutOfBoundsException {
+    private LocalDate getExpirationDate(List<String> list, int expirationDateIndex, int orderIdIndex) throws IndexOutOfBoundsException {
         StringBuilder expirationDate = new StringBuilder();
         for(String date : list.subList(expirationDateIndex+1, orderIdIndex)) {
             expirationDate.append(date);
         }
-        expirationDate.append(" ");
-        expirationDate.append("00:00:00");
 
-        return LocalDateTime.parse(expirationDate.toString(), DateTimeFormatter.ofPattern("yyyy년MM월dd일 HH:mm:ss"));
+        return LocalDate.parse(expirationDate.toString(), DateTimeFormatter.ofPattern("yyyy년MM월dd일"));
     }
 
     private String getItemName(List<String> list, String brandName) throws IndexOutOfBoundsException {
