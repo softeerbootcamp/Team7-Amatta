@@ -25,6 +25,8 @@
     "func-names": "off",
     "no-restricted-syntax": "off",
     "no-use-before-define": "off",
-    "no-unused-expressions": "off"
+    "no-unused-expressions": "off",
+    "no-useless-escape": "off",
+    "consistent-return": "off"
   }
 }
