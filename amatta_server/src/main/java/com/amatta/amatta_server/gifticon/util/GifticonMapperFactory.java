@@ -11,6 +11,6 @@ public class GifticonMapperFactory {
                 return mapperEnum.getGifticonMapper();
             }
         }
-        return null;
+        return NoMatchMapper.getInstance();
     }
 }
