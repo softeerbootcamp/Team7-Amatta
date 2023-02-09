@@ -7,14 +7,14 @@ const INPUT = [
   {
     type: 'passwordCheck',
     name: 'password-check-input',
-    label: '비밀번호 확인',
+    label: '비밀번호를 한번 더 입력해주세요.',
     required: true,
     placeholder: '',
   },
   {
     type: 'password',
     name: 'password-input',
-    label: '비밀번호',
+    label: '비밀번호 입력(영문, 숫자, 특수문자)',
     required: true,
     placeholder: '',
   },
@@ -27,7 +27,7 @@ const INPUT = [
   },
   {
     type: 'verificationCode',
-    name: 'verification-code',
+    name: 'verification-code-input',
     label: '인증번호',
     required: true,
     placeholder: '',

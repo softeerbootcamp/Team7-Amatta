@@ -5,6 +5,9 @@ import { _ } from '@/utils/customFx';
 
 const register = () => {
   const REGISTER_INPUT_TYPE = ['email', 'tel', 'password', 'passwordCheck'];
+  const emailReg =
+    /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
+  const codeReg = /^[0-9]{6}$/i;
 
   const addCodeForm = (e, resolve) => {
     const newForm = _.find(({ type }) => type === 'verificationCode', INPUT);
@@ -14,35 +17,19 @@ const register = () => {
     resolve(() => $.qs('#root'));
   };
 
-  const disableVerifyButton = () => {
-    const verifyButton = $.qs('.verify-button');
-    verifyButton.disabled = false;
+  const changeButtonStatus = (type) => {
+    const buttonTarget = $.qs(type);
+    buttonTarget.disabled = false;
   };
 
-  const disableConfirmButton = () => {
-    const confirmButton = $.qs('.confirm-button');
-    confirmButton.disabled = false;
-  };
-
-  const testValidEmail = ({ target }) => {
-    const emailReg = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
-    if (emailReg.test(target.value)) {
-      disableVerifyButton();
-    }
-  };
-
-  const testValidCode = ({ target }) => {
-    const codeReg = /^[0-9]{6}$/i;
-    if (codeReg.test(target.value)) {
-      disableConfirmButton();
-    }
-  };
+  const testValidation = ({ target }, type, reg) =>
+    reg.test(target.value) && changeButtonStatus(type);
 
   // prettier-ignore
   const validateEmail = (target) =>
     _.pipe(
       $.find('#email-input'),
-      $.on('input', testValidEmail))(target);
+      $.on('input', (e) => testValidation(e, '.verify-button', emailReg)))(target);
 
   // prettier-ignore
   const sendVerificationCode = () =>
@@ -54,8 +41,8 @@ const register = () => {
   // prettier-ignore
   const validateCode = (target) => 
     _.pipe(
-      $.find('#verification-code'),
-      $.on('input', testValidCode))(target);
+      $.find('#verification-code-input'),
+      $.on('input', (e) => testValidation(e, '.confirm-button', codeReg)))(target);
 
   // prettier-ignore
   const render = () =>
