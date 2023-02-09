@@ -6,7 +6,7 @@ const header = (props) => {
   const { color, label, target } = props;
   const mintLogoUrl = `${SERVER_URL.IMG}logo/logo-mint.png`;
   const whiteLogoUrl = `${SERVER_URL.IMG}logo/logo-white.png`;
-  const leftArrowIconUrl = `${SERVER_URL.IMG}icon/back.svg`;
+  const leftArrowIconUrl = `${SERVER_URL.IMG}icon/arrow-left.svg`;
   const searchIconUrl = `${SERVER_URL.IMG}icon/search.svg`;
 
   const mintTemp = `

@@ -5,8 +5,8 @@ import { $ } from '@/utils';
 
 const AuthPage = {};
 const logoUrl = `${SERVER_URL.IMG}logo/logo-pink.png`;
-const mintLogoUrl = `${SERVER_URL.IMG}logo/logo-mint+.png`;
-const backIconUrl = `${SERVER_URL.IMG}icon/back.svg`;
+const mintLogoUrl = `${SERVER_URL.IMG}logo/logo-mint.png`;
+const backIconUrl = `${SERVER_URL.IMG}icon/left-arrow.svg`;
 
 // const status = (componentName) => {
 //   if (componentName === 'register') {

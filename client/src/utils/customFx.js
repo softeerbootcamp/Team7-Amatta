@@ -74,10 +74,13 @@ _.find = _.curry((f, iter) => _.go(iter, L.filter(f), _.take(1), ([a]) => a));
 
 _.strMap = _.curry(_.pipe(_.map, makeString));
 
-_.isIterable = (a) => a !== null && !!a[Symbol.iterator];
+_.tap =
+  (f, ...fs) =>
+  (a, ...as) =>
+    _.go(_.reduce(_.go, f(a, ...as), fs), () => a);
 
+_.isIterable = (a) => a !== null && !!a[Symbol.iterator];
 _.getDataset = (target, dataset) => target.getAttribute(dataset);
 _.findClosest = (target, dataset) => target.closest(dataset);
-
 
 export { L, _ };

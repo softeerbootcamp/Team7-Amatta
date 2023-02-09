@@ -5,6 +5,13 @@ const SERVER_URL = {
 
 const INPUT = [
   {
+    type: 'passwordCheck',
+    name: 'password-check-input',
+    label: '비밀번호 확인',
+    required: true,
+    placeholder: '',
+  },
+  {
     type: 'password',
     name: 'password-input',
     label: '비밀번호',

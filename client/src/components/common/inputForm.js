@@ -15,14 +15,14 @@ const inputForm = (props) => {
     </section>
   `;
 
-  //prettier-ignore
+  // prettier-ignore
   const render = () =>
     _.go(
       inputFormTemplate,
       $.el,
       $.prepend($.qs(`${target}`)));
 
-  //prettier-ignore
+  // prettier-ignore
   const appendForm = () =>
   _.go(
     render());

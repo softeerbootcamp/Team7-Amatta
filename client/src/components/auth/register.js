@@ -1,40 +1,31 @@
 import { inputForm } from '@/components/common';
 import { INPUT } from '@/constants/constant';
 import { $ } from '@/utils';
-import { _, L } from '@/utils/customFx';
+import { _ } from '@/utils/customFx';
 
-// const emailReg = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
-const register = (props) => {
-  const { target } = props;
-
+const register = () => {
   const addCodeForm = () => {
-    const a = _.filter((input) => input.type === 'verificationCode', INPUT);
-    a[0].target = '.auth-form';
+    const newForm = _.find(({ type }) => type === 'verificationCode', INPUT);
 
-    inputForm(...a)();
+    newForm.target = '.auth-form';
+    inputForm(newForm)();
   };
-  // const verifyEmail = () =>
 
-  const registerTemp = `
-    ${_.map((input) => inputForm({ ...input, target: '.auth-form' }), INPUT)}
-  `;
-
-  const te = new Promise((resolve) => resolve(_.map((input) => inputForm({ ...input, target: '.auth-form' })())));
-
-  //prettier-ignore
+  // prettier-ignore
   const render = () =>
-    _.go(
-      registerTemp,
-      $.el,
-      $.prepend($.qs(`${target}`)));
+    new Promise(resolve =>
+      _.go(
+        INPUT,
+        _.filter((input) => input.type !== 'verificationCode'),
+        _.map((input) => inputForm({ ...input, target: '.auth-form' })()),
+        resolve));
 
-  //prettier-ignore
+  // prettier-ignore
   const appendRegister = async () =>
-  _.go(
-    INPUT,
-    await te,
-    () => $.qs('.verify-button'),
-    $.on('click', addCodeForm));
+    _.go(
+      await render(),
+      () => $.find('.verify-button')(),
+      $.on('click', addCodeForm));
 
   return appendRegister;
 };
