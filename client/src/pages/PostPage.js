@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-expressions */
 import SERVER_URL from '@/constants/constant';
-import { inputForm, headerTemplate } from '@/components/common';
+import { inputForm, header } from '@/components/common';
 import { $, drag } from '@/utils';
 import { _ } from '@/utils/customFx';
 
@@ -28,14 +28,12 @@ const inputs = [
 ];
 
 PostPage.temp = `
-  ${headerTemplate}
   <main class="post-main">
     <div class="test">
       <div class="test2">
         <img></img>
         <div data-drag></div>
       </div>
-      <button>완료</button>
     </div>
     <section class="post-info-section">
       <section class="post-upload-section">
@@ -69,7 +67,8 @@ PostPage.render = () =>
     _.go(
       PostPage.temp,
       $.el,
-      $.replace($.qs('#root')));
+      $.replace($.qs('#root')),
+      header({ color: 'hh', label: 'bb', target: '#root' }));
 
 // prettier-ignore
 const navigatePost = () => 
