@@ -68,7 +68,7 @@ PostPage.render = () =>
       PostPage.temp,
       $.el,
       $.replace($.qs('#root')),
-      header({ color: 'hh', label: 'bb', target: '#root' }));
+      header({ color: 'mint', label: 'bb', target: '#root' }));
 
 // prettier-ignore
 const navigatePost = () => 
