@@ -60,8 +60,6 @@ public class UserController {
                 .domain("amatta.site")
                 .httpOnly(true)
                 .path("/")
-                .secure(true)
-                .sameSite("None")
                 .build();
         httpServletResponse.addHeader("Set-Cookie", responseCookie.toString());
         return new ResponseEntity<>(new UserLoginRes(true), HttpStatus.OK);
