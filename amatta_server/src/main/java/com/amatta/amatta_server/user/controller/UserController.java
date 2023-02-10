@@ -57,6 +57,7 @@ public class UserController {
         HttpSession httpSession = httpServletRequest.getSession(true);
         httpSession.setAttribute("User", loginUser);
         ResponseCookie responseCookie = ResponseCookie.from("JSESSIONID", httpSession.getId())
+                .domain("amatta.site")
                 .httpOnly(true)
                 .path("/")
                 .secure(true)
