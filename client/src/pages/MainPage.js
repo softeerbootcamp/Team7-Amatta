@@ -2,6 +2,7 @@ import { SERVER_URL } from '@/constants/constant';
 import { cardDetail } from '@/components/common';
 import { $, slider } from '@/utils';
 import { _ } from '@/utils/customFx';
+import { navigate } from '@/core/router';
 
 const oneCardIconUrl = `${SERVER_URL.IMG}icon/image.svg`;
 const listIconUrl = `${SERVER_URL.IMG}icon/list.svg`;
@@ -54,6 +55,12 @@ MainPage.temp = `
   `;
 
 // prettier-ignore
+MainPage.handleClickaddCard = (target) =>
+  _.pipe(
+    $.find('#plus-button'),
+    $.on('click', () => navigate('/post')))(target);
+
+// prettier-ignore
 MainPage.render = () =>
     _.go(
       MainPage.temp,
@@ -64,6 +71,7 @@ MainPage.render = () =>
 const navigateMain = () => 
     _.go(
       MainPage.render(),
-      slider);
+      slider,
+      () => MainPage.handleClickaddCard());
 
 export default navigateMain;

@@ -2,7 +2,6 @@ import '@/styles/style.scss';
 import { setScreenSize } from '@/utils';
 import { navigateHome, navigateAuth, navigateMain, navigatePost } from '@/pages';
 import { routes, navigate } from '@/core/router';
-import client from '@/apis/client';
 
 routes.push(
   { path: '/', component: navigateHome },
@@ -15,5 +14,3 @@ const path = window.location.pathname;
 navigate(path);
 
 window.addEventListener('resize', setScreenSize);
-
-// client.get('cookie');
