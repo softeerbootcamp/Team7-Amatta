@@ -26,25 +26,27 @@ const register = () => {
   `;
 
   const setUserData = ({ target }, targets) => {
+    if (!target.validity.valid) return;
+
     const dataType = _.getDataset(target, 'data-input');
     const newUserData = { ...userData };
 
-    if (!target.validity.valid) return;
-
     newUserData[dataType] = target.value;
     userData = newUserData;
+
     checkValidateAll(targets);
 
     return userData;
   };
 
   const checkValidateAll = (targets) => {
-    const $target = $.qs('.auth-button').classList;
+    const $targetClass = $.qs('.auth-button').classList;
 
-    if (![...targets].every((target) => target.validity.valid)) return $target.remove('active');
-    if (userData.password !== userData.passwordCheck) return $target.remove('active');
+    if (![...targets].every((target) => target.validity.valid))
+      return $targetClass.remove('active');
+    if (userData.password !== userData.passwordCheck) return $targetClass.remove('active');
 
-    $target.add('active');
+    $targetClass.add('active');
   };
 
   const closeCodeForm = (target) => () => target.classList.remove('visible');
