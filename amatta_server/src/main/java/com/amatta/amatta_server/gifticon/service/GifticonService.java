@@ -61,6 +61,7 @@ public class GifticonService {
     public void addGifticon(GifticonDto dto) throws DuplicateGifticonException {
         long uid = getUserBySessionId().getId();
         byte[] image = dto.getImage().getBytes();
+        byte[] thumbnail = dto.getThumbnail().getBytes();
         String brandName = dto.getBrandName();
         String itemName = dto.getItemName();
         String barcode = dto.getBarcode();
@@ -75,6 +76,7 @@ public class GifticonService {
         gifticonRepository.addGifticon(
                 uid,
                 image,
+                thumbnail,
                 brandName,
                 itemName,
                 barcode,

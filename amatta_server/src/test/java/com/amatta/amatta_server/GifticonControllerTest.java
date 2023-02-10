@@ -58,6 +58,7 @@ public class GifticonControllerTest {
                 "\"itemName\": \"아메리카노\", " +
                 "\"brandName\": \"스타벅스\", " +
                 "\"image\": \"adfadf\", " +
+                "\"thumbnail\": \"adfadfa\", " +
                 "\"price\": \"3000\", " +
                 "\"barcode\": \"12341234\", " +
                 "\"expiresAtInString\": \"2023/11/11\"" +
@@ -78,6 +79,7 @@ public class GifticonControllerTest {
                 "\"itemName\": \"아메리카노\", " +
                 "\"brandName\": \"스타벅스\", " +
                 "\"image\": \"adfadf\", " +
+                "\"thumbnail\": \"adfadfa\", " +
                 "\"price\": \"3000\", " +
                 "\"barcode\": \"12341234\", " +
                 "\"expiresAtInString\": \"2023/11/11\"" +
@@ -103,6 +105,7 @@ public class GifticonControllerTest {
         String requestBody = "{" +
                 "\"itemName\": \"아메리카노\", " +
                 "\"image\": \"adfadf\", " +
+                "\"thumbnail\": \"adfadfa\", " +
                 "\"price\": \"3000\", " +
                 "\"barcode\": \"12341234\", " +
                 "\"expiresAtInString\": \"2023/11/11\"" +
@@ -129,6 +132,7 @@ public class GifticonControllerTest {
                 "\"itemName\": \"아메리카노\", " +
                 "\"brandName\": \"스타벅스\", " +
                 "\"image\": \"adfadf\", " +
+                "\"thumbnail\": \"adfadfa\", " +
                 "\"price\": \"3000\", " +
                 "\"barcode\": \"12341234000\", " +
                 "\"expiresAtInString\": \"2023/11/11\"" +
@@ -144,6 +148,7 @@ public class GifticonControllerTest {
                         "\"itemName\": \"아메리카노\", " +
                         "\"brandName\": \"스타벅스\", " +
                         "\"image\": \"adfadf\", " +
+                        "\"thumbnail\": \"adfadfa\", " +
                         "\"price\": \"3000\", " +
                         "\"barcode\": \"109123124\", " +
                         "\"expiresAtInString\": \"2023/11/11\"" +
@@ -170,6 +175,7 @@ public class GifticonControllerTest {
                         "\"itemName\": \"아메리카노\", " +
                         "\"brandName\": \"스타벅스\", " +
                         "\"image\": \"adfadf\", " +
+                        "\"thumbnail\": \"adfadfa\", " +
                         "\"price\": \"3000\", " +
                         "\"barcode\": \"12341234000\", " +
                         "\"expiresAtInString\": \"2023/11/11\"" +
