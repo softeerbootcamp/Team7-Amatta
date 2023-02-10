@@ -57,9 +57,10 @@ public class UserController {
         HttpSession httpSession = httpServletRequest.getSession(true);
         httpSession.setAttribute("User", loginUser);
         ResponseCookie responseCookie = ResponseCookie.from("JSESSIONID", httpSession.getId())
-                .domain("backend.amatta.site")
                 .httpOnly(true)
                 .path("/")
+                .secure(true)
+                .sameSite("None")
                 .build();
         httpServletResponse.addHeader("Set-Cookie", responseCookie.toString());
         return new ResponseEntity<>(new UserLoginRes(true), HttpStatus.OK);
