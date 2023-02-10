@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 @RestController
-@CrossOrigin(origins = "http://15.164.13.149:5173/", allowCredentials = "true")
+@CrossOrigin(origins = "https://amatta.site", allowCredentials = "true")
 public class IndexController {
     @GetMapping("/cookie")
     public ResponseEntity<?> redirect(HttpServletRequest httpServletRequest) {

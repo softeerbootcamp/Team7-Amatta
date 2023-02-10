@@ -16,7 +16,7 @@ import javax.validation.Valid;
 import java.util.Objects;
 
 @RestController
-@CrossOrigin(origins = "http://15.164.13.149:5173/", allowCredentials = "true")
+@CrossOrigin(origins = "https://amatta.site", allowCredentials = "true")
 @RequestMapping("/user")
 public class UserController {
 
