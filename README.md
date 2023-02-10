@@ -36,8 +36,7 @@
 
 - <h3>ERD</h3>
   <br>
-    <img width="700" alt="ERD" src="https://user-images.githubusercontent.com/65708461/215433375-81f7ac6e-00bd-406f-8a11-8b5cd05272e4.png">
-
+    <img width="1141" alt="erd" src="https://user-images.githubusercontent.com/65708461/218037413-a551fc8d-16a2-4308-a6f1-66eaea9778a0.png">
 ## Github
 
 - [Github 저장소](https://github.com/softeerbootcamp/Team7-Project)
