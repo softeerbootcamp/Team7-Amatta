@@ -6,11 +6,13 @@ import com.amatta.amatta_server.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.util.Objects;
@@ -46,7 +48,7 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@Valid @RequestBody UserLoginReq userLoginReq, HttpServletRequest httpServletRequest) {
+    public ResponseEntity<?> login(@Valid @RequestBody UserLoginReq userLoginReq, HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) {
         Users loginUser = userService.login(userLoginReq);
         if (Objects.isNull(loginUser)) {
             return new ResponseEntity<>(new UserLoginRes(false), HttpStatus.BAD_REQUEST);
@@ -54,6 +56,14 @@ public class UserController {
 
         HttpSession httpSession = httpServletRequest.getSession(true);
         httpSession.setAttribute("User", loginUser);
+        ResponseCookie responseCookie = ResponseCookie.from("JSESSIONID", httpSession.getId())
+                .domain("https://amatta.site")
+                .httpOnly(true)
+                .path("/")
+                .secure(true)
+                .sameSite("None")
+                .build();
+        httpServletResponse.addHeader("Set-Cookie", responseCookie.toString());
         return new ResponseEntity<>(new UserLoginRes(true), HttpStatus.OK);
     }
 
