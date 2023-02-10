@@ -25,6 +25,7 @@ public interface GifticonRepository extends CrudRepository<Gifticon, Long> {
             "itemName, " +
             "brandName, " +
             "image,  " +
+            "thumbnail, " +
             "barcode, " +
             "price, " +
             "expiresAt, " +
@@ -33,11 +34,12 @@ public interface GifticonRepository extends CrudRepository<Gifticon, Long> {
     Optional<Gifticon> findById(@Param("id") long id);
 
     @Modifying
-    @Query("INSERT INTO gifticon(uid, image, brandName, itemName, barcode, expiresAt, usedAt, price)" +
-            " VALUES (:uid, :image, :brandName, :itemName, :barcode, :expiresAt, :usedAt, :price)")
+    @Query("INSERT INTO gifticon(uid, image, thumbnail, brandName, itemName, barcode, expiresAt, usedAt, price)" +
+            " VALUES (:uid, :image, :thumbnail, :brandName, :itemName, :barcode, :expiresAt, :usedAt, :price)")
     void addGifticon(
             @Param("uid")       long uid,
             @Param("image")     byte[] image,
+            @Param("thumbnail") byte[] thumbnail,
             @Param("brandName") String brandName,
             @Param("itemName")  String itemName,
             @Param("barcode")   String barcode,
@@ -52,6 +54,7 @@ public interface GifticonRepository extends CrudRepository<Gifticon, Long> {
             "itemName, " +
             "brandName, " +
             "image,  " +
+            "thumbnail, " +
             "barcode, " +
             "price, " +
             "expiresAt, " +
