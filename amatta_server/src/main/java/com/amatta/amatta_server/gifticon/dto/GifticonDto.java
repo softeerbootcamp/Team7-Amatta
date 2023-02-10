@@ -12,6 +12,8 @@ public class GifticonDto {
     @NotEmpty
     private String image;
     @NotEmpty
+    private String thumbnail;
+    @NotEmpty
     private String barcode;
     @NotEmpty
     private String expiresAtInString;

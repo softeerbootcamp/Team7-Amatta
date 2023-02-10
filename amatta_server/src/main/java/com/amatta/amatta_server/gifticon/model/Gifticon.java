@@ -10,6 +10,7 @@ public class Gifticon {
     private long id;
     private long uid;
     private byte[] image;
+    private byte[] thumbnail;
     private String brandname;
     private String itemname;
     private String barcode;
@@ -27,6 +28,10 @@ public class Gifticon {
 
     public byte[] getImage() {
         return image;
+    }
+
+    public byte[] getThumbnail() {
+        return thumbnail;
     }
 
     public String getBrandName() {
