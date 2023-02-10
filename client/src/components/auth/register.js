@@ -85,8 +85,14 @@ const register = () => {
       .replace(/(\-{1,2})$/g, '');
   };
 
+  const checkPassword = (target) => {
+    if (userData.password !== userData.passwordCheck) return target.classList.add('invalid');
+    target.classList.remove('invalid');
+  };
+
   const testValidation = ({ target }, type, reg) => {
     if (target.type === 'tel') return putAutoHyphen(target);
+    if (type === 'passwordCheck') return checkPassword(target);
     const isValidate = reg.test(target.value);
 
     changeButtonStatus(type, isValidate);
@@ -136,6 +142,12 @@ const register = () => {
       $.on('input', (e) => testValidation(e, '.phone', emailReg)))(target);
 
   // prettier-ignore
+  const validatePassword = (target) => 
+    _.pipe(
+      $.find('#password-check-input'),
+      $.on('input', (e) => testValidation(e, 'passwordCheck', codeReg)))(target);
+
+  // prettier-ignore
   const sendVerificationCode = () =>
     new Promise((resolve) =>
       _.go(
@@ -178,6 +190,7 @@ const register = () => {
       handleClickEye,
       validateEmail,
       validatePhone,
+      validatePassword,
       sendVerificationCode(),
       validateCode,
       submitData);

@@ -1,6 +1,6 @@
 const SERVER_URL = {
   IMG: 'https://amatta-icons.s3.ap-northeast-2.amazonaws.com/',
-  API: 'http://backend.amatta.site/',
+  API: 'https://backend.amatta.site/',
 };
 
 const EMAIL_REG = '^[a-zA-Z0-9+-_.]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-.]+$';

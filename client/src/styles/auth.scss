@@ -144,6 +144,13 @@
         }
       }
 
+      .invalid {
+        border-bottom: 1px solid $red-color !important;
+        + label {
+          color: $red-color !important;
+        }
+      }
+
       .confirm-button,
       .verify-button {
         position: absolute;
