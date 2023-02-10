@@ -15,7 +15,7 @@
       .one-card-button,
       .list-card-button {
         height: 100%;
-        margin-right: 0.5rem;
+        // margin-right: 0.5rem;
       }
     }
 
@@ -43,19 +43,17 @@
     display: flex;
     transition: 0.3s ease-out;
     height: 80%;
-    margin-left: 5%;
-    // width: 500%;
 
     .one-card-section {
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      margin-right: 6%;
-      // margin-left: 5%;
 
       .card-image {
+        object-fit: cover;
         margin-bottom: 5%;
+        width: 100vw;
       }
 
       .card-text {
@@ -101,12 +99,12 @@
     bottom: 2rem;
     background-color: $pink-color;
     border: none;
-    width: 5rem;
-    height: 5rem;
+    width: 4rem;
+    height: 4rem;
     border-radius: 50%;
 
     .plus-button-image {
-      width: 2.5rem;
+      width: 2rem;
       filter: invert(100%) sepia(0%) saturate(0%) hue-rotate(113deg) brightness(104%) contrast(101%);
     }
   }
