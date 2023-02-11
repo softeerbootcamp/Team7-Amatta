@@ -40,8 +40,9 @@
   }
 
   .cards-section {
+    position: relative;
     display: flex;
-    transition: 0.3s ease-out;
+    transition: transform 0.3s;
     height: 80%;
 
     .one-card-section {

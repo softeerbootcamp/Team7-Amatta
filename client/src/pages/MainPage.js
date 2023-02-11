@@ -1,5 +1,5 @@
 import { SERVER_URL } from '@/constants/constant';
-import { cardDetail } from '@/components/common';
+import { cardDetail } from '@/components/main';
 import { $, slider } from '@/utils';
 import { _ } from '@/utils/customFx';
 import { navigate } from '@/core/router';
