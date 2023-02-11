@@ -66,6 +66,7 @@
         align-items: center;
         justify-content: center;
         text-align: center;
+        margin-bottom: 5%;
 
         .item-name {
           font-weight: 300;
@@ -104,25 +105,23 @@
     padding: 0;
     margin: 0;
   }
-  .slide_pagination {
+  .card-pagination {
     /* layout */
     display: flex;
-    gap: 5px;
 
     /* position */
     position: absolute;
-    bottom: 0;
     /* left:50%, translateX(-50%)를 하면 가로 가운데로 위치시킬 수 있다. */
     left: 50%;
     transform: translateX(-50%);
   }
-  .slide_pagination > li {
+  .card-pagination > li {
     /* 현재 슬라이드가 아닌 것은 투명도 부여 */
     color: #7fb5ff88;
     cursor: pointer;
     font-size: 25px;
   }
-  .slide_pagination > li.active {
+  .card-pagination > li.active {
     /* 현재 슬라이드 색상은 투명도 없이 */
     color: #7fb5ff;
   }

@@ -48,7 +48,7 @@ MainPage.temp = `
       <section class='cards-section'>
         ${cards.map((detail) => cardDetail(detail)).join('')}
       </section>
-      <ul class="slide-pagination"></ul>
+      <ul class="card-pagination"></ul>
       <button type="button" id="plus-button">
         <img class='plus-button-image' src='${plusIconUrl}' alt='plus-button' />
       </button>

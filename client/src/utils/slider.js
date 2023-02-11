@@ -26,14 +26,31 @@ const slider = () => {
   let currSlide = 1;
 
   // 페이지네이션 생성
-  const pagination = $.qs('.slide-pagination');
+  const pagination = $.qs('.card-pagination');
 
-  // for (let i = 0; i < maxSlide; i++) {
-  //   if (i === 0) pagination.replace += `<li class="active">•</li>`;
-  //   else pagination.innerHTML += `<li>•</li>`;
-  // }
+  const paginationTemp = `<li>•</li>`;
+  const activePaginationTemp = `<li class="active">•</li>`;
 
-  // const paginationItems = $.qs('.slide_pagination > li');
+  //prettier-ignore
+  const render = () => 
+    _.go(
+      paginationTemp, 
+      $.el, 
+      $.prepend(pagination));
+
+  //prettier-ignore
+  const activeRender = () => 
+    _.go(
+      activePaginationTemp,
+      $.el,
+      $.prepend(pagination));
+
+  for (let i = 0; i < maxSlide; i++) {
+    if (i === maxSlide - 1) activeRender();
+    else render();
+  }
+
+  const paginationItems = $.qs('.card-pagination > li');
 
   function nextMove() {
     currSlide++;
