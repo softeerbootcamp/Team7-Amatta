@@ -50,7 +50,7 @@ const slider = () => {
     else render();
   }
 
-  const paginationItems = $.qs('.card-pagination > li');
+  const paginationItems = $.qsa('.card-pagination > li');
 
   function nextMove() {
     currSlide++;
@@ -65,8 +65,8 @@ const slider = () => {
         i.setAttribute('style', `left: ${-offset}px`);
       });
       // 슬라이드 이동 시 현재 활성화된 pagination 변경
-      // paginationItems.forEach((i) => i.classList.remove('active'));
-      // paginationItems[currSlide - 1].classList.add('active');
+      paginationItems.forEach((i) => i.classList.remove('active'));
+      paginationItems[currSlide - 1].classList.add('active');
     } else {
       currSlide--;
     }
@@ -82,8 +82,8 @@ const slider = () => {
         i.setAttribute('style', `left: ${-offset}px`);
       });
       // 슬라이드 이동 시 현재 활성화된 pagination 변경
-      // paginationItems.forEach((i) => i.classList.remove('active'));
-      // paginationItems[currSlide - 1].classList.add('active');
+      paginationItems.forEach((i) => i.classList.remove('active'));
+      paginationItems[currSlide - 1].classList.add('active');
     } else {
       currSlide++;
     }
@@ -94,23 +94,23 @@ const slider = () => {
     slideWidth = slide.clientWidth;
   });
 
-  // // 각 페이지네이션 클릭 시 해당 슬라이드로 이동하기
-  // for (let i = 0; i < maxSlide; i++) {
-  //   // 각 페이지네이션마다 클릭 이벤트 추가하기
-  //   paginationItems[i].addEventListener('click', () => {
-  //     // 클릭한 페이지네이션에 따라 현재 슬라이드 변경해주기(currSlide는 시작 위치가 1이기 때문에 + 1)
-  //     currSlide = i + 1;
-  //     // 슬라이드를 이동시키기 위한 offset 계산
-  //     const offset = slideWidth * (currSlide - 1);
-  //     // 각 슬라이드 아이템의 left에 offset 적용
-  //     slideItems.forEach((i) => {
-  //       i.setAttribute('style', `left: ${-offset}px`);
-  //     });
-  //     // 슬라이드 이동 시 현재 활성화된 pagination 변경
-  //     paginationItems.forEach((i) => i.classList.remove('active'));
-  //     paginationItems[currSlide - 1].classList.add('active');
-  //   });
-  // }
+  // 각 페이지네이션 클릭 시 해당 슬라이드로 이동하기
+  for (let i = 0; i < maxSlide; i++) {
+    // 각 페이지네이션마다 클릭 이벤트 추가하기
+    paginationItems[i].addEventListener('click', () => {
+      // 클릭한 페이지네이션에 따라 현재 슬라이드 변경해주기(currSlide는 시작 위치가 1이기 때문에 + 1)
+      currSlide = i + 1;
+      // 슬라이드를 이동시키기 위한 offset 계산
+      const offset = slideWidth * (currSlide - 1);
+      // 각 슬라이드 아이템의 left에 offset 적용
+      slideItems.forEach((i) => {
+        i.setAttribute('style', `left: ${-offset}px`);
+      });
+      // 슬라이드 이동 시 현재 활성화된 pagination 변경
+      paginationItems.forEach((i) => i.classList.remove('active'));
+      paginationItems[currSlide - 1].classList.add('active');
+    });
+  }
 
   // 드래그(스와이프) 이벤트를 위한 변수 초기화
   let startPoint = 0;

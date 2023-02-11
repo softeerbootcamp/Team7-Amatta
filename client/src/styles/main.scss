@@ -117,13 +117,13 @@
   }
   .card-pagination > li {
     /* 현재 슬라이드가 아닌 것은 투명도 부여 */
-    color: #7fb5ff88;
+    color: $gray300;
     cursor: pointer;
     font-size: 25px;
   }
   .card-pagination > li.active {
     /* 현재 슬라이드 색상은 투명도 없이 */
-    color: #7fb5ff;
+    color: $pink-color;
   }
 
   #plus-button {
