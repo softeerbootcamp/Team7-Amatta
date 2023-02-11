@@ -1,49 +1,122 @@
+import { $ } from '@/utils';
+import { _ } from '@/utils/customFx';
+
 const slider = () => {
-  const mainArticle = document.querySelector('.main-card-article');
-  const cardsSection = document.querySelector('.cards-section');
-  const oneCardSection = document.querySelectorAll('.one-card-section');
-  let currentIndex = 0; // 현재 슬라이드 화면 인덱스
+  const mainArticle = $.qs('.main-card-article');
+  const slide = $.qs('.cards-section');
+  const slideWidth = mainArticle.clientWidth;
+  const slideItems = $.qsa('.one-card-section');
+  const maxSlide = slideItems.length;
+  let currentSlide = 1;
+  let startPoint = 0;
+  let endPoint = 0;
 
-  // oneCardSection.forEach((inner) => {
-  //   inner.style.width = `${mainArticle.clientWidth}px`; // inner의 width를 모두 outer의 width로 만들기
-  // })
+  slide.style.width = `${mainArticle.clientWidth * slideItems.length}px`;
 
-  cardsSection.style.width = `${mainArticle.clientWidth * oneCardSection.length}px`; // innerList의 width를 inner의 width * inner의 개수로 만들기
+  [...slideItems].forEach((card) => {
+    card.style.width = `${mainArticle.clientWidth}px`;
+  });
 
-  const getInterval = setInterval(() => {
-    currentIndex += 1;
-    currentIndex = currentIndex >= oneCardSection.length ? 0 : currentIndex;
-    cardsSection.style.marginLeft = `-${mainArticle.clientWidth * currentIndex}px`;
-  }, 2000);
+  let currSlide = 1;
 
-  return getInterval;
+  const pagination = $.qs('.card-pagination');
+
+  const paginationTemp = `<li>•</li>`;
+  const activePaginationTemp = `<li class="active">•</li>`;
+
+  //prettier-ignore
+  const setUnactive = () =>
+    _.go(
+      paginationTemp,
+      $.el,
+      $.prepend(pagination));
+
+  //prettier-ignore
+  const setActive = () =>
+    _.go(
+      activePaginationTemp,
+      $.el,
+      $.prepend(pagination));
+
+  for (let i = 0; i < maxSlide; i++) {
+    if (i === maxSlide - 1) setActive();
+    else setUnactive();
+  }
+
+  const paginationItems = $.qsa('.card-pagination > li');
+
+  const nextMove = () => {
+    currSlide++;
+
+    if (currSlide <= maxSlide) {
+      const offset = slideWidth * (currSlide - 1);
+      slideItems.forEach((i) => {
+        i.setAttribute('style', `left: ${-offset}px`);
+      });
+      paginationItems.forEach((i) => i.classList.remove('active'));
+      paginationItems[currSlide - 1].classList.add('active');
+    } else {
+      currSlide--;
+    }
+  };
+  const prevMove = () => {
+    currSlide--;
+
+    if (currSlide > 0) {
+      const offset = slideWidth * (currSlide - 1);
+      slideItems.forEach((i) => {
+        i.setAttribute('style', `left: ${-offset}px`);
+      });
+
+      paginationItems.forEach((i) => i.classList.remove('active'));
+      paginationItems[currSlide - 1].classList.add('active');
+    } else {
+      currSlide++;
+    }
+  };
+
+  // window.addEventListener('resize', () => {
+  //   slideWidth = slide.clientWidth;
+  // });
+
+  for (let i = 0; i < maxSlide; i++) {
+    paginationItems[i].addEventListener('click', () => {
+      currSlide = i + 1;
+
+      const offset = slideWidth * (currSlide - 1);
+
+      slideItems.forEach((i) => {
+        i.setAttribute('style', `left: ${-offset}px`);
+      });
+      paginationItems.forEach((i) => i.classList.remove('active'));
+      paginationItems[currSlide - 1].classList.add('active');
+    });
+  }
+
+  slide.addEventListener('mousedown', (e) => {
+    startPoint = e.pageX;
+  });
+
+  slide.addEventListener('mouseup', (e) => {
+    endPoint = e.pageX;
+    if (startPoint < endPoint) {
+      prevMove();
+    } else if (startPoint > endPoint) {
+      nextMove();
+    }
+  });
+
+  slide.addEventListener('touchstart', (e) => {
+    startPoint = e.touches[0].pageX;
+  });
+  slide.addEventListener('touchend', (e) => {
+    endPoint = e.changedTouches[0].pageX;
+    if (startPoint < endPoint) {
+      prevMove();
+    } else if (startPoint > endPoint) {
+      nextMove();
+    }
+  });
 };
 
 export default slider;
-/*
-  버튼에 이벤트 등록하기
-*/
-// const buttonLeft = document.querySelector('.button-left');
-// const buttonRight = document.querySelector('.button-right');
-
-// buttonLeft.addEventListener('click', () => {
-//   currentIndex--;
-//   currentIndex = currentIndex < 0 ? 0 : currentIndex; // index값이 0보다 작아질 경우 0으로 변경
-//   innerList.style.marginLeft = `-${outer.clientWidth * currentIndex}px`; // index만큼 margin을 주어 옆으로 밀기
-//   clearInterval(interval); // 기존 동작되던 interval 제거
-//   interval = getInterval(); // 새로운 interval 등록
-// });
-
-// buttonRight.addEventListener('click', () => {
-//   currentIndex++;
-//   currentIndex = currentIndex >= inners.length ? inners.length - 1 : currentIndex; // index값이 inner의 총 개수보다 많아질 경우 마지막 인덱스값으로 변경
-//   innerList.style.marginLeft = `-${outer.clientWidth * currentIndex}px`; // index만큼 margin을 주어 옆으로 밀기
-//   clearInterval(interval); // 기존 동작되던 interval 제거
-//   interval = getInterval(); // 새로운 interval 등록
-// });
-
-/*
-  주기적으로 화면 넘기기
-*/
-
-// export let interval = getInterval(); // interval 등록

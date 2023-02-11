@@ -1,5 +1,5 @@
 import { SERVER_URL } from '@/constants/constant';
-import { cardDetail } from '@/components/common';
+import { cardDetail } from '@/components/main';
 import { $, slider } from '@/utils';
 import { _ } from '@/utils/customFx';
 import { navigate } from '@/core/router';
@@ -48,6 +48,7 @@ MainPage.temp = `
       <section class='cards-section'>
         ${cards.map((detail) => cardDetail(detail)).join('')}
       </section>
+      <ul class="card-pagination"></ul>
       <button type="button" id="plus-button">
         <img class='plus-button-image' src='${plusIconUrl}' alt='plus-button' />
       </button>
