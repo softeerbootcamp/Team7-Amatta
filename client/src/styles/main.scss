@@ -3,7 +3,7 @@
   width: 90%;
   height: 90%;
   margin: 6% auto;
-  overflow-x: hidden;
+  overflow: hidden;
 
   .main-button-container {
     display: flex;
@@ -44,12 +44,14 @@
     display: flex;
     transition: transform 0.3s;
     height: 80%;
+    overflow: hidden;
 
     .one-card-section {
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
+      position: relative;
 
       .card-image {
         object-fit: cover;
@@ -92,6 +94,36 @@
         color: white;
       }
     }
+  }
+
+  /* 페이지네이션 스타일 */
+  ul,
+  li {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+  }
+  .slide_pagination {
+    /* layout */
+    display: flex;
+    gap: 5px;
+
+    /* position */
+    position: absolute;
+    bottom: 0;
+    /* left:50%, translateX(-50%)를 하면 가로 가운데로 위치시킬 수 있다. */
+    left: 50%;
+    transform: translateX(-50%);
+  }
+  .slide_pagination > li {
+    /* 현재 슬라이드가 아닌 것은 투명도 부여 */
+    color: #7fb5ff88;
+    cursor: pointer;
+    font-size: 25px;
+  }
+  .slide_pagination > li.active {
+    /* 현재 슬라이드 색상은 투명도 없이 */
+    color: #7fb5ff;
   }
 
   #plus-button {
