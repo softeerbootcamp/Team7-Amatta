@@ -52,6 +52,7 @@
       align-items: center;
       justify-content: center;
       position: relative;
+      transition: left 0.2s;
 
       .card-image {
         object-fit: cover;
