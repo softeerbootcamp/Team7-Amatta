@@ -94,6 +94,15 @@ public class UserController {
         return new ResponseEntity<>(new UserMypageRes(true, user.getEmail(), user.getPassword(), user.getName(), user.getPhoneNumber()), HttpStatus.OK);
     }
 
+    @PutMapping("/password")
+    public ResponseEntity<?> changePassword(@SessionAttribute(value = "User", required = false) Users user, @RequestBody UserChangePasswordReq userChangePasswordReq) {
+        if (Objects.isNull(user)) {
+            return new ResponseEntity<>(new UserChangePasswordRes(false), HttpStatus.OK);
+        }
+        UserChangePasswordRes userChangePasswordRes = userService.changePassword(user, userChangePasswordReq);
+        return new ResponseEntity<>(userChangePasswordRes, HttpStatus.OK);
+    }
+
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<?> methodArgumentNotValidExceptionHandler(MethodArgumentNotValidException e) {
         return new ResponseEntity<>(Objects.requireNonNull(e.getBindingResult().getFieldError()).getDefaultMessage(), HttpStatus.BAD_REQUEST);
