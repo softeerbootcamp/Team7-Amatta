@@ -86,6 +86,14 @@ public class UserController {
         return new ResponseEntity<>(userFindPasswordByEmailRes, HttpStatus.OK);
     }
 
+    @GetMapping("/mypage")
+    public ResponseEntity<?> mypage(@SessionAttribute(value = "User", required = false) Users user) {
+        if (Objects.isNull(user)) {
+            return new ResponseEntity<>(new UserMypageRes(false), HttpStatus.OK);
+        }
+        return new ResponseEntity<>(new UserMypageRes(true, user.getEmail(), user.getPassword(), user.getName(), user.getPhoneNumber()), HttpStatus.OK);
+    }
+
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<?> methodArgumentNotValidExceptionHandler(MethodArgumentNotValidException e) {
         return new ResponseEntity<>(Objects.requireNonNull(e.getBindingResult().getFieldError()).getDefaultMessage(), HttpStatus.BAD_REQUEST);
