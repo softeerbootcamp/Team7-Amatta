@@ -65,4 +65,9 @@ public class UserService {
         }
         return new UserFindPasswordByEmailRes(false);
     }
+
+    public UserChangePasswordRes changePassword(Users user, UserChangePasswordReq userChangePasswordReq) {
+        userRepository.changePassword(user.getEmail(), BCrypt.hashpw(userChangePasswordReq.getPassword(), BCrypt.gensalt()));
+        return new UserChangePasswordRes(true);
+    }
 }
