@@ -18,7 +18,7 @@ import javax.validation.Valid;
 import java.util.Objects;
 
 @RestController
-@CrossOrigin(origins = "https://amatta.site", allowCredentials = "true")
+@CrossOrigin(origins = {"https://amatta.site", "http://localhost:5173"}, allowCredentials = "true")
 @RequestMapping("/user")
 public class UserController {
 
@@ -48,7 +48,7 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@Valid @RequestBody UserLoginReq userLoginReq, HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) {
+    public ResponseEntity<?> login(@Valid @RequestBody UserLoginReq userLoginReq, HttpServletRequest httpServletRequest) {
         Users loginUser = userService.login(userLoginReq);
         if (Objects.isNull(loginUser)) {
             return new ResponseEntity<>(new UserLoginRes(false), HttpStatus.BAD_REQUEST);
@@ -56,12 +56,6 @@ public class UserController {
 
         HttpSession httpSession = httpServletRequest.getSession(true);
         httpSession.setAttribute("User", loginUser);
-        ResponseCookie responseCookie = ResponseCookie.from("JSESSIONID", httpSession.getId())
-                .domain("amatta.site")
-                .httpOnly(true)
-                .path("/")
-                .build();
-        httpServletResponse.addHeader("Set-Cookie", responseCookie.toString());
         return new ResponseEntity<>(new UserLoginRes(true), HttpStatus.OK);
     }
 
@@ -89,7 +83,7 @@ public class UserController {
     @GetMapping("/mypage")
     public ResponseEntity<?> mypage(@SessionAttribute(value = "User", required = false) Users user) {
         if (Objects.isNull(user)) {
-            return new ResponseEntity<>(new UserMypageRes(false), HttpStatus.OK);
+            return new ResponseEntity<>(new UserMypageRes(false), HttpStatus.UNAUTHORIZED);
         }
         return new ResponseEntity<>(new UserMypageRes(true, user.getEmail(), user.getPassword(), user.getName(), user.getPhoneNumber()), HttpStatus.OK);
     }
@@ -97,7 +91,7 @@ public class UserController {
     @PutMapping("/password")
     public ResponseEntity<?> changePassword(@SessionAttribute(value = "User", required = false) Users user, @RequestBody UserChangePasswordReq userChangePasswordReq) {
         if (Objects.isNull(user)) {
-            return new ResponseEntity<>(new UserChangePasswordRes(false), HttpStatus.OK);
+            return new ResponseEntity<>(new UserChangePasswordRes(false), HttpStatus.UNAUTHORIZED);
         }
         UserChangePasswordRes userChangePasswordRes = userService.changePassword(user, userChangePasswordReq);
         return new ResponseEntity<>(userChangePasswordRes, HttpStatus.OK);
