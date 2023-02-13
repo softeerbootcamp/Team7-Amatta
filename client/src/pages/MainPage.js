@@ -32,26 +32,30 @@ const cards = [
 const MainPage = {};
 
 MainPage.temp = `
-    <article class = 'main-card-article'>
-      <div class='main-button-container'>
-        <section class = 'show-card-section'>
-          <img class='one-card-button' src = '${oneCardIconUrl}' alt='square-card-button' />
-          <img class='list-card-button' src = '${listIconUrl}' alt='list-card-button' />
-        </section>
-        <section class='main-dropdown-section'>
-          <button class='main-dropdown-button'>
-          최신순
-          <img class='main-dropdown-image' src = '${dropdownIconUrl}' alt='dropdown-image' />
+    <article class='main-card-article'>
+      <div class='main-card-container'>
+        <div class="main-card-box">
+          <div class='main-button-container'>
+            <section class='show-card-section'>
+              <img class='one-card-button' src='${oneCardIconUrl}' alt='square-card-button' />
+              <img class='list-card-button' src='${listIconUrl}' alt='list-card-button' />
+            </section>
+            <section class='main-dropdown-section'>
+              <button class='main-dropdown-button'>
+              최신순
+              <img class='main-dropdown-image' src='${dropdownIconUrl}' alt='dropdown-image' />
+              </button>
+            </section>
+          </div>
+          <section class='cards-section'>
+            ${cards.map((detail) => cardDetail(detail)).join('')}
+          </section>
+          <ul class="card-pagination"></ul>
+          <button type="button" id="plus-button">
+            <img class='plus-button-image' src='${plusIconUrl}' alt='plus-button' />
           </button>
-        </section>
+        </div>
       </div>
-      <section class='cards-section'>
-        ${cards.map((detail) => cardDetail(detail)).join('')}
-      </section>
-      <ul class="card-pagination"></ul>
-      <button type="button" id="plus-button">
-        <img class='plus-button-image' src='${plusIconUrl}' alt='plus-button' />
-      </button>
     </article>
   `;
 
@@ -72,7 +76,7 @@ MainPage.render = () =>
 const navigateMain = () => 
     _.go(
       MainPage.render(),
-      slider,
+      slider(),
       () => MainPage.handleClickaddCard());
 
 export default navigateMain;
