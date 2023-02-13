@@ -13,12 +13,13 @@
       background-color: $white-color;
       padding: 1.25rem;
       overflow: hidden;
+      box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
     }
 
     .main-button-container {
       display: flex;
       justify-content: space-between;
-      margin-bottom: 10%;
+      margin-bottom: 5%;
 
       .show-card-section {
         display: flex;
@@ -62,7 +63,12 @@
       display: flex;
       transition: transform 0.3s;
       height: 80%;
-      overflow: hidden;
+      //overflow: hidden;
+
+      &.list {
+        width: 100% !important;
+        flex-direction: column;
+      }
 
       .one-card-section {
         display: flex;
@@ -73,12 +79,12 @@
         transition: left 0.2s;
         border-radius: 1.25rem;
         border: 1px $primary-color solid;
-        margin-right: calc(5% + 1.25rem - 2px);
+        margin-right: 2.5rem;
+        width: calc(90vw - 2.5rem - 2px);
 
         .card-image {
           object-fit: cover;
           margin-bottom: 5%;
-          width: 100vw;
         }
 
         .card-text {
@@ -102,20 +108,66 @@
           }
         }
 
-        .more-icon {
-          height: 2rem;
-          margin-top: 10%;
-          margin-bottom: 15%;
-        }
-
         .mark-used-button {
-          font-size: 1.25rem;
-          width: 10rem;
-          height: 4.5rem;
+          font-size: 1.125rem;
+          width: 8rem;
+          height: 4rem;
           border-radius: 10px;
           border: none;
           background-color: $primary-color;
-          color: white;
+          color: $white-color;
+        }
+      }
+
+      .one-list-section {
+        display: flex;
+        flex-direction: row;
+        height: 20%;
+        width: 72vw;
+        //margin-bottom: 1rem;
+        // border-radius: 10px;
+        // border: 1px solid $primary-color;
+        border-bottom: 1px solid $primary-color;
+        padding: 1rem;
+
+        .card-list-image {
+          height: 7.5rem;
+          border-radius: 10px;
+          border: 1px solid $gray300;
+        }
+
+        .card-list-text {
+          display: flex;
+          flex-direction: column;
+          margin-left: 2rem;
+
+          .more-dots-button {
+            position: absolute;
+            right: 0.75rem;
+            height: 1rem;
+            width: 2rem;
+          }
+
+          .list-d-day {
+            font-size: 0.5rem;
+            color: $gray600;
+            margin-bottom: 0.5rem;
+          }
+
+          .list-shop-name {
+            font-size: 0.75rem;
+            margin-bottom: 0.5rem;
+          }
+
+          .list-item-name {
+            font-size: 1rem;
+            font-weight: 200;
+            margin-bottom: 0.5rem;
+          }
+
+          .list-date-of-use {
+            font-size: 0.75rem;
+          }
         }
       }
     }

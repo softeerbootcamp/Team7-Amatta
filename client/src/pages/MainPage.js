@@ -28,6 +28,18 @@ const cards = [
     itemName: 'Vanilla Latte',
     dateOfUse: '2023.07.07 까지',
   },
+  {
+    image: 'https://amatta-icons.s3.ap-northeast-2.amazonaws.com/icon/gifticonSample.jpeg',
+    shopName: 'twosome place',
+    itemName: 'Americano & Tiramisu',
+    dateOfUse: '2023.07.07 까지',
+  },
+  {
+    image: 'https://amatta-icons.s3.ap-northeast-2.amazonaws.com/icon/gifticonSample.jpeg',
+    shopName: 'starbucks',
+    itemName: 'Latte',
+    dateOfUse: '2023.07.07 까지',
+  },
 ];
 const MainPage = {};
 
@@ -59,19 +71,27 @@ MainPage.temp = `
     </article>
   `;
 
+const changeToDetail = (cardsSection) => cardsSection.classList.remove('list');
+
 // prettier-ignore
 const renderDetail = () =>
   _.go(
     cards.map((detail) => cardDetail(detail)).join(''),
     $.el,
-    $.replace($.qs('.cards-section')));
+    $.replace($.qs('.cards-section')),
+    () => $.find('.cards-section')(),
+    changeToDetail);
 
+const changeToList = (cardsSection) => cardsSection.classList.add('list');
 // prettier-ignore
+
 const renderList = () => 
   _.go(
     cards.map((detail) => cardList(detail)).join(''), 
     $.el, 
-    $.replace($.qs('.cards-section')));
+    $.replace($.qs('.cards-section')),
+    () => $.find('.cards-section')(),
+    changeToList);
 
 // prettier-ignore
 MainPage.handleClickaddCard = (target) =>

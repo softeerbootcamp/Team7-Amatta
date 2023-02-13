@@ -9,7 +9,7 @@ const cardList = (props) => {
     <section class='one-list-section'>
       <img class='card-list-image' src="${image}" alt='card-list-image' />
       <section class='card-list-text'>
-        <img class='more-dots-button'src='${moreIconUrl}' alt='more-dots-button' />
+        <img class='more-dots-button' src='${moreIconUrl}' alt='more-dots-button' />
         <div class='list-d-day'> ${dateOfUse} </div>
         <div class='list-shop-name'> ${shopName} </div>
         <div class='list-item-name'> ${itemName} </div>
@@ -17,15 +17,6 @@ const cardList = (props) => {
       </section>
     </section>
     `;
-
-  // prettier-ignore
-  // const render = () =>
-  //   new Promise(resolve =>
-  //     _.go(
-  //     cardListTemplate,
-  //     $.el,
-  //     $.replace($.qs('.cards-section')),
-  //   resolve));
 
   return cardListTemplate;
 };
