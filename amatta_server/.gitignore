@@ -25,7 +25,8 @@ bin/
 out/
 !**/src/main/**/out/
 !**/src/test/**/out/
-src/main/resources/application.properties
+/src/main/resources/application.properties
+/src/main/resources/team7-amatta-firebase-adminsdk-pa4f5-612a44bb30.json
 
 ### NetBeans ###
 /nbproject/private/

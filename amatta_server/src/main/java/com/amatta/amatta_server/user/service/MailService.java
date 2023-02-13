@@ -60,7 +60,7 @@ public class MailService {
 
     private MimeMessage createPasswordFindEmailForm(String email) {
         try {
-            String title = "[Amatta] 회원가입 인증 번호";
+            String title = "[Amatta] 임시 비밀번호";
             authNum = UUID.randomUUID().toString().substring(0, 10);
             String text =
                     "<div style=\"margin:100px; font-family: verdana\">\n" +

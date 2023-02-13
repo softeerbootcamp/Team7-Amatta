@@ -10,6 +10,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Repository
 public interface UserRepository extends CrudRepository<Users, Long> {
+    @Query("SELECT LAST_INSERT_ID()")
+    long last_insert_id();
 
     @Query("SELECT * FROM users WHERE email = :email")
     Users findByEmail(@Param("email") String email);
