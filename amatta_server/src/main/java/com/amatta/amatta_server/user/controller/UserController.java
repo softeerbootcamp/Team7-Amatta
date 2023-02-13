@@ -48,7 +48,7 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@Valid @RequestBody UserLoginReq userLoginReq, HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) {
+    public ResponseEntity<?> login(@Valid @RequestBody UserLoginReq userLoginReq, HttpServletRequest httpServletRequest) {
         Users loginUser = userService.login(userLoginReq);
         if (Objects.isNull(loginUser)) {
             return new ResponseEntity<>(new UserLoginRes(false), HttpStatus.BAD_REQUEST);
@@ -56,12 +56,6 @@ public class UserController {
 
         HttpSession httpSession = httpServletRequest.getSession(true);
         httpSession.setAttribute("User", loginUser);
-        ResponseCookie responseCookie = ResponseCookie.from("JSESSIONID", httpSession.getId())
-                .domain("amatta.site")
-                .httpOnly(true)
-                .path("/")
-                .build();
-        httpServletResponse.addHeader("Set-Cookie", responseCookie.toString());
         return new ResponseEntity<>(new UserLoginRes(true), HttpStatus.OK);
     }
 
