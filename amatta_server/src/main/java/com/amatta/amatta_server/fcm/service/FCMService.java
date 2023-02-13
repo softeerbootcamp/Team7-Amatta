@@ -20,7 +20,7 @@ import java.util.Objects;
 
 @Service
 public class FCMService {
-    private final DeviceTokenRepository tokenRepository;
+    /*private final DeviceTokenRepository tokenRepository;
 
     @Autowired
     public FCMService(DeviceTokenRepository tokenRepository) {
@@ -54,5 +54,5 @@ public class FCMService {
         HttpServletRequest request = ((ServletRequestAttributes) Objects.requireNonNull(RequestContextHolder.getRequestAttributes())).getRequest();
         HttpSession session = request.getSession(false);
         return (Users) session.getAttribute("User");
-    }
+    }*/
 }
