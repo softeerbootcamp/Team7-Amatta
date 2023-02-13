@@ -1,5 +1,5 @@
 import { SERVER_URL } from '@/constants/constant';
-import { cardDetail } from '@/components/main';
+import { cardDetail, cardList } from '@/components/common';
 import { $, slider } from '@/utils';
 import { _ } from '@/utils/customFx';
 import { navigate } from '@/core/router';
@@ -60,6 +60,32 @@ MainPage.temp = `
   `;
 
 // prettier-ignore
+const renderDetail = () =>
+  _.go(
+    cards.map((detail) => cardDetail(detail)).join(''),
+    $.el,
+    $.replace($.qs('.cards-section')));
+
+// prettier-ignore
+const showCardDetail = () => 
+  _.pipe(
+    $.find('.one-card-button'),
+    $.on('click', renderDetail()));
+
+// prettier-ignore
+const renderList = () => 
+  _.go(
+    cards.map((detail) => cardList(detail)).join(''), 
+    $.el, 
+    $.replace($.qs('.cards-section')));
+
+// prettier-ignore
+const showCardList = () => 
+  _.pipe(
+    $.find('.list-card-button'),
+    $.on('click', renderList()));
+
+// prettier-ignore
 MainPage.handleClickaddCard = (target) =>
   _.pipe(
     $.find('#plus-button'),
@@ -77,6 +103,8 @@ const navigateMain = () =>
     _.go(
       MainPage.render(),
       slider(),
+      () => showCardList(),
+      () => showCardDetail(),
       () => MainPage.handleClickaddCard());
 
 export default navigateMain;
