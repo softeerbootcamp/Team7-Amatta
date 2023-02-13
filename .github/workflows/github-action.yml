@@ -31,6 +31,7 @@ jobs:
           cd ./src/main/resources
           touch ./application.properties
           echo "${{ secrets.PROPERTIES }}" > ./application.properties
+          cd ./src/main/resources
           touch ./team7-amatta-firebase-adminsdk-pa4f5-612a44bb30.json
           echo "${{ secrets.FIREBASE_JSON }}" > ./team7-amatta-firebase-adminsdk-pa4f5-612a44bb30.json
       working-directory: ${{ env.working-directory }}
