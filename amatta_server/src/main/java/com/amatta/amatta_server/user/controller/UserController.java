@@ -83,7 +83,7 @@ public class UserController {
     @GetMapping("/mypage")
     public ResponseEntity<?> mypage(@SessionAttribute(value = "User", required = false) Users user) {
         if (Objects.isNull(user)) {
-            return new ResponseEntity<>(new UserMypageRes(false), HttpStatus.OK);
+            return new ResponseEntity<>(new UserMypageRes(false), HttpStatus.UNAUTHORIZED);
         }
         return new ResponseEntity<>(new UserMypageRes(true, user.getEmail(), user.getPassword(), user.getName(), user.getPhoneNumber()), HttpStatus.OK);
     }
@@ -91,7 +91,7 @@ public class UserController {
     @PutMapping("/password")
     public ResponseEntity<?> changePassword(@SessionAttribute(value = "User", required = false) Users user, @RequestBody UserChangePasswordReq userChangePasswordReq) {
         if (Objects.isNull(user)) {
-            return new ResponseEntity<>(new UserChangePasswordRes(false), HttpStatus.OK);
+            return new ResponseEntity<>(new UserChangePasswordRes(false), HttpStatus.UNAUTHORIZED);
         }
         UserChangePasswordRes userChangePasswordRes = userService.changePassword(user, userChangePasswordReq);
         return new ResponseEntity<>(userChangePasswordRes, HttpStatus.OK);
