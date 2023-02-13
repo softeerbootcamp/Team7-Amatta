@@ -3,6 +3,7 @@ package com.amatta.amatta_server.gifticon.controller;
 import com.amatta.amatta_server.exception.DuplicateGifticonException;
 import com.amatta.amatta_server.exception.GifticonNotSupportedException;
 import com.amatta.amatta_server.exception.NotAuthenticatedException;
+import com.amatta.amatta_server.fcm.service.FCMService;
 import com.amatta.amatta_server.gifticon.dto.GifticonDto;
 import com.amatta.amatta_server.gifticon.dto.GifticonImageDto;
 import com.amatta.amatta_server.gifticon.dto.GifticonTextDto;
@@ -17,14 +18,17 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 
 @RestController
-@CrossOrigin(origins = "https://amatta.site/", allowCredentials = "true")
+@CrossOrigin(origins = "https://amatta.site", allowCredentials = "true")
 @RequestMapping("/gifticon")
 public class GifticonController {
     private final GifticonService gifticonService;
 
+    private final FCMService fcmService;
+
     @Autowired
-    public GifticonController(GifticonService gifticonService) {
+    public GifticonController(GifticonService gifticonService, FCMService fcmService) {
         this.gifticonService = gifticonService;
+        this.fcmService = fcmService;
     }
 
     @PostMapping("/text")
