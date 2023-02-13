@@ -72,7 +72,7 @@ MainPage.render = () =>
 const navigateMain = () => 
     _.go(
       MainPage.render(),
-      slider,
+      slider(),
       () => MainPage.handleClickaddCard());
 
 export default navigateMain;
