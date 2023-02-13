@@ -5,7 +5,8 @@ import { routes, navigate } from '@/core/router';
 
 routes.push(
   { path: '/', component: navigateHome },
-  { path: '/auth:register', component: navigateAuth },
+  { path: '/register', component: navigateAuth },
+  { path: '/login', component: navigateAuth },
   { path: '/card', component: navigateMain },
   { path: '/post', component: navigatePost },
 );

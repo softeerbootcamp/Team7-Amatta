@@ -2,6 +2,7 @@ import { inputForm } from '@/components/common';
 import { regiseterUser } from '@/apis/auth';
 import { navigate } from '@/core/router';
 import { INPUT } from '@/constants/constant';
+import { EventMonad } from '@/utils/monad';
 import { timer, $ } from '@/utils';
 import { _ } from '@/utils/customFx';
 
@@ -25,29 +26,44 @@ const register = () => {
     <h5>기프티콘을 효율적으로 관리해보세요.</h5>
   `;
 
-  const setUserData = ({ target }, targets) => {
+  const setUserData = (userData, target) => {
+    const newUserData = { ...userData };
+    const dataType = _.getDataset(target, 'data-input');
+    newUserData[dataType] = target.value;
+
+    return newUserData;
+  };
+
+  const handleChange = EventMonad.of(({ target }) => {
     if (!target.validity.valid) return;
 
-    const dataType = _.getDataset(target, 'data-input');
-    const newUserData = { ...userData };
+    const updatedUserData = setUserData(userData, target);
+    userData = updatedUserData;
+  });
 
-    newUserData[dataType] = target.value;
-    userData = newUserData;
+  // const setUserData = (userData, { target }, targets) => {
+  //   if (!target.validity.valid) return;
 
-    checkValidateAll(targets);
+  //   const dataType = _.getDataset(target, 'data-input');
+  //   const newUserData = { ...userData };
 
-    return userData;
-  };
+  //   newUserData[dataType] = target.value;
+  //   userData = newUserData;
 
-  const checkValidateAll = (targets) => {
-    const $targetClass = $.qs('.auth-button').classList;
+  //   checkValidateAll(targets);
 
-    if (![...targets].every((target) => target.validity.valid))
-      return $targetClass.remove('active');
-    if (userData.password !== userData.passwordCheck) return $targetClass.remove('active');
+  //   return userData;
+  // };
 
-    $targetClass.add('active');
-  };
+  // const checkValidateAll = (targets) => {
+  //   const $targetClass = $.qs('.auth-button').classList;
+
+  //   if (![...targets].every((target) => target.validity.valid))
+  //     return $targetClass.remove('active');
+  //   if (userData.password !== userData.passwordCheck) return $targetClass.remove('active');
+
+  //   $targetClass.add('active');
+  // };
 
   const closeCodeForm = (target) => () => target.classList.remove('visible');
 
@@ -68,7 +84,7 @@ const register = () => {
     buttonTarget.disabled = !isValidate;
   };
 
-  const changeVisibility = ({ target }) => {
+  const changeVisibility = EventMonad.of(({ target }) => {
     const inputTarget = target.closest('.input-section').querySelector('input');
 
     if (target.src.includes('open')) {
@@ -78,7 +94,9 @@ const register = () => {
       target.src = target.src.replace('close', 'open');
       inputTarget.type = 'text';
     }
-  };
+  });
+
+  const aaa = EventMonad.of(() => navigate('/'));
 
   const putAutoHyphen = (target) => {
     target.value = target.value
@@ -112,24 +130,28 @@ const register = () => {
   };
 
   // prettier-ignore
+  const composedEvents = 
+    handleChange
+      .chain(e => changeVisibility.map(me => [e, me]))
+      .chain(em => aaa.map(ke => [...em, ke]));
+
+  // prettier-ignore
   const handleChangeInput = (target) => 
     _.pipe(
-      $.findAll('.text-input'),
-      (targets) => _.map((f) => $.on('input', (e) => setUserData(e, targets))(f), targets),
-      ([f]) => f)(target);
+      $.find('#root'),
+      $.on('input', composedEvents.value[0]))(target);
 
   // prettier-ignore
   const handleClickGoBack = (target) => 
     _.pipe(
       $.find('.left-arrow-button'),
-      $.on('click', () => navigate('/')))(target);
+      $.on('click', composedEvents.value[2]))(target);
 
   // prettier-ignore
   const handleClickEye = (target) => 
     _.pipe(
       $.findAll('.eye-icon'),
-      (targets) => _.map((f) => $.on('click', changeVisibility)(f), targets),
-      ([f]) => f)(target);
+      _.map((f) => $.on('click', composedEvents.value[1])(f)))(target);
 
   // prettier-ignore
   const validateEmail = (target) =>
@@ -169,24 +191,35 @@ const register = () => {
       $.on('click', (e) => handleClickSubmitButton(e)))(target);
 
   // prettier-ignore
-  const render = () =>
-    new Promise(resolve =>
+  const renderInputs = (inputData) =>
+    _.go(
+      inputData,
+      _.filter((input) => REGISTER_INPUT_TYPE.includes(input.type)),
+      _.map((input) => inputForm({ ...input, target: '.auth-form' })()))
+
+  // prettier-ignore
+  const renderText = (textData) =>
+    _.go(
+      textData,
+      $.el,
+      $.prepend($.qs('.auth-form-section')));
+
+  // prettier-ignore
+  const render = () => 
       _.go(
         INPUT,
-        _.filter((input) => REGISTER_INPUT_TYPE.includes(input.type)),
-        _.map((input) => inputForm({ ...input, target: '.auth-form' })),
-        _.map(f => f()),
+        renderInputs,
         ([f]) => f,
         _.tap(
           () => registerTemp,
           $.el,
-          $.prepend($.qs('.auth-form-section'))),
-        resolve));
+          $.prepend($.qs('.auth-form-section'))));
 
   // prettier-ignore
   const appendRegister = () =>
     _.go(
       render(),
+      console.log,
       handleChangeInput,
       handleClickGoBack,
       handleClickEye,

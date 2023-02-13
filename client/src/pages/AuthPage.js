@@ -1,16 +1,19 @@
-import { SERVER_URL } from '@/constants/constant';
-import { register } from '@/components/auth';
-import { _ } from '@/utils/customFx';
+import { SERVER_URL, AUTH } from '@/constants/constant';
+import { register, login } from '@/components/auth';
+import { L, _ } from '@/utils/customFx';
 import { $ } from '@/utils';
 
 const AuthPage = {};
-const leftArrowUrl = `${SERVER_URL.IMG}icon/left-arrow.svg`;
+const LEFT_ARROW_URL = `${SERVER_URL.IMG}icon/left-arrow.svg`;
+
+AuthPage.path = window.location.pathname.replace('/', '');
+AuthPage.type = () => AUTH[`${AuthPage.path}`];
 
 AuthPage.temp = `
     <article class="auth-article">
       <section class="white-header-section">
-        <img class="left-arrow-button" src="${leftArrowUrl}" alt="left-arrow-button" /> 
-        <h4 class="auth-type">회원가입</h4>
+        <img class="left-arrow-button" src="${LEFT_ARROW_URL}" alt="left-arrow-button" /> 
+        <h4 class="auth-type">${AuthPage.type()}</h4>
       </section>
       <section class="auth-form-section">
         <form class="auth-form">
@@ -18,21 +21,31 @@ AuthPage.temp = `
             <input type="submit" class="auth-button" name="auth-button" value="완료" />
           </div>
         </form>
-      </section>
     </article>
   `;
 
 // prettier-ignore
-AuthPage.render = () =>
+AuthPage.renderComponent = () =>
+  _.go(
+    [register, login],
+    L.filter((component) => component.name === AuthPage.path),
+    _.take(1));
+
+// prettier-ignore
+AuthPage.render = () => new Promise(resolve => 
   _.go(
     AuthPage.temp, 
     $.el, 
     $.replace($.qs('#root')),
-    register({target: '.auth-form'}));
+    resolve,
+));
 
 // prettier-ignore
-const navigateAuth = () =>
+const navigateAuth = async () =>
     _.go(
-      AuthPage.render());
+      await AuthPage.render(),
+      register());
+// () => AuthPage.renderComponent(),
+// ([f]) => f());
 
 export default navigateAuth;

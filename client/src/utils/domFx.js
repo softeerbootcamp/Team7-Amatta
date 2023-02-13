@@ -24,7 +24,7 @@ $.replace = _.curry((parent, child) => {
 $.prepend = _.curry((parent, child) => {
   parent.prepend(child);
 
-  return parent;
+  return child;
 });
 
 $.closest = _.curry((sel, el) => el.closest(sel));
