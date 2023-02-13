@@ -1,5 +1,5 @@
 import { SERVER_URL } from '@/constants/constant';
-import { cardDetail } from '@/components/main';
+import { cardDetail, cardList } from '@/components/main';
 import { $, slider } from '@/utils';
 import { _ } from '@/utils/customFx';
 import { navigate } from '@/core/router';
@@ -26,6 +26,18 @@ const cards = [
     image: 'https://amatta-icons.s3.ap-northeast-2.amazonaws.com/icon/gifticonSample.jpeg',
     shopName: 'The venti',
     itemName: 'Vanilla Latte',
+    dateOfUse: '2023.07.07 까지',
+  },
+  {
+    image: 'https://amatta-icons.s3.ap-northeast-2.amazonaws.com/icon/gifticonSample.jpeg',
+    shopName: 'twosome place',
+    itemName: 'Americano & Tiramisu',
+    dateOfUse: '2023.07.07 까지',
+  },
+  {
+    image: 'https://amatta-icons.s3.ap-northeast-2.amazonaws.com/icon/gifticonSample.jpeg',
+    shopName: 'starbucks',
+    itemName: 'Latte',
     dateOfUse: '2023.07.07 까지',
   },
 ];
@@ -59,6 +71,28 @@ MainPage.temp = `
     </article>
   `;
 
+const changeToDetail = (cardsSection) => cardsSection.classList.remove('list');
+
+// prettier-ignore
+const renderDetail = () =>
+  _.go(
+    cards.map((detail) => cardDetail(detail)).join(''),
+    $.el,
+    $.replace($.qs('.cards-section')),
+    () => $.find('.cards-section')(),
+    changeToDetail);
+
+const changeToList = (cardsSection) => cardsSection.classList.add('list');
+// prettier-ignore
+
+const renderList = () => 
+  _.go(
+    cards.map((detail) => cardList(detail)).join(''), 
+    $.el, 
+    $.replace($.qs('.cards-section')),
+    () => $.find('.cards-section')(),
+    changeToList);
+
 // prettier-ignore
 MainPage.handleClickaddCard = (target) =>
   _.pipe(
@@ -77,6 +111,10 @@ const navigateMain = () =>
     _.go(
       MainPage.render(),
       slider(),
+      () => $.qs('.one-card-button'),
+      $.on('click', renderDetail),
+      () => $.qs('.list-card-button'),
+      $.on('click', renderList),
       () => MainPage.handleClickaddCard());
 
 export default navigateMain;
