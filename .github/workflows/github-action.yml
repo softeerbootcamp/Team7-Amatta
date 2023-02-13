@@ -34,14 +34,23 @@ jobs:
 
       working-directory: ${{ env.working-directory }}
     
-    ## create firebase json file
-    - name: create firebase json file
-      if: contains(github.ref, 'dev')
-      run: |
-          cd ./src/main/resources
-          touch ./team7-amatta-firebase-adminsdk-pa4f5-612a44bb30.json
-          echo "${{ secrets.FIREBASE_JSON }}" > ./team7-amatta-firebase-adminsdk-pa4f5-612a44bb30.json
-      working-directory: ${{ env.working-directory }}
+#     ## create firebase json file
+#     - name: create firebase json file
+#       if: contains(github.ref, 'dev')
+#       run: |
+#           cd ./src/main/resources
+#           touch ./team7-amatta-firebase-adminsdk-pa4f5-612a44bb30.json
+#           echo "${{ secrets.FIREBASE_JSON }}" > ./team7-amatta-firebase-adminsdk-pa4f5-612a44bb30.json
+#       working-directory: ${{ env.working-directory }}
+    
+    ##create-json
+    - name: create-json
+      id: create-json
+      uses: jsdaniell/create-json@v1.2.2
+      with:
+        name: "team7-amatta-firebase-adminsdk-pa4f5-612a44bb30.json"
+        json: ${{ secrets.FIREBASE_JSON }}
+        dir: 'amatta_server/src/main/resources/'
       
     
     ## grant gradlew
