@@ -18,9 +18,9 @@ public class FCMController {
         this.fcmService = fcmService;
     }
 
-    @PostMapping("")
+    /*@PostMapping("")
     public ResponseEntity<?> addDeviceToken(@RequestBody TokenRegisterDto dto) {
         fcmService.addToken(dto);
         return new ResponseEntity<>(HttpStatus.OK);
-    }
+    }*/
 }

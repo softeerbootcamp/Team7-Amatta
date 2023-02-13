@@ -13,7 +13,7 @@ import java.io.InputStream;
 
 @Service
 public class FCMInitializer {
-    @Value("${firebase.key}")
+    /*@Value("${firebase.key}")
     private String firebaseKey;
 
     @Value("${firebase.projectId}")
@@ -29,5 +29,5 @@ public class FCMInitializer {
                 .build();
 
         FirebaseApp.initializeApp(options);
-    }
+    }*/
 }
