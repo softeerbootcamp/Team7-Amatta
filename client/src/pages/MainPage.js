@@ -23,8 +23,8 @@ const cards = [
     dateOfUse: '2023.07.07 까지',
   },
   {
-    image: 'https://amatta-icons.s3.ap-northeast-2.amazonaws.com/icon/gifticonSample.jpeg',
-    shopName: 'The venti',
+    image: '../src/assets/starbucks3.jpeg',
+    shopName: 'THE VENTI',
     itemName: 'Vanilla Latte',
     dateOfUse: '2023.07.07 까지',
   },
