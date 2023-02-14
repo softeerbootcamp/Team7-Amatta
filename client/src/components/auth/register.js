@@ -1,7 +1,8 @@
 import { inputForm } from '@/components/common';
-import { regiseterUser } from '@/apis/auth';
+import { regiseterUser, verificateEmail } from '@/apis/auth';
 import { navigate } from '@/core/router';
 import { INPUT } from '@/constants/constant';
+import { EventMonad } from '@/utils/monad';
 import { timer, $ } from '@/utils';
 import { _ } from '@/utils/customFx';
 
@@ -25,33 +26,48 @@ const register = () => {
     <h5>기프티콘을 효율적으로 관리해보세요.</h5>
   `;
 
-  const setUserData = ({ target }, targets) => {
-    if (!target.validity.valid) return;
-
-    const dataType = _.getDataset(target, 'data-input');
+  const setUserData = (userData, target) => {
     const newUserData = { ...userData };
-
+    const dataType = _.getDataset(target, 'data-input');
     newUserData[dataType] = target.value;
-    userData = newUserData;
 
-    checkValidateAll(targets);
-
-    return userData;
+    return newUserData;
   };
 
-  const checkValidateAll = (targets) => {
-    const $targetClass = $.qs('.auth-button').classList;
+  const handleChange = EventMonad.of(({ target }) => {
+    if (!target.validity.valid) return;
+    const updatedUserData = setUserData(userData, target);
+    userData = updatedUserData;
+    console.log(userData);
+  });
 
-    if (![...targets].every((target) => target.validity.valid))
-      return $targetClass.remove('active');
-    if (userData.password !== userData.passwordCheck) return $targetClass.remove('active');
+  // const setUserData = (userData, { target }, targets) => {
+  //   if (!target.validity.valid) return;
 
-    $targetClass.add('active');
-  };
+  //   const dataType = _.getDataset(target, 'data-input');
+  //   const newUserData = { ...userData };
+
+  //   newUserData[dataType] = target.value;
+  //   userData = newUserData;
+
+  //   checkValidateAll(targets);
+
+  //   return userData;
+  // };
+
+  // const checkValidateAll = (targets) => {
+  //   const $targetClass = $.qs('.auth-button').classList;
+
+  //   if (![...targets].every((target) => target.validity.valid))
+  //     return $targetClass.remove('active');
+  //   if (userData.password !== userData.passwordCheck) return $targetClass.remove('active');
+
+  //   $targetClass.add('active');
+  // };
 
   const closeCodeForm = (target) => () => target.classList.remove('visible');
 
-  const addCodeForm = (e, resolve) => {
+  const addCodeForm = (e) => {
     const formTarget = $.qs('#verification-code-input-section');
     const buttonTarget = $.qs('.confirm-button');
 
@@ -60,7 +76,7 @@ const register = () => {
     timer(180, '#verification-code-input-section', closeCodeForm(formTarget));
 
     $.on('click', () => closeCodeForm(formTarget)())(buttonTarget);
-    resolve(() => $.qs('#root'));
+    return $.qs('#root');
   };
 
   const changeButtonStatus = (type, isValidate) => {
@@ -68,7 +84,7 @@ const register = () => {
     buttonTarget.disabled = !isValidate;
   };
 
-  const changeVisibility = ({ target }) => {
+  const changeVisibility = EventMonad.of(({ target }) => {
     const inputTarget = target.closest('.input-section').querySelector('input');
 
     if (target.src.includes('open')) {
@@ -78,6 +94,12 @@ const register = () => {
       target.src = target.src.replace('close', 'open');
       inputTarget.type = 'text';
     }
+  });
+
+  const aaa = EventMonad.of(() => navigate('/'));
+  const checkEmail = async (e, data) => {
+    await verificateEmail(data);
+    addCodeForm(e);
   };
 
   const putAutoHyphen = (target) => {
@@ -112,24 +134,28 @@ const register = () => {
   };
 
   // prettier-ignore
+  const composedEvents = 
+    handleChange
+      .chain(e => changeVisibility.map(me => [e, me]))
+      .chain(em => aaa.map(ke => [...em, ke]));
+
+  // prettier-ignore
   const handleChangeInput = (target) => 
     _.pipe(
-      $.findAll('.text-input'),
-      (targets) => _.map((f) => $.on('input', (e) => setUserData(e, targets))(f), targets),
-      ([f]) => f)(target);
+      $.find('.auth-article'),
+      $.on('input', composedEvents.value[0]))(target);
 
   // prettier-ignore
-  const handleClickGoBack = (target) => 
+  const handleClickGoBack = (target) => {
     _.pipe(
       $.find('.left-arrow-button'),
-      $.on('click', () => navigate('/')))(target);
+      $.on('click', composedEvents.value[2]))(target);}
 
   // prettier-ignore
-  const handleClickEye = (target) => 
+  const handleClickEye = (target) =>
     _.pipe(
       $.findAll('.eye-icon'),
-      (targets) => _.map((f) => $.on('click', changeVisibility)(f), targets),
-      ([f]) => f)(target);
+      _.map((f) => $.on('click', composedEvents.value[1])(f)))(target);
 
   // prettier-ignore
   const validateEmail = (target) =>
@@ -150,11 +176,19 @@ const register = () => {
       $.on('input', (e) => testValidation(e, 'passwordCheck', codeReg)))(target);
 
   // prettier-ignore
-  const sendVerificationCode = () =>
-    new Promise((resolve) =>
+  const sendVerificationCode = (fragment) =>
       _.go(
-        $.qs('.verify-button'),
-        $.on('click', (e) => addCodeForm(e, resolve))));
+        fragment,
+        $.find('.verify-button'),
+        $.on('click',  (e) => checkEmail(e, userData.email)));
+
+  // // prettier-ignore
+  // const sendVerificationCode = (fragment) =>
+  //   new Promise((resolve) =>
+  //     _.go(
+  //       fragment,
+  //       $.find('.verify-button'),
+  //       $.on('click', (e) => addCodeForm(e, resolve))));
 
   // prettier-ignore
   const validateCode = (target) => 
@@ -169,33 +203,48 @@ const register = () => {
       $.on('click', (e) => handleClickSubmitButton(e)))(target);
 
   // prettier-ignore
-  const render = () =>
-    new Promise(resolve =>
+  const renderInput = (target) =>
+    _.go(
+      INPUT,
+      _.filter((input) => REGISTER_INPUT_TYPE.includes(input.type)),
+      _.map((input) => inputForm({ ...input, target})()))
+
+  // prettier-ignore
+  const renderText = (textData) =>
+    _.go(
+      textData,
+      $.el,
+      $.prepend($.qs('.auth-form-section')));
+
+  // prettier-ignore
+  const render = () => 
       _.go(
         INPUT,
-        _.filter((input) => REGISTER_INPUT_TYPE.includes(input.type)),
-        _.map((input) => inputForm({ ...input, target: '.auth-form' })),
-        _.map(f => f()),
+        renderInput,
         ([f]) => f,
         _.tap(
           () => registerTemp,
           $.el,
-          $.prepend($.qs('.auth-form-section'))),
-        resolve));
+          $.prepend($.qs('.auth-form-section'))));
 
   // prettier-ignore
-  const appendRegister = () =>
+  const appendRegister = (fragment) =>
     _.go(
-      render(),
-      handleChangeInput,
-      handleClickGoBack,
-      handleClickEye,
-      validateEmail,
-      validatePhone,
-      validatePassword,
-      sendVerificationCode(),
-      validateCode,
-      submitData);
+      fragment,
+      $.find('.auth-form-section'),
+      $.insert(registerTemp),
+      $.find('.auth-form'),
+      renderInput,
+      () => handleChangeInput(fragment),
+      () => handleClickGoBack(fragment),
+      () => handleClickEye(fragment),
+      () => validateEmail(fragment),
+      () => validatePhone(fragment),
+      () => validatePassword(fragment),
+      () => sendVerificationCode(fragment),
+      () => validateCode(fragment),
+      () => submitData(fragment),
+      () => fragment);
 
   return appendRegister;
 };

@@ -1,16 +1,16 @@
-import { SERVER_URL } from '@/constants/constant';
-import { register } from '@/components/auth';
+import { SERVER_URL, AUTH } from '@/constants/constant';
+import { register, login } from '@/components/auth';
 import { _ } from '@/utils/customFx';
 import { $ } from '@/utils';
 
 const AuthPage = {};
-const leftArrowUrl = `${SERVER_URL.IMG}icon/left-arrow.svg`;
+const LEFT_ARROW_URL = `${SERVER_URL.IMG}icon/left-arrow.svg`;
 
-AuthPage.temp = `
+AuthPage.temp = (path) => `
     <article class="auth-article">
       <section class="white-header-section">
-        <img class="left-arrow-button" src="${leftArrowUrl}" alt="left-arrow-button" /> 
-        <h4 class="auth-type">회원가입</h4>
+        <img class="left-arrow-button" src="${LEFT_ARROW_URL}" alt="left-arrow-button" /> 
+        <h4 class="auth-type">${AUTH[path.replace('/', '')]}</h4>
       </section>
       <section class="auth-form-section">
         <form class="auth-form">
@@ -18,21 +18,32 @@ AuthPage.temp = `
             <input type="submit" class="auth-button" name="auth-button" value="완료" />
           </div>
         </form>
-      </section>
     </article>
   `;
 
 // prettier-ignore
-AuthPage.render = () =>
+AuthPage.appendComponent = (path) => (fragment) =>
   _.go(
-    AuthPage.temp, 
-    $.el, 
-    $.replace($.qs('#root')),
-    register({target: '.auth-form'}));
+    ['register', 'login'],
+    _.filter((type) => type === path.replace('/', '')),
+    ([f]) => {if(f === 'register') return register(fragment); return login(fragment)});
+// _.take(1),
+// (type) => AuthPage.type[type]);
 
 // prettier-ignore
-const navigateAuth = () =>
+AuthPage.makeFragment = (path) => 
+  _.go(
+    path,
+    AuthPage.temp,
+    $.el);
+// prettier-ignore
+const navigateAuth = (path) =>
     _.go(
-      AuthPage.render());
+      path,
+      AuthPage.makeFragment,
+      AuthPage.appendComponent(path)(),
+      $.replace($.qs('#root')));
+// () => AuthPage.renderComponent(),
+// ([f]) => f());
 
 export default navigateAuth;

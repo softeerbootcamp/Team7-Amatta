@@ -8,8 +8,7 @@ const findRoute = (path) =>
     component: NotFound,
   };
 
-// prettier-ignore
-const render = ({ component }) => component();
+const render = ({ path, component }) => component(path);
 
 // prettier-ignore
 const reRender = () => 
@@ -35,8 +34,9 @@ const navigate =
       render);
 
 const addNavigateEvent = (targets) => {
-  _.isIterable(targets) && targets.forEach((target) => onClickNavigateButton(target));
-  !_.isIterable(targets) && onClickNavigateButton(targets);
+  _.isIterable(targets)
+    ? targets.forEach((target) => onClickNavigateButton(target))
+    : onClickNavigateButton(targets);
 };
 
 const link = (event) => {
@@ -45,7 +45,7 @@ const link = (event) => {
   const path = _.getDataset(closestTarget, 'data-link');
 
   event.preventDefault();
-  navigate(path);
+  navigate(`/${path}`);
 };
 
 const onClickNavigateButton = (target) => target.addEventListener('click', link);

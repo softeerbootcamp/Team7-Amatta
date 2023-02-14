@@ -32,16 +32,10 @@ const inputForm = (props) => {
   `;
 
   // prettier-ignore
-  const render = () =>
-    _.go(
-      inputFormTemplate,
-      $.el,
-      $.prepend($.qs(`${target}`)));
-
-  // prettier-ignore
   const appendForm = () =>
   _.go(
-    render());
+    inputFormTemplate,
+    (a) => $.insert(a,target));
 
   return appendForm;
 };
