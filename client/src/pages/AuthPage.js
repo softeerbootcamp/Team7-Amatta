@@ -1,19 +1,16 @@
 import { SERVER_URL, AUTH } from '@/constants/constant';
 import { register, login } from '@/components/auth';
-import { L, _ } from '@/utils/customFx';
+import { _ } from '@/utils/customFx';
 import { $ } from '@/utils';
 
 const AuthPage = {};
 const LEFT_ARROW_URL = `${SERVER_URL.IMG}icon/left-arrow.svg`;
 
-AuthPage.path = window.location.pathname.replace('/', '');
-AuthPage.type = () => AUTH[`${AuthPage.path}`];
-
-AuthPage.temp = `
+AuthPage.temp = (path) => `
     <article class="auth-article">
       <section class="white-header-section">
         <img class="left-arrow-button" src="${LEFT_ARROW_URL}" alt="left-arrow-button" /> 
-        <h4 class="auth-type">${AuthPage.type()}</h4>
+        <h4 class="auth-type">${AUTH[path.replace('/', '')]}</h4>
       </section>
       <section class="auth-form-section">
         <form class="auth-form">
@@ -25,26 +22,27 @@ AuthPage.temp = `
   `;
 
 // prettier-ignore
-AuthPage.renderComponent = () =>
+AuthPage.appendComponent = (path) => (fragment) =>
   _.go(
-    [register, login],
-    L.filter((component) => component.name === AuthPage.path),
-    _.take(1));
+    ['register', 'login'],
+    _.filter((type) => type === path.replace('/', '')),
+    ([f]) => {if(f === 'register') return register(fragment); return login(fragment)});
+// _.take(1),
+// (type) => AuthPage.type[type]);
 
 // prettier-ignore
-AuthPage.render = () => new Promise(resolve => 
+AuthPage.makeFragment = (path) => 
   _.go(
-    AuthPage.temp, 
-    $.el, 
-    $.replace($.qs('#root')),
-    resolve,
-));
-
+    path,
+    AuthPage.temp,
+    $.el);
 // prettier-ignore
-const navigateAuth = async () =>
+const navigateAuth = (path) =>
     _.go(
-      await AuthPage.render(),
-      register());
+      path,
+      AuthPage.makeFragment,
+      AuthPage.appendComponent(path)(),
+      $.replace($.qs('#root')));
 // () => AuthPage.renderComponent(),
 // ([f]) => f());
 

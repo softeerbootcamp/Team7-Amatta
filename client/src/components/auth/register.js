@@ -1,5 +1,5 @@
 import { inputForm } from '@/components/common';
-import { regiseterUser } from '@/apis/auth';
+import { regiseterUser, verificateEmail } from '@/apis/auth';
 import { navigate } from '@/core/router';
 import { INPUT } from '@/constants/constant';
 import { EventMonad } from '@/utils/monad';
@@ -36,9 +36,9 @@ const register = () => {
 
   const handleChange = EventMonad.of(({ target }) => {
     if (!target.validity.valid) return;
-
     const updatedUserData = setUserData(userData, target);
     userData = updatedUserData;
+    console.log(userData);
   });
 
   // const setUserData = (userData, { target }, targets) => {
@@ -67,7 +67,7 @@ const register = () => {
 
   const closeCodeForm = (target) => () => target.classList.remove('visible');
 
-  const addCodeForm = (e, resolve) => {
+  const addCodeForm = (e) => {
     const formTarget = $.qs('#verification-code-input-section');
     const buttonTarget = $.qs('.confirm-button');
 
@@ -76,7 +76,7 @@ const register = () => {
     timer(180, '#verification-code-input-section', closeCodeForm(formTarget));
 
     $.on('click', () => closeCodeForm(formTarget)())(buttonTarget);
-    resolve(() => $.qs('#root'));
+    return $.qs('#root');
   };
 
   const changeButtonStatus = (type, isValidate) => {
@@ -97,6 +97,10 @@ const register = () => {
   });
 
   const aaa = EventMonad.of(() => navigate('/'));
+  const checkEmail = async (e, data) => {
+    await verificateEmail(data);
+    addCodeForm(e);
+  };
 
   const putAutoHyphen = (target) => {
     target.value = target.value
@@ -138,17 +142,17 @@ const register = () => {
   // prettier-ignore
   const handleChangeInput = (target) => 
     _.pipe(
-      $.find('#root'),
+      $.find('.auth-article'),
       $.on('input', composedEvents.value[0]))(target);
 
   // prettier-ignore
-  const handleClickGoBack = (target) => 
+  const handleClickGoBack = (target) => {
     _.pipe(
       $.find('.left-arrow-button'),
-      $.on('click', composedEvents.value[2]))(target);
+      $.on('click', composedEvents.value[2]))(target);}
 
   // prettier-ignore
-  const handleClickEye = (target) => 
+  const handleClickEye = (target) =>
     _.pipe(
       $.findAll('.eye-icon'),
       _.map((f) => $.on('click', composedEvents.value[1])(f)))(target);
@@ -172,11 +176,19 @@ const register = () => {
       $.on('input', (e) => testValidation(e, 'passwordCheck', codeReg)))(target);
 
   // prettier-ignore
-  const sendVerificationCode = () =>
-    new Promise((resolve) =>
+  const sendVerificationCode = (fragment) =>
       _.go(
-        $.qs('.verify-button'),
-        $.on('click', (e) => addCodeForm(e, resolve))));
+        fragment,
+        $.find('.verify-button'),
+        $.on('click',  (e) => checkEmail(e, {email : userData.email})));
+
+  // // prettier-ignore
+  // const sendVerificationCode = (fragment) =>
+  //   new Promise((resolve) =>
+  //     _.go(
+  //       fragment,
+  //       $.find('.verify-button'),
+  //       $.on('click', (e) => addCodeForm(e, resolve))));
 
   // prettier-ignore
   const validateCode = (target) => 
@@ -191,11 +203,11 @@ const register = () => {
       $.on('click', (e) => handleClickSubmitButton(e)))(target);
 
   // prettier-ignore
-  const renderInputs = (inputData) =>
+  const renderInput = (target) =>
     _.go(
-      inputData,
+      INPUT,
       _.filter((input) => REGISTER_INPUT_TYPE.includes(input.type)),
-      _.map((input) => inputForm({ ...input, target: '.auth-form' })()))
+      _.map((input) => inputForm({ ...input, target})()))
 
   // prettier-ignore
   const renderText = (textData) =>
@@ -208,7 +220,7 @@ const register = () => {
   const render = () => 
       _.go(
         INPUT,
-        renderInputs,
+        renderInput,
         ([f]) => f,
         _.tap(
           () => registerTemp,
@@ -216,19 +228,23 @@ const register = () => {
           $.prepend($.qs('.auth-form-section'))));
 
   // prettier-ignore
-  const appendRegister = () =>
+  const appendRegister = (fragment) =>
     _.go(
-      render(),
-      console.log,
-      handleChangeInput,
-      handleClickGoBack,
-      handleClickEye,
-      validateEmail,
-      validatePhone,
-      validatePassword,
-      sendVerificationCode(),
-      validateCode,
-      submitData);
+      fragment,
+      $.find('.auth-form-section'),
+      $.insert(registerTemp),
+      $.find('.auth-form'),
+      renderInput,
+      () => handleChangeInput(fragment),
+      () => handleClickGoBack(fragment),
+      () => handleClickEye(fragment),
+      () => validateEmail(fragment),
+      () => validatePhone(fragment),
+      () => validatePassword(fragment),
+      () => sendVerificationCode(fragment),
+      () => validateCode(fragment),
+      () => submitData(fragment),
+      () => fragment);
 
   return appendRegister;
 };

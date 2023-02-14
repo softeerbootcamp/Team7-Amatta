@@ -8,8 +8,7 @@ const findRoute = (path) =>
     component: NotFound,
   };
 
-// prettier-ignore
-const render = ({ component }) => component();
+const render = ({ path, component }) => component(path);
 
 // prettier-ignore
 const reRender = () => 

@@ -10,6 +10,7 @@ routes.push(
   { path: '/card', component: navigateMain },
   { path: '/post', component: navigatePost },
 );
+
 const path = window.location.pathname;
 
 navigate(path);

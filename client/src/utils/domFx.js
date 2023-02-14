@@ -21,7 +21,14 @@ $.replace = _.curry((parent, child) => {
   return parent;
 });
 
-$.prepend = _.curry((parent, child) => {
+$.insert = _.curry((child, parent) => {
+  parent.insertAdjacentHTML('afterBegin', child);
+
+  return parent;
+});
+
+$.prepend = _.curry((child, parent) => {
+  console.log(parent, child);
   parent.prepend(child);
 
   return child;
@@ -31,6 +38,7 @@ $.closest = _.curry((sel, el) => el.closest(sel));
 
 $.remove = (el) => el.parentNode.removeChild(el);
 
+// $.on = (event, f) => (target) => console.log(event, f, target);
 $.on = (event, f) => (target) => target.addEventListener(event, f);
 
 export default $;
