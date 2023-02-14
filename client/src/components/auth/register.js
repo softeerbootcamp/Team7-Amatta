@@ -180,7 +180,7 @@ const register = () => {
       _.go(
         fragment,
         $.find('.verify-button'),
-        $.on('click',  (e) => checkEmail(e, {email : userData.email})));
+        $.on('click',  (e) => checkEmail(e, userData.email)));
 
   // // prettier-ignore
   // const sendVerificationCode = (fragment) =>

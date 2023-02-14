@@ -7,7 +7,7 @@ export const regiseterUser = async (data) => {
 };
 
 export const verificateEmail = async (data) => {
-  const response = await client.post('user/join/exist/email', data);
+  const response = await client.get(`user/join/exist/email?email=${data}`);
 
   return response.data;
 };
