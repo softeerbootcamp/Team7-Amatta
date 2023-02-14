@@ -29,7 +29,7 @@
 
         img {
           height: auto;
-          width: 2rem;
+          width: 1.75rem;
 
           &:nth-of-type(1) {
             margin-right: 0.5rem;
@@ -48,12 +48,50 @@
           background-color: $white-color;
           border-radius: 5px;
           border: 1px solid $primary-color;
-          padding: 0.75rem;
+          padding: 0.5rem;
           white-space: nowrap;
 
           .main-dropdown-image {
             height: 100%;
             margin-left: 0.5rem;
+          }
+        }
+
+        .dropdown-list {
+          opacity: 0;
+          transition: opacity 0.3s ease-in-out;
+
+          li {
+            list-style-type: none;
+          }
+        }
+
+        &.active {
+          opacity: 1;
+
+          li {
+            opacity: 0;
+            animation: fadeIn 0.5s ease-in-out forwards;
+
+            &:nth-child(1) {
+              animation-delay: 0.1s;
+            }
+            &:nth-child(2) {
+              animation-delay: 0.2s;
+            }
+            &:nth-child(3) {
+              animation-delay: 0.3s;
+            }
+          }
+        }
+        @keyframes fadeIn {
+          from {
+            opacity: 0;
+            transform: translateY(-10px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
           }
         }
       }

@@ -1,11 +1,12 @@
 import { SERVER_URL } from '@/constants/constant';
 import { cardDetail, cardList } from '@/components/main';
+import { dropdownMenu } from '@/components/common';
 import { $, slider } from '@/utils';
 import { _ } from '@/utils/customFx';
 import { navigate } from '@/core/router';
 
-const oneCardIconUrl = `${SERVER_URL.IMG}icon/image.svg`;
-const listIconUrl = `${SERVER_URL.IMG}icon/list.svg`;
+const oneCardIconUrl = `${SERVER_URL.IMG}icon/image-icon.svg`;
+const listIconUrl = `${SERVER_URL.IMG}icon/list-icon.svg`;
 const dropdownIconUrl = `${SERVER_URL.IMG}icon/angle-down.svg`;
 const plusIconUrl = `${SERVER_URL.IMG}icon/plus.svg`;
 
@@ -53,10 +54,7 @@ MainPage.temp = `
               <img class='list-card-button' src='${listIconUrl}' alt='list-card-button' />
             </section>
             <section class='main-dropdown-section'>
-              <button class='main-dropdown-button'>
-              최신순
-              <img class='main-dropdown-image' src='${dropdownIconUrl}' alt='dropdown-image' />
-              </button>
+            ${dropdownMenu()}
             </section>
           </div>
           <section class='cards-section'>
@@ -71,6 +69,8 @@ MainPage.temp = `
     </article>
   `;
 
+const toggleDropdown = () => $.qs('.main-dropdown-section').classList.toggle('drop');
+
 const changeToDetail = (cardsSection) => cardsSection.classList.remove('list');
 
 // prettier-ignore
@@ -80,7 +80,13 @@ const renderDetail = () =>
     $.el,
     $.replace($.qs('.cards-section')),
     () => $.find('.cards-section')(),
-    changeToDetail);
+    changeToDetail,
+    () => slider());
+
+const mainArticle = $.qs('.main-card-article');
+const findClient = () => mainArticle.clientWidth;
+
+const setListWidth = (cardsSection) => (cardsSection.style.width = `${findClient()}px`);
 
 const changeToList = (cardsSection) => cardsSection.classList.add('list');
 
@@ -91,7 +97,8 @@ const renderList = () =>
     $.el, 
     $.replace($.qs('.cards-section')),
     () => $.find('.cards-section')(),
-    changeToList);
+    _.tap(changeToList),
+    _.tap(() => setListWidth));
 
 // prettier-ignore
 MainPage.handleClickaddCard = (target) =>
@@ -111,6 +118,9 @@ const navigateMain = () =>
     _.go(
       MainPage.render(),
       slider(),
+      //() => renderDropdown,
+      () => $.qs('.main-dropdown-button'),
+      $.on('click', toggleDropdown),
       () => $.qs('.one-card-button'),
       $.on('click', renderDetail),
       () => $.qs('.list-card-button'),
