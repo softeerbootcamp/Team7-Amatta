@@ -6,12 +6,16 @@ const cardDetail = (props) => {
   const cardDetailTemplate = `
     <section class='one-card-section'>
       <img class='card-image' src="${image}" alt='card-image' />
-      <section class='card-text'>
-        <div class='shop-name'> ${shopName} </div>
-        <div class='item-name'> ${itemName} </div>
-        <div class='date-of-use'> ${dateOfUse} </div>
+      <section class='card-info'>
+        <div class='card-text'>
+          <div class='shop-name'> ${shopName} </div>
+          <div class='item-name'> ${itemName} </div>
+          <div class='date-of-use'> ${dateOfUse} </div>
+        </div>
+        <div class='card-button'>
+          <button type="button" class='mark-used-button' name='mark-used-button'>사용 완료</button>
+        </div>
       </section>
-      <input type="submit" class='mark-used-button' name='mark-used-button' value='사용 완료' />
     </section>
     `;
 

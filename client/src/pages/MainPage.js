@@ -11,14 +11,14 @@ const plusIconUrl = `${SERVER_URL.IMG}icon/plus.svg`;
 
 const cards = [
   {
-    image: 'https://amatta-icons.s3.ap-northeast-2.amazonaws.com/icon/gifticonSample.jpeg',
-    shopName: 'twosome place',
+    image: '../src/assets/starbucks2.jpg',
+    shopName: 'TWOSOME PLACE',
     itemName: 'Americano & Tiramisu',
     dateOfUse: '2023.07.07 까지',
   },
   {
-    image: 'https://amatta-icons.s3.ap-northeast-2.amazonaws.com/icon/gifticonSample.jpeg',
-    shopName: 'starbucks',
+    image: '../src/assets/starbucks2.jpg',
+    shopName: 'STARBUCKS',
     itemName: 'Latte',
     dateOfUse: '2023.07.07 까지',
   },
@@ -83,8 +83,8 @@ const renderDetail = () =>
     changeToDetail);
 
 const changeToList = (cardsSection) => cardsSection.classList.add('list');
-// prettier-ignore
 
+// prettier-ignore
 const renderList = () => 
   _.go(
     cards.map((detail) => cardList(detail)).join(''), 

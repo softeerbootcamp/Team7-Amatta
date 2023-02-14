@@ -9,6 +9,7 @@
     padding: 5%;
 
     .main-card-box {
+      height: 70vh;
       border-radius: 1.25rem;
       background-color: $white-color;
       padding: 1.25rem;
@@ -62,11 +63,11 @@
       position: relative;
       display: flex;
       transition: transform 0.3s;
-      height: 80%;
+      height: 90%;
       //overflow: hidden;
 
       &.list {
-        width: 100% !important;
+        //width: 100% !important;
         flex-direction: column;
       }
 
@@ -74,7 +75,7 @@
         display: flex;
         flex-direction: column;
         align-items: center;
-        justify-content: center;
+        // justify-content: space-between;
         position: relative;
         transition: left 0.2s;
         border-radius: 1.25rem;
@@ -83,17 +84,23 @@
         width: calc(90vw - 2.5rem - 2px);
 
         .card-image {
-          object-fit: cover;
-          margin-bottom: 5%;
+          max-height: 55%;
+          width: calc(80vw + 2px);
         }
 
-        .card-text {
+        .card-info {
           display: flex;
           flex-direction: column;
           align-items: center;
-          justify-content: center;
+          justify-content: space-around;
           text-align: center;
-          margin-bottom: 5%;
+          margin-top: 15%;
+          // margin: 10% 0;
+
+          .shop-name {
+            color: $gray500;
+            font-size: 0.875rem;
+          }
 
           .item-name {
             font-weight: 300;
@@ -101,10 +108,12 @@
             margin-top: 0.5rem;
             margin-bottom: 1rem;
             white-space: nowrap;
+            color: $gray900;
           }
 
           .date-of-use {
-            font-size: 1.25rem;
+            font-size: 1.125rem;
+            color: $gray600;
           }
         }
 
@@ -112,17 +121,19 @@
           font-size: 1.125rem;
           width: 8rem;
           height: 4rem;
-          border-radius: 10px;
+          border-radius: 0.75rem;
           border: none;
           background-color: $primary-color;
           color: $white-color;
+          margin-bottom: 2rem;
+          margin-top: 30%;
         }
       }
 
       .one-list-section {
         display: flex;
         flex-direction: row;
-        height: 20%;
+        height: 30%;
         width: 72vw;
         //margin-bottom: 1rem;
         // border-radius: 10px;
@@ -131,7 +142,7 @@
         padding: 1rem;
 
         .card-list-image {
-          height: 7.5rem;
+          height: 6rem;
           border-radius: 10px;
           border: 1px solid $gray300;
         }
