@@ -1,6 +1,13 @@
-const SERVER_URL = {
+export const SERVER_URL = {
   IMG: 'https://amatta-icons.s3.ap-northeast-2.amazonaws.com/',
   API: 'https://backend.amatta.site/',
+};
+
+export const AUTH = {
+  register: '회원가입',
+  login: '로그인',
+  findPw: '비밀번호 찾기',
+  findEmail: '이메일 찾기',
 };
 
 const EMAIL_REG = '^[a-zA-Z0-9+-_.]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-.]+$';
@@ -8,7 +15,7 @@ const CODE_REG = '^[0-9]{6}$';
 const PHONE_REG = '^(\\d{3})-(\\d{4})-(\\d{4})$';
 const NAME_REG = '^[ㄱ-ㅎ|가-힣|a-z|A-Z|]+$';
 
-const INPUT = [
+export const INPUT = [
   {
     type: 'price',
     name: 'price-input',
@@ -76,5 +83,3 @@ const INPUT = [
     pattern: NAME_REG,
   },
 ];
-
-export { SERVER_URL, INPUT };

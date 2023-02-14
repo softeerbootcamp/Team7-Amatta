@@ -183,7 +183,7 @@
         justify-content: space-between;
         color: $white-color;
         background-color: $gray400;
-        pointer-events: none;
+        // pointer-events: none;
 
         &.active {
           background-color: $primary-color;
