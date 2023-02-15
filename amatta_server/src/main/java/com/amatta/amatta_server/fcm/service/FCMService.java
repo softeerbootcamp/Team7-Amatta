@@ -7,12 +7,14 @@ import com.amatta.amatta_server.fcm.repository.DeviceTokenRepository;
 import com.amatta.amatta_server.user.model.Users;
 import com.google.firebase.messaging.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.List;
 import java.util.Objects;
 
 @Service
@@ -74,5 +76,28 @@ public class FCMService {
                         .build())
                 .build();
         FirebaseMessaging.getInstance().send(message);
+    }
+
+    @Scheduled(cron = "*/10 * * * * *")
+    public void sendTestMessageToAllTokens() {
+        System.out.println("스케줄러");
+        List<FCMToken> list = tokenRepository.findAllTokens();
+        for(FCMToken token : list) {
+            Message message = Message.builder()
+                    .setToken(token.getToken())
+                    .setWebpushConfig(WebpushConfig.builder()
+                            .setNotification(WebpushNotification.builder()
+                                    .setBody("push body")
+                                    .setTitle("push title")
+                                    .setVibrate(new int[]{200, 100, 200, 100, 200, 100, 200})
+                                    .build())
+                            .build())
+                    .build();
+            try {
+                FirebaseMessaging.getInstance().send(message);
+            } catch (FirebaseMessagingException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }
