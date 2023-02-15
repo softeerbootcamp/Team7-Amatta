@@ -21,6 +21,7 @@
       display: flex;
       justify-content: space-between;
       margin-bottom: 5%;
+      height: 2.5rem;
 
       .show-card-section {
         display: flex;
@@ -40,6 +41,10 @@
       .main-dropdown-section {
         height: 2.5rem;
         z-index: 9;
+
+        &.hidden {
+          display: none;
+        }
 
         .main-dropdown-button {
           display: flex;

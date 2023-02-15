@@ -60,7 +60,7 @@ MainPage.temp = `
               <img class='one-card-button' src='${oneCardIconUrl}' alt='square-card-button' />
               <img class='list-card-button' src='${listIconUrl}' alt='list-card-button' />
             </section>
-            <section class='main-dropdown-section'>
+            <section class='main-dropdown-section hidden'>
             ${dropdownMenu()}
             </section>
           </div>
@@ -87,8 +87,18 @@ const toggleDropdown = () => {
 };
 
 const toggleHidden = (target) => target.classList.toggle('hidden');
+const addHidden = (target) => target.classList.add('hidden');
+const removeHidden = (target) => target.classList.remove('hidden');
 
 const changeToDetail = (cardsSection) => cardsSection.classList.remove('list');
+
+const makeGrayScale = (target) =>
+  (target.closest('.one-card-section').style.filter = 'grayscale(1.0)');
+
+const makeUsedState = (targets) => {
+  const usedButtons = $.qsa('.mark-used-button');
+  targets.forEach((button) => button.addEventListener('click', (e) => makeGrayScale(e.target)));
+};
 
 // prettier-ignore
 const renderDetail = () =>
@@ -98,10 +108,12 @@ const renderDetail = () =>
     $.el,
     $.replace($.qs('.cards-section')),
     () => $.find('.cards-section')(),
-    // () => $.find('.cards-section')(),
     changeToDetail,
-    // () => setWidth(),
-    () => slider()());
+    () => slider()(),
+    () => $.qsa('.mark-used-button'),
+    makeUsedState,
+    () => $.qs('.main-dropdown-section'),
+    addHidden);
 
 const mainArticle = $.qs('.main-card-article');
 const findClient = () => mainArticle.clientWidth;
@@ -119,7 +131,9 @@ const renderList = () =>
     $.el, 
     $.replace($.qs('.cards-section')),
     () => $.find('.cards-section')(),
-    _.tap(changeToList));
+    changeToList,
+    () => $.qs('.main-dropdown-section'),
+    removeHidden);
 
 const navigateToPost = () => navigate('/post');
 
@@ -141,7 +155,8 @@ const navigateMain = () =>
     _.go(
       MainPage.render(),
       slider(),
-      //() => renderDropdown,
+      () => $.qsa('.mark-used-button'),
+      makeUsedState,
       () => $.qs('.main-dropdown-button'),
       $.on('click', toggleDropdown),
       () => $.qs('.one-card-button'),
