@@ -10,7 +10,7 @@ const dropdownMenu = () => {
       등록순
       <img class='main-dropdown-image' src='${dropdownIconUrl}' alt='dropdown-image' />
     </button>
-    <ul class="dropdown-list">
+    <ul class="dropdown-list hidden">
       <li>마감순</li>
       <li>금액순</li>
     </ul>

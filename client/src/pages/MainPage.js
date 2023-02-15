@@ -77,18 +77,18 @@ MainPage.temp = `
   `;
 //${cards.map((detail) => cardDetail(detail)).join('')}
 
-const toggleDropdown = () => $.qs('.main-dropdown-section').classList.toggle('drop');
+//const toggleDropdown = () => $.qs('.main-dropdown-section').classList.toggle('drop');
+const toggleDropdown = () => {
+  const dropdownSection = $.qs('.main-dropdown-section');
+  dropdownSection.classList.toggle('drop');
+
+  // const dropdownList = $.qs('.dropdown-list');
+  // toggleHidden(dropdownList);
+};
+
+const toggleHidden = (target) => target.classList.toggle('hidden');
 
 const changeToDetail = (cardsSection) => cardsSection.classList.remove('list');
-
-const setWidth = () => {
-  const mainArticle = $.qs('.main-card-article');
-  const slide = $.qs('.cards-detail-container');
-  const slideItems = $.qsa('.one-card-section');
-
-  slideItems.foreach((item) => (item.style.width = mainArticle.clientWidth));
-  slide.style.width = `${mainArticle.clientWidth * slideItems.length}px`;
-};
 
 // prettier-ignore
 const renderDetail = () =>
@@ -121,11 +121,13 @@ const renderList = () =>
     () => $.find('.cards-section')(),
     _.tap(changeToList));
 
+const navigateToPost = () => navigate('/post');
+
 // prettier-ignore
 MainPage.handleClickaddCard = (target) =>
   _.pipe(
     $.find('#plus-button'),
-    $.on('click', () => navigate('/post')))(target);
+    $.on('click', navigateToPost))(target);
 
 // prettier-ignore
 MainPage.render = () =>

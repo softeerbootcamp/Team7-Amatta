@@ -68,6 +68,10 @@
           transition: opacity 0.3s ease-in-out;
           z-index: 5;
 
+          // &.hidden {
+          //   display: none;
+          // }
+
           li {
             background-color: #fff;
             font-size: 0.875rem;
