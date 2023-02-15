@@ -28,9 +28,9 @@ public class FCMController {
     }
 
     @GetMapping("/message")
-    public ResponseEntity<?> sendTestMessage(@RequestParam Map<String, String> mp) {
+    public ResponseEntity<?> sendTestMessage(@RequestParam("token") String token) {
         try {
-            fcmService.sendTestMessage(mp.get("token"));
+            fcmService.sendTestMessage(token);
         } catch (FirebaseMessagingException e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
