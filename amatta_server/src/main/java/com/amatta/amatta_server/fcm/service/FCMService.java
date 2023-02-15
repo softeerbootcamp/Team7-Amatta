@@ -58,6 +58,7 @@ public class FCMService {
     }
 
     public void sendTestMessage(String token) throws FirebaseMessagingException {
+        System.out.println(token);
         Message message = Message.builder()
                 .setToken(token)
                 /*.setNotification(Notification.builder()
