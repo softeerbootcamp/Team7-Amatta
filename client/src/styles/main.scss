@@ -68,9 +68,10 @@
           transition: opacity 0.3s ease-in-out;
           z-index: 5;
 
-          // &.hidden {
-          //   display: none;
-          // }
+          &.hidden {
+            display: none;
+            transition: 0.5s;
+          }
 
           li {
             background-color: #fff;
@@ -140,6 +141,7 @@
       &.list {
         // width: 90vw !important;
         flex-direction: column;
+        overflow: scroll;
 
         section:nth-last-of-type(1) {
           border: none;

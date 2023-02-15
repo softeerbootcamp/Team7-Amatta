@@ -10,7 +10,7 @@ const cardDetail = (props) => {
         <div class='card-text'>
           <div class='shop-name'> ${shopName} </div>
           <div class='item-name'> ${itemName} </div>
-          <div class='date-of-use'> ${dateOfUse} </div>
+          <div class='date-of-use'> due ${dateOfUse} </div>
         </div>
         <div class='card-button'>
           <button type="button" class='mark-used-button' name='mark-used-button'>사용 완료</button>

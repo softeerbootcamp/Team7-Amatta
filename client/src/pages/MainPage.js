@@ -15,31 +15,31 @@ const cards = [
     image: '../src/assets/starbucks2.jpg',
     shopName: 'TWOSOME PLACE',
     itemName: 'Americano & Tiramisu',
-    dateOfUse: '2023.07.07 까지',
+    dateOfUse: '2023.07.07',
   },
   {
     image: '../src/assets/starbucks3.jpeg',
     shopName: 'STARBUCKS',
     itemName: 'Latte',
-    dateOfUse: '2023.07.22 까지',
+    dateOfUse: '2023.07.22',
   },
   {
     image: '../src/assets/starbucks2.jpg',
     shopName: 'THE VENTI',
     itemName: 'Vanilla Latte',
-    dateOfUse: '2023.09.01 까지',
+    dateOfUse: '2023.09.01',
   },
   {
     image: '../src/assets/starbucks3.jpeg',
     shopName: 'twosome place',
     itemName: 'Americano & Tiramisu',
-    dateOfUse: '2023.11.01 까지',
+    dateOfUse: '2023.11.01',
   },
   {
     image: '../src/assets/starbucks2.jpg',
     shopName: 'starbucks',
     itemName: 'Latte',
-    dateOfUse: '2023.07.07 까지',
+    dateOfUse: '2023.07.07',
   },
 ];
 
@@ -82,8 +82,8 @@ const toggleDropdown = () => {
   const dropdownSection = $.qs('.main-dropdown-section');
   dropdownSection.classList.toggle('drop');
 
-  // const dropdownList = $.qs('.dropdown-list');
-  // toggleHidden(dropdownList);
+  const dropdownList = $.qs('.dropdown-list');
+  toggleHidden(dropdownList);
 };
 
 const toggleHidden = (target) => target.classList.toggle('hidden');
