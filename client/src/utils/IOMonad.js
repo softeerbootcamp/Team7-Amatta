@@ -1,6 +1,6 @@
 export default class IO {
   constructor(effect) {
-    if (typeof effect !== 'function') throw new Error('함수 아님!');
+    if (typeof effect !== 'function') throw new Error('😡😡😡함수 내놔😡😡😡');
 
     this.effect = effect;
   }

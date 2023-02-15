@@ -6,10 +6,15 @@ import { IO, $, drag } from '@/utils';
 import { _, L } from '@/utils/customFx';
 
 const POST_INPUT_TYPE = ['menu', 'shop', 'price'];
-const PostPage = {};
+const $root = $.qs('#root');
 const iconURL = `${SERVER_URL.IMG}icon/camera.svg`;
+const PostPage = {};
 
-PostPage.temp = `
+const inputImage = $.qs('.upload-image');
+const canvas = $.qs('.canvas');
+const imageContainer = $.qs('.post-upload-section');
+
+PostPage.tpl = `
   <main class="post-main">
     <div class="test">
       <div class="test2">
@@ -92,22 +97,21 @@ const resizeImg1 = () => {
   reader.readAsDataURL(file);
 };
 
-// const test2 = (event) => {
-//   switch (event.target.id) {
-//     case 'target1':
-//       alert(1);
-//       break;
-//     case 'target2':
-//       alert(2);
-//       break;
-//   }
-// };
-
 // prettier-ignore
-PostPage.resizeImg = () => 
+PostPage.resizeImg = () =>
   _.go(
     $.qs('.submit1'),
     $.on('click', resizeImg1));
+
+const addInputForm = (fragment) => (input) => inputForm({ ...input, target: fragment })();
+const postInputs = ({ type }) => POST_INPUT_TYPE.includes(type);
+
+const appendInputForm = ({ fragment }) => PostPage.appendComponent(fragment);
+
+const findTarget = (child, parent) => () => $.qs(child, parent);
+const handleClickUploadBtn = () => $.qs('.upload-image').click();
+const eventTrigger = (type, target) => () => $.on(type, handleClickUploadBtn)(target);
+const setEvent = (type) => (target) => IO.of(eventTrigger(type, target));
 
 const makeFragment = (html) =>
   IO.of(() => ({
@@ -117,44 +121,35 @@ const makeFragment = (html) =>
 
 // prettier-ignore
 PostPage.appendComponent = (fragment) =>
-  new IO(() =>
+  IO.of(() =>
     _.go(
       INPUT,
-      _.filter((input) => POST_INPUT_TYPE.includes(input.type)),
-      _.map((input) => inputForm({ ...input, target: fragment })()),
-      ([f]) => f));
-
-// prettier-ignore
-PostPage.renderTemplate = () =>
-  _.go(
-    makeFragment(PostPage.temp)
-      .chain((result) => PostPage.appendComponent(result.fragment))
-      .run());
+      _.filter(postInputs),
+      _.map(addInputForm(fragment)),
+      _.flatOne));
 
 // prettier-ignore
 PostPage.render = () =>
   _.go(
-    PostPage.renderTemplate(),
-    $.replace($.qs('#root')));
+    makeFragment(PostPage.tpl)
+      .chain(appendInputForm)
+      .run(),
+    $.replace($root));
 
 // prettier-ignore
-PostPage.addEvent = () =>
+PostPage.addEvents = (target) =>
   _.go(
-
-  );
+    IO.of(findTarget('.post-upload-section', target))
+      .chain(setEvent('click'))
+      .run(),
+    $.find('.upload-image'),
+    $.on('change', (e) => test(e.target.files)));
 
 // prettier-ignore
 const navigatePost = () => 
   _.go(
     PostPage.render(),
-    $.find('.post-upload-section'),
-    $.on('click', () => $.qs('.upload-image').click()),
-    $.find('.upload-image'),
-    $.on('change', (e) => test(e.target.files)),
+    PostPage.addEvents,
     () => PostPage.resizeImg());
 
 export default navigatePost;
-
-const inputImage = document.querySelector('.upload-image');
-const canvas = document.querySelector('.canvas');
-const imageContainer = document.querySelector('.post-upload-section');
