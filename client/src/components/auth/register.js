@@ -2,8 +2,7 @@ import { inputForm } from '@/components/common';
 import { regiseterUser, verificateEmail } from '@/apis/auth';
 import { navigate } from '@/core/router';
 import { INPUT } from '@/constants/constant';
-import { EventMonad } from '@/utils/monad';
-import { timer, $ } from '@/utils';
+import { EventMonad, timer, $ } from '@/utils';
 import { _ } from '@/utils/customFx';
 
 const register = () => {
@@ -38,7 +37,6 @@ const register = () => {
     if (!target.validity.valid) return;
     const updatedUserData = setUserData(userData, target);
     userData = updatedUserData;
-    console.log(userData);
   });
 
   // const setUserData = (userData, { target }, targets) => {
