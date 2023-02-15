@@ -142,6 +142,11 @@
         }
       }
 
+      .cards-detail-container {
+        display: flex;
+        transition: 0.5s;
+      }
+
       .one-card-section {
         display: flex;
         overflow: hidden;

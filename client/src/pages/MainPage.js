@@ -18,30 +18,37 @@ const cards = [
     dateOfUse: '2023.07.07 까지',
   },
   {
-    image: '../src/assets/starbucks2.jpg',
+    image: '../src/assets/starbucks3.jpeg',
     shopName: 'STARBUCKS',
     itemName: 'Latte',
-    dateOfUse: '2023.07.07 까지',
+    dateOfUse: '2023.07.22 까지',
+  },
+  {
+    image: '../src/assets/starbucks2.jpg',
+    shopName: 'THE VENTI',
+    itemName: 'Vanilla Latte',
+    dateOfUse: '2023.09.01 까지',
   },
   {
     image: '../src/assets/starbucks3.jpeg',
-    shopName: 'THE VENTI',
-    itemName: 'Vanilla Latte',
-    dateOfUse: '2023.07.07 까지',
-  },
-  {
-    image: 'https://amatta-icons.s3.ap-northeast-2.amazonaws.com/icon/gifticonSample.jpeg',
     shopName: 'twosome place',
     itemName: 'Americano & Tiramisu',
-    dateOfUse: '2023.07.07 까지',
+    dateOfUse: '2023.11.01 까지',
   },
   {
-    image: 'https://amatta-icons.s3.ap-northeast-2.amazonaws.com/icon/gifticonSample.jpeg',
+    image: '../src/assets/starbucks2.jpg',
     shopName: 'starbucks',
     itemName: 'Latte',
     dateOfUse: '2023.07.07 까지',
   },
 ];
+
+const detailTemp = `
+  <div class='cards-detail-container'>
+    ${cards.map((detail) => cardDetail(detail)).join('')}
+  </div>
+`;
+
 const MainPage = {};
 
 MainPage.temp = `
@@ -58,7 +65,7 @@ MainPage.temp = `
             </section>
           </div>
           <section class='cards-section'>
-            ${cards.map((detail) => cardDetail(detail)).join('')}
+            ${detailTemp}
           </section>
           <ul class="card-pagination"></ul>
           <button type="button" id="plus-button">
@@ -68,20 +75,33 @@ MainPage.temp = `
       </div>
     </article>
   `;
+//${cards.map((detail) => cardDetail(detail)).join('')}
 
 const toggleDropdown = () => $.qs('.main-dropdown-section').classList.toggle('drop');
 
 const changeToDetail = (cardsSection) => cardsSection.classList.remove('list');
 
+const setWidth = () => {
+  const mainArticle = $.qs('.main-card-article');
+  const slide = $.qs('.cards-detail-container');
+  const slideItems = $.qsa('.one-card-section');
+
+  slideItems.foreach((item) => (item.style.width = mainArticle.clientWidth));
+  slide.style.width = `${mainArticle.clientWidth * slideItems.length}px`;
+};
+
 // prettier-ignore
 const renderDetail = () =>
   _.go(
-    cards.map((detail) => cardDetail(detail)).join(''),
+    //cards.map((detail) => cardDetail(detail)).join(''),
+    detailTemp,
     $.el,
     $.replace($.qs('.cards-section')),
     () => $.find('.cards-section')(),
+    // () => $.find('.cards-section')(),
     changeToDetail,
-    () => slider());
+    // () => setWidth(),
+    () => slider()());
 
 const mainArticle = $.qs('.main-card-article');
 const findClient = () => mainArticle.clientWidth;
