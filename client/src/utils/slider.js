@@ -3,7 +3,9 @@ import { _ } from '@/utils/customFx';
 const slider = () => {
   //slider.js 리팩토링하려다 실패한 부분 => 2/13 완료!!
   const mainArticle = $.qs('.main-card-article');
-  const slide = $.qs('.cards-section');
+  const slide = $.qs('.cards-detail-container');
+
+  // const slide = $.qs('.cards-section');
   const slideWidth = mainArticle.clientWidth;
   const slideItems = $.qsa('.one-card-section');
   const maxSlide = slideItems.length;
@@ -80,13 +82,12 @@ const slider = () => {
   // prettier-ignore
   const cardSlider = () =>
     _.go(
-      [],
-      () => setWidth(slideWidth),
+      setWidth(slideWidth),
       // () => setPagination(),
       // $.findAll('.card-pagination > li'),
       // changeActive,
       // clickPagination,
-      () => $.qs('.cards-section'),
+      () => $.qs('.cards-detail-container'),
       _.tap(
         $.on('touchstart', touchStartEvent)),
       _.tap(
