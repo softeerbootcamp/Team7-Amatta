@@ -90,6 +90,8 @@ const setListWidth = (cardsSection) => (cardsSection.style.width = `${findClient
 
 const changeToList = (cardsSection) => cardsSection.classList.add('list');
 
+const scrollEvent = (target) => target.scrollIntoView();
+
 // prettier-ignore
 const renderList = () => 
   _.go(
@@ -97,8 +99,7 @@ const renderList = () =>
     $.el, 
     $.replace($.qs('.cards-section')),
     () => $.find('.cards-section')(),
-    _.tap(changeToList),
-    _.tap(() => setListWidth));
+    _.tap(changeToList));
 
 // prettier-ignore
 MainPage.handleClickaddCard = (target) =>
