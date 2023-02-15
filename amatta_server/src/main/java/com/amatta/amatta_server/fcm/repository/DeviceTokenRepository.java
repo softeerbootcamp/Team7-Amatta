@@ -21,4 +21,7 @@ public interface DeviceTokenRepository extends CrudRepository<FCMToken, Long> {
 
     @Query("SELECT id, uid, token FROM device_token WHERE uid = :uid")
     List<FCMToken> findByUid(@Param("uid") long uid);
+
+    @Query("SELECT * FROM device_token")
+    List<FCMToken> findAllTokens();
 }
