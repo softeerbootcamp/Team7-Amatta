@@ -20,7 +20,7 @@ import java.util.Objects;
 
 @Service
 public class FCMService {
-    /*private final DeviceTokenRepository tokenRepository;
+    private final DeviceTokenRepository tokenRepository;
 
     @Autowired
     public FCMService(DeviceTokenRepository tokenRepository) {
@@ -33,10 +33,14 @@ public class FCMService {
         tokenRepository.addToken(user.getId(), tokenRegisterDto.getToken());
     }
 
-    public void sendPushNotification(long uid) throws FirebaseMessagingException {
+    public void sendPushNotification(long uid) {
         for(FCMToken token : tokenRepository.findByUid(uid)) {
             Message message = makeExpirationMessage(token);
-            FirebaseMessaging.getInstance().send(message);
+            try {
+                FirebaseMessaging.getInstance().send(message);
+            } catch (FirebaseMessagingException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -54,5 +58,16 @@ public class FCMService {
         HttpServletRequest request = ((ServletRequestAttributes) Objects.requireNonNull(RequestContextHolder.getRequestAttributes())).getRequest();
         HttpSession session = request.getSession(false);
         return (Users) session.getAttribute("User");
-    }*/
+    }
+
+    public void sendTestMessage(String token) throws FirebaseMessagingException {
+        Message message = Message.builder()
+                .setToken(token)
+                .setNotification(Notification.builder()
+                        .setTitle("title")
+                        .setBody("body")
+                        .build())
+                .build();
+        FirebaseMessaging.getInstance().send(message);
+    }
 }

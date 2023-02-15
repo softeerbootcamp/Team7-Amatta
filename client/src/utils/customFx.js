@@ -84,5 +84,6 @@ _.tap =
 _.isIterable = (a) => a !== null && !!a[Symbol.iterator];
 _.getDataset = (target, dataset) => target.getAttribute(dataset);
 _.findClosest = (target, dataset) => target.closest(dataset);
+_.flatOne = ([f]) => f;
 
 export { L, _ };
