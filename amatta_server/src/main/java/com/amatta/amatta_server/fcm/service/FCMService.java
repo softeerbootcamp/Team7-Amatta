@@ -5,10 +5,7 @@ import com.amatta.amatta_server.fcm.dto.TokenRegisterDto;
 import com.amatta.amatta_server.fcm.model.FCMToken;
 import com.amatta.amatta_server.fcm.repository.DeviceTokenRepository;
 import com.amatta.amatta_server.user.model.Users;
-import com.google.firebase.messaging.FirebaseMessaging;
-import com.google.firebase.messaging.FirebaseMessagingException;
-import com.google.firebase.messaging.Message;
-import com.google.firebase.messaging.Notification;
+import com.google.firebase.messaging.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -63,9 +60,16 @@ public class FCMService {
     public void sendTestMessage(String token) throws FirebaseMessagingException {
         Message message = Message.builder()
                 .setToken(token)
-                .setNotification(Notification.builder()
-                        .setTitle("title")
-                        .setBody("body")
+                /*.setNotification(Notification.builder()
+                        .setTitle("notification title")
+                        .setBody("notification body")
+                        .build())*/
+                .setWebpushConfig(WebpushConfig.builder()
+                        .setNotification(WebpushNotification.builder()
+                                .setBody("push body")
+                                .setTitle("push title")
+                                .setVibrate(new int[]{200, 100, 200, 100, 200, 100, 200})
+                                .build())
                         .build())
                 .build();
         FirebaseMessaging.getInstance().send(message);
