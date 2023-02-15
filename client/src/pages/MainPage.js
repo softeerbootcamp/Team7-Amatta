@@ -92,13 +92,11 @@ const removeHidden = (target) => target.classList.remove('hidden');
 
 const changeToDetail = (cardsSection) => cardsSection.classList.remove('list');
 
-const makeGrayScale = (target) =>
-  (target.closest('.one-card-section').style.filter = 'grayscale(1.0)');
+const makeGrayScale = (target) => target.closest('.one-card-section').classList.add('gray');
+//(target.closest('.one-card-section').style.filter = 'grayscale(1.0)');
 
-const makeUsedState = (targets) => {
-  const usedButtons = $.qsa('.mark-used-button');
+const makeUsedState = (targets) =>
   targets.forEach((button) => button.addEventListener('click', (e) => makeGrayScale(e.target)));
-};
 
 // prettier-ignore
 const renderDetail = () =>
@@ -116,9 +114,6 @@ const renderDetail = () =>
     addHidden);
 
 const mainArticle = $.qs('.main-card-article');
-const findClient = () => mainArticle.clientWidth;
-
-const setListWidth = (cardsSection) => (cardsSection.style.width = `${findClient()}px`);
 
 const changeToList = (cardsSection) => cardsSection.classList.add('list');
 
