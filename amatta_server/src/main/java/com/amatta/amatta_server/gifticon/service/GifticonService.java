@@ -25,7 +25,6 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Objects;
@@ -65,7 +64,7 @@ public class GifticonService {
         String brandName = dto.getBrandName();
         String itemName = dto.getItemName();
         String barcode = dto.getBarcode();
-        LocalDate expiresAt = LocalDate.parse(dto.getExpiresAtInString(), DateTimeFormatter.ofPattern("yyyy/MM/dd"));
+        LocalDate expiresAt = LocalDate.parse(dto.getExpiresAtInString(), DateTimeFormatter.ofPattern("yyyy-MM-dd"));
         LocalDate usedAt = LocalDate.now().plusYears(100);
         int price = dto.getPrice();
 
