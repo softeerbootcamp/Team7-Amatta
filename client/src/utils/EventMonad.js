@@ -1,4 +1,4 @@
-export class EventMonad {
+export default class EventMonad {
   constructor(value) {
     this.value = value;
   }

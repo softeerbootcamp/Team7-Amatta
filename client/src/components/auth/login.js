@@ -2,8 +2,7 @@ import { inputForm } from '@/components/common';
 import { loginU } from '@/apis/auth';
 import { navigate } from '@/core/router';
 import { INPUT } from '@/constants/constant';
-import { EventMonad } from '@/utils/monad';
-import { timer, $ } from '@/utils';
+import { EventMonad, timer, $ } from '@/utils';
 import { _ } from '@/utils/customFx';
 
 const login = () => {

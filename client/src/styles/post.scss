@@ -36,12 +36,14 @@
           position: absolute;
           width: 40vw;
           height: 40vw;
-          top: 50%;
-          left: 50%;
-          transform: translate(-50%, -50%);
+          top: 0;
+          left: 0;
+          // top: 50%;
+          // left: 50%;
+          // transform: translate(-50%, -50%);
+          // transform: translate(0, 0);
           background-color: rgba(0, 0, 0, 0.5);
           border-radius: 0.75rem;
-          box-sizing: border-box;
         }
       }
 

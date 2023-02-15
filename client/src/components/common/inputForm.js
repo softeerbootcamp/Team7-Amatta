@@ -32,10 +32,13 @@ const inputForm = (props) => {
   `;
 
   // prettier-ignore
-  const appendForm = () =>
-  _.go(
-    inputFormTemplate,
-    (a) => $.insert(a,target));
+  const appendForm = () => {
+    _.go(
+      inputFormTemplate,
+      (tmp) => $.insert(tmp, $.qs('.input-info-section', target)));
+
+    return target;
+  };
 
   return appendForm;
 };
