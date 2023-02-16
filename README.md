@@ -80,6 +80,15 @@
     
 
 ### :wrench: Structures    
+<br>
+
+## 👩‍👩‍👧‍👧 Contributors
+| Name | Country | Where to find us | Role |
+| ---- | ------- | ----------------- | ---- |
+| MinJi Chang <br /> <img src="https://avatars.githubusercontent.com/SUMMERLOVE7" width="100" />  | Republic of Korea | [Github](https://github.com/SUMMERLOVE7)| FRONTEND |
+| JangOh Jeong  <br /> <img src="https://avatars.githubusercontent.com/sunjh96" width="100" />  | Republic of Korea | [Github](https://github.com/sunjh96)| FRONTEND |
+| TaeWan Kim <br /> <img src="https://avatars.githubusercontent.com/ktykty0722" width="100" />  | Republic of Korea | [Github](https://github.com/ktykty0722)| BACKEND |
+| 덕진 장 <br /> <img src="https://avatars.githubusercontent.com/201724554" width="100" />  | Republic of Korea | [Github](https://github.com/201724554)| BACKEND |
 
 
 ## Github
