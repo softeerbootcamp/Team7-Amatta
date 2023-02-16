@@ -19,7 +19,7 @@ PostPage.tpl = `
     <section class="crop-section">
       <div class="crop-container">
         <img class='crop-image'></img>
-        <div data-drag class='crop-box'></div>
+        <div data-drag class='crop-box' style='width: 40vw; height:40vw;'></div>
       </div>
     </section>
     <section class="post-info-section">

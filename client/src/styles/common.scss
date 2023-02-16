@@ -77,8 +77,9 @@
 
 .calendar .calendar-inner .calendar-controls .calendar-year-month {
   display: flex;
+  flex-direction: column;
   min-width: 100px;
-  justify-content: space-evenly;
+  justify-content: center;
   align-items: center;
 }
 
@@ -133,4 +134,14 @@
 .calendar .calendar-inner .calendar-body .next-dates:hover {
   border: 1px solid transparent;
   pointer-events: none;
+}
+
+.calendar-year-label {
+  font-size: 0.75rem !important;
+  color: $gray500;
+}
+
+.calendar-month-label {
+  font-size: 1.25rem !important;
+  color: $gray700;
 }

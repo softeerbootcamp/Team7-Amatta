@@ -1,7 +1,6 @@
 @include mobile {
   .post-main {
     position: relative;
-    // height: calc(calc(var(--vh, 1vh) * 100) - 4.5rem);
     padding: 4.5rem 10% 0 10%;
     display: flex;
     flex-direction: column;
@@ -15,7 +14,7 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background-color: rgba(0, 0, 0, 0.5);
+      background-color: rgba(0, 0, 0, 0.7);
 
       .crop-container {
         display: flex;
@@ -26,6 +25,7 @@
         max-height: 80%;
 
         img {
+          position: relative;
           max-width: 100%;
           min-width: 90%;
           height: 100%;
@@ -34,18 +34,61 @@
 
         .crop-box {
           position: absolute;
-          width: 40vw;
-          height: 40vw;
           top: 0;
           left: 0;
-          // top: 50%;
-          // left: 50%;
-          // transform: translate(-50%, -50%);
-          // transform: translate(0, 0);
-          background-color: rgba(0, 0, 0, 0.5);
+          filter: none;
+          border: 1px solid beige;
           border-radius: 0.75rem;
+
+          &::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            background-color: rgb(255 255 255 / 30%);
+          }
         }
+
+        /* ::before 가상 요소 */
       }
+
+      // .crop-container {
+      //   display: flex;
+      //   align-content: center;
+      //   justify-content: center;
+      //   position: relative;
+      //   width: 100%;
+      //   max-height: 80%;
+      //   // filter: grayscale(30%);
+      //   filter: brightness(30%);
+
+      //   img {
+      //     position: relative;
+      //     max-width: 100%;
+      //     min-width: 90%;
+      //     height: 100%;
+      //     object-fit: fill;
+      //   }
+
+      //   .crop-box {
+      //     position: absolute;
+      //     top: 0;
+      //     left: 0;
+      //     opacity: 0;
+      //     filter: none;
+      //     border: 1px solid beige;
+
+      //     // top: 50%;
+      //     // left: 50%;
+      //     // transform: translate(-50%, -50%);
+      //     // transform: translate(0, 0);
+      //     // background-color: rgba(0, 0, 0, 0.5);
+      //     border-radius: 0.75rem;
+      //   }
+      // }
 
       button {
         width: 80%;
@@ -116,7 +159,6 @@
           margin-bottom: 1rem;
         }
 
-        //prettier-ignore
         #date-input {
           background-image: url('https://amatta-icons.s3.ap-northeast-2.amazonaws.com/icon/calendar.svg');
           background-repeat: no-repeat;
