@@ -1,5 +1,6 @@
 export { default as setScreenSize } from './screenSize';
 export { default as generateElement } from './templateGenerator';
+export { default as CalendarControl } from './calendar';
 export { default as slider } from './slider';
 export { default as timer } from './timer';
 export { default as drag } from './drag';

@@ -1,36 +1,3 @@
-// export default function drag(event) {
-//   const elementToDrag = event.target.closest('[data-drag]');
-
-//   const startX = event.touches[0].clientX;
-//   const startY = event.touches[0].clientY;
-
-//   const origX = elementToDrag.offsetLeft;
-//   const origY = elementToDrag.offsetTop;
-
-//   const deltaX = startX - origX;
-//   const deltaY = startY - origY;
-
-//   function moveHandler(e) {
-//     elementToDrag.style.left = `${e.touches[0].clientX - deltaX}px`;
-//     elementToDrag.style.top = `${e.touches[0].clientY - deltaY}px`;
-
-//     e.stopPropagation();
-//   }
-
-//   function upHandler(e) {
-//     elementToDrag.removeEventListener('touchend', upHandler, true);
-//     elementToDrag.removeEventListener('touchmove', moveHandler, true);
-
-//     e.stopPropagation();
-//   }
-
-//   elementToDrag.addEventListener('touchmove', moveHandler, true);
-//   elementToDrag.addEventListener('touchend', upHandler, true);
-
-//   event.stopPropagation();
-//   event.preventDefault();
-// }
-
 export default function drag(e) {
   let initialX = e.touches[0].clientX;
   let initialY = e.touches[0].clientY;
@@ -39,14 +6,14 @@ export default function drag(e) {
   let isResizing = false;
 
   const element = e.target.closest('[data-drag]');
-  const image = document.querySelector('.asd2');
+  const image = document.querySelector('.crop-image');
+  const imgSize = element.getBoundingClientRect();
+  const bottomRight = imgSize.bottom - initialY < 20 && imgSize.right - initialX < 20;
 
-  const bottomRight =
-    element.getBoundingClientRect().bottom - initialY < 20 &&
-    element.getBoundingClientRect().right - initialX < 20;
-  if (bottomRight) {
-    isResizing = true;
-  }
+  let currentWidth = element.offsetWidth;
+  let currentHeight = element.offsetHeight;
+  // console.log(currentWidth);
+  if (bottomRight) isResizing = true;
 
   const moveHandler = (event) => {
     if (event.targetTouches.length === 1) {
@@ -55,26 +22,29 @@ export default function drag(e) {
       currentX = event.targetTouches[0].clientX;
       currentY = event.targetTouches[0].clientY;
 
+      // let diffX = currentX - initialX;
+      // let diffY = currentY - initialY;
+      // let newWidth = currentWidth + diffX;
+      // let newHeight = currentHeight + diffY;
+
       if (isResizing) {
         const diffX = currentX - initialX;
         const diffY = currentY - initialY;
-        const currentWidth = element.offsetWidth;
-        const currentHeight = element.offsetHeight;
         const newWidth = currentWidth + diffX;
         const newHeight = currentHeight + diffY;
-
+        console.log(newWidth, currentWidth);
         if (
           newWidth >= 50 &&
           newWidth <= image.offsetWidth - element.offsetLeft &&
           newHeight >= 50 &&
           newHeight <= image.offsetHeight - element.offsetTop
         ) {
-          // element.style.left = `${diffX}px`;
-          console.log(newWidth / currentWidth, newWidth / currentWidth);
-          element.style.transform = `scale(${newWidth / currentWidth}, ${newWidth / currentWidth})`;
+          // element.style.transform = `scale(${newWidth / currentWidth}, ${newWidth / currentWidth})`;
+          element.style.width = `calc(40vw * ${newWidth / currentWidth})`;
+          element.style.height = `calc(40vw * ${newWidth / currentWidth})`;
         }
-        // initialX = currentX;
-        // initialY = currentY;
+        // currentWidth = newWidth;
+        // currentHeight = newHeight;
       } else {
         const diffX = currentX - initialX;
         const diffY = currentY - initialY;
@@ -89,13 +59,9 @@ export default function drag(e) {
           newTop >= 0 &&
           newTop + element.offsetHeight <= image.offsetHeight
         ) {
-          console.log(currentY, initialX);
-
           element.style.left = `${newLeft}px`;
           element.style.top = `${newTop}px`;
-          element.style.transform = `scale(${element.offsetWidth / element.offsetWidth}, ${
-            element.offsetHeight / element.offsetHeight
-          })`;
+          // element.style.transform = `scale(${newWidth / currentWidth}, ${newWidth / currentWidth})`;
         }
         initialX = currentX;
         initialY = currentY;

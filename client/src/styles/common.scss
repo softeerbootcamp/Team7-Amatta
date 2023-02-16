@@ -2,3 +2,135 @@
   width: 100vw;
   height: calc(var(--vh, 1vh) * 100);
 }
+
+* {
+  padding: 0;
+  margin: 0;
+}
+
+.calendar {
+  opacity: 0;
+  position: relative;
+  background: $calendar-bg-color;
+  color: $calendar-font-color;
+  margin-bottom: 1rem;
+  box-sizing: border-box;
+  overflow: hidden;
+  font-weight: normal;
+  border-radius: 16px;
+  transition: max-height 0.1s ease-in-out;
+  pointer-events: none;
+  width: 100%;
+  max-height: 0;
+
+  &.active {
+    opacity: 1;
+    pointer-events: auto;
+    transition: max-height 0.5s ease-in-out;
+    max-height: 100vh;
+  }
+}
+
+.calendar-inner {
+  padding: 10px;
+}
+
+.calendar .calendar-inner .calendar-body {
+  background-color: $gray100;
+  border-radius: 0 0 16px 16px;
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  text-align: center;
+}
+
+.calendar .calendar-inner .calendar-body div {
+  padding: 4px;
+  min-height: 30px;
+  line-height: 30px;
+  border: 1px solid transparent;
+  margin: 10px 2px 0px;
+}
+
+.calendar .calendar-inner .calendar-body div:nth-child(-n + 7) {
+  border: 1px solid transparent;
+  border-bottom: 1px solid $weekdays-border-bottom-color;
+}
+
+.calendar .calendar-inner .calendar-body div:nth-child(-n + 7):hover {
+  border: 1px solid transparent;
+  border-bottom: 1px solid $weekdays-border-bottom-color;
+}
+
+.calendar .calendar-inner .calendar-body div > a {
+  color: $calendar-font-color;
+  text-decoration: none;
+  display: flex;
+  justify-content: center;
+}
+
+.calendar .calendar-inner .calendar-controls {
+  background-color: $gray100;
+  border-radius: 16px 16px 0 0;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.calendar .calendar-inner .calendar-controls .calendar-year-month {
+  display: flex;
+  min-width: 100px;
+  justify-content: space-evenly;
+  align-items: center;
+}
+
+.calendar .calendar-inner .calendar-controls .calendar-next {
+  text-align: right;
+}
+
+.calendar .calendar-inner .calendar-controls .calendar-year-month .calendar-year-label,
+.calendar .calendar-inner .calendar-controls .calendar-year-month .calendar-month-label {
+  font-weight: 500;
+  font-size: 20px;
+}
+
+.calendar .calendar-inner .calendar-body .calendar-today {
+  background: $calendar-today-color;
+  border-radius: 50%;
+}
+
+.calendar .calendar-inner .calendar-body .calendar-today:hover {
+  border: 1px solid transparent;
+}
+
+.calendar .calendar-inner .calendar-controls .calendar-next a,
+.calendar .calendar-inner .calendar-controls .calendar-prev a {
+  color: $calendar-font-color;
+  font-family: arial, consolas, sans-serif;
+  font-size: 26px;
+  text-decoration: none;
+  padding: 4px 12px;
+  display: inline-block;
+  background: $calendar-nextprev-bg-color;
+  margin: 10px 0 10px 0;
+}
+
+.calendar .calendar-inner .calendar-controls .calendar-next a svg,
+.calendar .calendar-inner .calendar-controls .calendar-prev a svg {
+  height: 20px;
+  width: 20px;
+}
+
+.calendar .calendar-inner .calendar-controls .calendar-next a svg path,
+.calendar .calendar-inner .calendar-controls .calendar-prev a svg path {
+  fill: $next-prev-arrow-color;
+}
+
+.calendar .calendar-inner .calendar-body .prev-dates,
+.calendar .calendar-inner .calendar-body .next-dates {
+  color: $calendar-prevnext-date-color;
+}
+
+.calendar .calendar-inner .calendar-body .prev-dates:hover,
+.calendar .calendar-inner .calendar-body .next-dates:hover {
+  border: 1px solid transparent;
+  pointer-events: none;
+}

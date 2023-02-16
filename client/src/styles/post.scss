@@ -1,12 +1,12 @@
 @include mobile {
   .post-main {
     position: relative;
-    height: calc(calc(var(--vh, 1vh) * 100) - 4.5rem);
+    // height: calc(calc(var(--vh, 1vh) * 100) - 4.5rem);
     padding: 4.5rem 10% 0 10%;
     display: flex;
     flex-direction: column;
 
-    .test {
+    .crop-section {
       position: absolute;
       display: none;
       flex-direction: column;
@@ -17,7 +17,7 @@
       height: 100%;
       background-color: rgba(0, 0, 0, 0.5);
 
-      .test2 {
+      .crop-container {
         display: flex;
         align-content: center;
         justify-content: center;
@@ -32,7 +32,7 @@
           object-fit: fill;
         }
 
-        div {
+        .crop-box {
           position: absolute;
           width: 40vw;
           height: 40vw;
@@ -114,6 +114,13 @@
           margin-left: 0.25rem;
           font-size: 1.125rem;
           margin-bottom: 1rem;
+        }
+
+        //prettier-ignore
+        #date-input {
+          background-image: url('https://amatta-icons.s3.ap-northeast-2.amazonaws.com/icon/calendar.svg');
+          background-repeat: no-repeat;
+          background-size: 1.5rem;
         }
       }
     }
