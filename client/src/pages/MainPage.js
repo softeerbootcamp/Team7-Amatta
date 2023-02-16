@@ -15,31 +15,32 @@ const cards = [
     image: '../src/assets/starbucks2.jpg',
     shopName: 'TWOSOME PLACE',
     itemName: 'Americano & Tiramisu',
-    dateOfUse: '2023.07.07',
+    dateOfUse: '2023-07-07',
+    //dDay: new Date(dateOfUse) - new Date()
   },
   {
     image: '../src/assets/starbucks3.jpeg',
     shopName: 'STARBUCKS',
     itemName: 'Latte',
-    dateOfUse: '2023.07.22',
+    dateOfUse: '2023-07-22',
   },
   {
     image: '../src/assets/starbucks2.jpg',
     shopName: 'THE VENTI',
     itemName: 'Vanilla Latte',
-    dateOfUse: '2023.09.01',
+    dateOfUse: '2023-09-01',
   },
   {
     image: '../src/assets/starbucks3.jpeg',
     shopName: 'twosome place',
     itemName: 'Americano & Tiramisu',
-    dateOfUse: '2023.11.01',
+    dateOfUse: '2023-11-01',
   },
   {
     image: '../src/assets/starbucks2.jpg',
     shopName: 'starbucks',
     itemName: 'Latte',
-    dateOfUse: '2023.07.07',
+    dateOfUse: '2023-07-07',
   },
 ];
 
@@ -77,7 +78,6 @@ MainPage.temp = `
   `;
 //${cards.map((detail) => cardDetail(detail)).join('')}
 
-//const toggleDropdown = () => $.qs('.main-dropdown-section').classList.toggle('drop');
 const toggleDropdown = () => {
   const dropdownSection = $.qs('.main-dropdown-section');
   dropdownSection.classList.toggle('drop');
@@ -92,7 +92,7 @@ const removeHidden = (target) => target.classList.remove('hidden');
 
 const changeToDetail = (cardsSection) => cardsSection.classList.remove('list');
 
-const makeGrayScale = (target) => target.closest('.one-card-section').classList.add('gray');
+const makeGrayScale = (target) => target.closest('.card').classList.add('gray');
 //(target.closest('.one-card-section').style.filter = 'grayscale(1.0)');
 
 const makeUsedState = (targets) =>
@@ -112,8 +112,6 @@ const renderDetail = () =>
     makeUsedState,
     () => $.qs('.main-dropdown-section'),
     addHidden);
-
-const mainArticle = $.qs('.main-card-article');
 
 const changeToList = (cardsSection) => cardsSection.classList.add('list');
 

@@ -4,7 +4,7 @@ const cardDetail = (props) => {
   const { image, shopName, itemName, dateOfUse, required } = props;
 
   const cardDetailTemplate = `
-    <section class='one-card-section'>
+    <section class='one-card-section card'>
       <img class='card-image' src="${image}" alt='card-image' />
       <section class='card-info'>
         <div class='card-text'>
