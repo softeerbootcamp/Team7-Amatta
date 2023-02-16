@@ -166,7 +166,40 @@ const renderList = () =>
     () => $.qs('.main-dropdown-section'),
     removeHidden,
     () => $.qsa('.one-list-section'),
-    listEvent);
+    listEvent,
+    () => $.qsa('.card-delete-button'),
+    deleteListEvent,
+    () => $.qsa('.card-used-button'),
+    usedCardEvent);
+
+const findCardIndex = (target) => {
+  const cards = [...$.qsa('.one-list-section')];
+  const card = target.closest('.one-list-section');
+  const idx = cards.findIndex((ele) => ele === card);
+  return idx;
+};
+
+const deleteCard = (target) => {
+  const index = findCardIndex(target);
+  target.closest('.one-list-section').remove();
+  cards.splice(index, 1);
+  console.log(cards);
+};
+
+const deleteListEvent = (targets) => {
+  targets.forEach((target) => target.addEventListener('click', (e) => deleteCard(e.target)));
+};
+
+const usedStateCard = (target) => {
+  const index = findCardIndex(target);
+  const list = target.closest('.one-list-section');
+  list.classList.add('gray');
+  list.style.transform = 'translateX(0)';
+  target.closest('.card-actions-section').remove();
+};
+
+const usedCardEvent = (targets) =>
+  targets.forEach((target) => target.addEventListener('click', (e) => usedStateCard(e.target)));
 
 const navigateToPost = () => navigate('/post');
 

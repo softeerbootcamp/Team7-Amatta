@@ -255,6 +255,10 @@
           transition: transform 0.5s;
         }
 
+        &.gray {
+          filter: grayscale(1);
+        }
+
         .list-card-content {
           // width: 100%;
           width: calc(90vw - 2.5rem - 2px);
