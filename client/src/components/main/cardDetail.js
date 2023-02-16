@@ -8,10 +8,10 @@ const cardDetail = (props) => {
       <img class='card-image' src="${image}" alt='card-image' />
       <section class='card-info'>
         <div class='card-text'>
+          <div class='date-of-use'>${dateOfUse} </div>
           <div class='shop-name'> ${shopName} </div>
           <div class='item-name'> ${itemName} </div>
           <div class='item-price'> ${itemPrice.toLocaleString('ko-KR')} WON</div>
-          <div class='date-of-use'> due ${dateOfUse} </div>
         </div>
         <div class='card-button'>
           <button type="button" class='mark-used-button' name='mark-used-button'>사용 완료</button>

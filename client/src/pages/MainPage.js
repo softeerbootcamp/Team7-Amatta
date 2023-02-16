@@ -50,6 +50,13 @@ const cards = [
     itemPrice: 5000,
     dateOfUse: '2023-07-07',
   },
+  {
+    image: '../src/assets/starbucks3.jpeg',
+    shopName: 'THE VENTI',
+    itemName: 'Vanilla Latte',
+    itemPrice: 3500,
+    dateOfUse: '2023-09-01',
+  },
 ];
 
 const detailTemp = `
@@ -155,7 +162,7 @@ const handleTouchEnd = (e) => {
 
 const changeToList = (cardsSection) => cardsSection.classList.add('list');
 
-const scrollEvent = (target) => target.scrollIntoView();
+const scrollEvent = (targets) => targets.forEach((target) => target.scrollIntoView(true));
 
 const renderListTpl = () =>
   _.go(cards.map(cardList).join(''), $.el, $.replace($.qs('.cards-section')));
@@ -163,9 +170,6 @@ const renderListTpl = () =>
 // prettier-ignore
 const renderList = () => 
   _.go(
-    // cards.map(cardList).join(''), 
-    // $.el, 
-    // $.replace($.qs('.cards-section')),
     renderListTpl(),
     () => $.find('.cards-section')(),
     changeToList,
@@ -178,8 +182,12 @@ const renderList = () =>
     () => $.qsa('.card-used-button'),
     usedCardEvent,
     () => $.qs('.price-button'),
-    $.on('click', priceComparison));
-
+    $.on('click', priceComparison),
+    () => $.qs('.due-date-button'),
+    $.on('click', dateComparison));
+// ,
+//     () => $.qsa('.one-list-section'),
+//     scrollEvent
 const findCardIndex = (target) => {
   const cards = [...$.qsa('.one-list-section')];
   const card = target.closest('.one-list-section');
@@ -212,6 +220,13 @@ const usedCardEvent = (targets) =>
 const priceComparison = () => {
   cards.sort(function (comp1, comp2) {
     return comp1.itemPrice - comp2.itemPrice;
+  });
+  renderListTpl();
+};
+
+const dateComparison = () => {
+  cards.sort(function (comp1, comp2) {
+    return new Date(comp1.dateOfUse) - new Date(comp2.dateOfUse);
   });
   renderListTpl();
 };

@@ -210,11 +210,14 @@
 
           .item-price {
             margin-bottom: 0.25rem;
+            font-size: 1rem;
+            color: $gray700;
           }
 
           .date-of-use {
-            font-size: 1rem;
+            font-size: 0.75rem;
             color: $gray600;
+            margin-bottom: 0.75rem;
           }
         }
 
@@ -226,8 +229,8 @@
           border: none;
           background-color: $primary-color;
           color: $white-color;
-          margin-bottom: 2rem;
-          margin-top: 20%;
+          margin-bottom: 1rem;
+          margin-top: 10%;
         }
       }
 
@@ -241,7 +244,7 @@
         margin-bottom: 1rem;
         border-radius: 10px;
         //border: 1px solid $primary-color;
-        box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+        box-shadow: inset -3px -2px 3px 0px rgb(0 0 0 / 16%), 0 3px 6px rgba(0, 0, 0, 0.23);
         //border-bottom: 1px solid $primary-color;
         padding: 1rem;
 
@@ -294,8 +297,8 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            color: white;
-            border-radius: 6px;
+            color: $white-color;
+            border-radius: 0.5rem;
             text-align: center;
           }
 
@@ -310,7 +313,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            border-radius: 6px;
+            border-radius: 0.5rem;
             color: $white-color;
           }
         }
@@ -318,7 +321,7 @@
         .card-list-image {
           max-height: 6rem;
           width: 6.5rem;
-          border-radius: 10px;
+          border-radius: 0.625rem;
           border: 1px solid $gray300;
         }
 
