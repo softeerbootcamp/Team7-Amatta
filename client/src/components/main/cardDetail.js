@@ -1,7 +1,7 @@
 import { SERVER_URL } from '@/constants/constant.js';
 
 const cardDetail = (props) => {
-  const { image, shopName, itemName, dateOfUse, required } = props;
+  const { image, shopName, itemName, dateOfUse, itemPrice, required } = props;
 
   const cardDetailTemplate = `
     <section class='one-card-section'>
@@ -10,6 +10,7 @@ const cardDetail = (props) => {
         <div class='card-text'>
           <div class='shop-name'> ${shopName} </div>
           <div class='item-name'> ${itemName} </div>
+          <div class='item-price'> ${itemPrice.toLocaleString('ko-KR')} WON</div>
           <div class='date-of-use'> due ${dateOfUse} </div>
         </div>
         <div class='card-button'>

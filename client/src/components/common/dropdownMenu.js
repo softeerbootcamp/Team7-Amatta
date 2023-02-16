@@ -11,8 +11,8 @@ const dropdownMenu = () => {
       <img class='main-dropdown-image' src='${dropdownIconUrl}' alt='dropdown-image' />
     </button>
     <ul class="dropdown-list">
-      <li>마감순</li>
-      <li>금액순</li>
+      <li class="due-date-button">마감순</li>
+      <li class="price-button">금액순</li>
     </ul>
   `;
 

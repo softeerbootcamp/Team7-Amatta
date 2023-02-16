@@ -143,7 +143,7 @@
       &.list {
         // width: 90vw !important;
         flex-direction: column;
-        overflow: hidden;
+        overflow-x: hidden;
 
         -ms-overflow-style: none;
         scrollbar-width: none;
@@ -192,7 +192,7 @@
           align-items: center;
           justify-content: space-around;
           text-align: center;
-          margin-top: 15%;
+          margin-top: 10%;
 
           .shop-name {
             color: $gray500;
@@ -208,8 +208,12 @@
             color: $gray900;
           }
 
+          .item-price {
+            margin-bottom: 0.25rem;
+          }
+
           .date-of-use {
-            font-size: 1.125rem;
+            font-size: 1rem;
             color: $gray600;
           }
         }
@@ -223,7 +227,7 @@
           background-color: $primary-color;
           color: $white-color;
           margin-bottom: 2rem;
-          margin-top: 30%;
+          margin-top: 20%;
         }
       }
 

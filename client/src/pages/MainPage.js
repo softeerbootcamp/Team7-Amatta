@@ -19,33 +19,35 @@ const cards = [
     image: '../src/assets/starbucks2.jpg',
     shopName: 'TWOSOME PLACE',
     itemName: 'Americano & Tiramisu',
-    itemPrice: '5,000 WON',
+    itemPrice: 11000,
     dateOfUse: '2023-07-07',
-    //dDay: new Date(dateOfUse) - new Date()
   },
   {
     image: '../src/assets/starbucks3.jpeg',
     shopName: 'STARBUCKS',
     itemName: 'Latte',
-    itemPrice: '5,000 WON',
+    itemPrice: 5000,
     dateOfUse: '2023-07-22',
   },
   {
     image: '../src/assets/starbucks2.jpg',
     shopName: 'THE VENTI',
     itemName: 'Vanilla Latte',
+    itemPrice: 3500,
     dateOfUse: '2023-09-01',
   },
   {
     image: '../src/assets/starbucks3.jpeg',
     shopName: 'twosome place',
     itemName: 'Americano & Tiramisu',
+    itemPrice: 11000,
     dateOfUse: '2023-11-01',
   },
   {
     image: '../src/assets/starbucks2.jpg',
     shopName: 'starbucks',
     itemName: 'Latte',
+    itemPrice: 5000,
     dateOfUse: '2023-07-07',
   },
 ];
@@ -155,12 +157,16 @@ const changeToList = (cardsSection) => cardsSection.classList.add('list');
 
 const scrollEvent = (target) => target.scrollIntoView();
 
+const renderListTpl = () =>
+  _.go(cards.map(cardList).join(''), $.el, $.replace($.qs('.cards-section')));
+
 // prettier-ignore
 const renderList = () => 
   _.go(
-    cards.map(cardList).join(''), 
-    $.el, 
-    $.replace($.qs('.cards-section')),
+    // cards.map(cardList).join(''), 
+    // $.el, 
+    // $.replace($.qs('.cards-section')),
+    renderListTpl(),
     () => $.find('.cards-section')(),
     changeToList,
     () => $.qs('.main-dropdown-section'),
@@ -170,7 +176,9 @@ const renderList = () =>
     () => $.qsa('.card-delete-button'),
     deleteListEvent,
     () => $.qsa('.card-used-button'),
-    usedCardEvent);
+    usedCardEvent,
+    () => $.qs('.price-button'),
+    $.on('click', priceComparison));
 
 const findCardIndex = (target) => {
   const cards = [...$.qsa('.one-list-section')];
@@ -200,6 +208,13 @@ const usedStateCard = (target) => {
 
 const usedCardEvent = (targets) =>
   targets.forEach((target) => target.addEventListener('click', (e) => usedStateCard(e.target)));
+
+const priceComparison = () => {
+  cards.sort(function (comp1, comp2) {
+    return comp1.itemPrice - comp2.itemPrice;
+  });
+  renderListTpl();
+};
 
 const navigateToPost = () => navigate('/post');
 
