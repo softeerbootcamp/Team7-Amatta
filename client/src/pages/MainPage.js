@@ -10,11 +10,16 @@ const listIconUrl = `${SERVER_URL.IMG}icon/list-icon.svg`;
 const dropdownIconUrl = `${SERVER_URL.IMG}icon/angle-down.svg`;
 const plusIconUrl = `${SERVER_URL.IMG}icon/plus.svg`;
 
+let touchStartX = 0;
+let touchEndX = 0;
+let isSwipping = false;
+
 const cards = [
   {
     image: '../src/assets/starbucks2.jpg',
     shopName: 'TWOSOME PLACE',
     itemName: 'Americano & Tiramisu',
+    itemPrice: '5,000 WON',
     dateOfUse: '2023-07-07',
     //dDay: new Date(dateOfUse) - new Date()
   },
@@ -22,6 +27,7 @@ const cards = [
     image: '../src/assets/starbucks3.jpeg',
     shopName: 'STARBUCKS',
     itemName: 'Latte',
+    itemPrice: '5,000 WON',
     dateOfUse: '2023-07-22',
   },
   {
@@ -92,8 +98,7 @@ const removeHidden = (target) => target.classList.remove('hidden');
 
 const changeToDetail = (cardsSection) => cardsSection.classList.remove('list');
 
-const makeGrayScale = (target) => target.closest('.card').classList.add('gray');
-//(target.closest('.one-card-section').style.filter = 'grayscale(1.0)');
+const makeGrayScale = (target) => target.closest('.one-card-section').classList.add('gray');
 
 const makeUsedState = (targets) =>
   targets.forEach((button) => button.addEventListener('click', (e) => makeGrayScale(e.target)));
@@ -113,6 +118,39 @@ const renderDetail = () =>
     () => $.qs('.main-dropdown-section'),
     addHidden);
 
+const listEvent = (targets) => {
+  targets.forEach((card) => {
+    card.addEventListener('touchstart', handleTouchStart);
+    card.addEventListener('touchmove', handleTouchMove);
+    card.addEventListener('touchend', handleTouchEnd);
+  });
+};
+
+const handleTouchStart = (e) => (touchStartX = e.touches[0].clientX);
+
+const handleTouchMove = (e) => (touchEndX = e.touches[0].clientX);
+
+const handleTouchEnd = (e) => {
+  const touchDeltaX = touchEndX - touchStartX;
+  const card = e.currentTarget;
+  let isSwippingRight = card.classList.contains('swiped-right');
+  let isSwippingLeft = card.classList.contains('swiped-left');
+
+  if (touchDeltaX > 20 && !isSwipping && !isSwippingLeft) {
+    isSwipping = true;
+    card.classList.add('swiped-right');
+  } else if (touchDeltaX < -20 && !isSwipping && !isSwippingRight) {
+    isSwipping = true;
+    card.classList.add('swiped-left');
+  } else if (touchDeltaX < -20 && isSwipping && !isSwippingLeft) {
+    card.classList.remove('swiped-right');
+    isSwipping = false;
+  } else if (touchDeltaX > 20 && isSwipping && !isSwippingRight) {
+    card.classList.remove('swiped-left');
+    isSwipping = false;
+  }
+};
+
 const changeToList = (cardsSection) => cardsSection.classList.add('list');
 
 const scrollEvent = (target) => target.scrollIntoView();
@@ -120,13 +158,15 @@ const scrollEvent = (target) => target.scrollIntoView();
 // prettier-ignore
 const renderList = () => 
   _.go(
-    cards.map((detail) => cardList(detail)).join(''), 
+    cards.map(cardList).join(''), 
     $.el, 
     $.replace($.qs('.cards-section')),
     () => $.find('.cards-section')(),
     changeToList,
     () => $.qs('.main-dropdown-section'),
-    removeHidden);
+    removeHidden,
+    () => $.qsa('.one-list-section'),
+    listEvent);
 
 const navigateToPost = () => navigate('/post');
 
