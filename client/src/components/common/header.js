@@ -1,9 +1,10 @@
 import { SERVER_URL } from '@/constants/constant';
+import { navigate } from '@/core/router';
 import { _ } from '@/utils/customFx';
 import { $ } from '@/utils';
 
 const header = (props) => {
-  const { color, label, target } = props;
+  const { color, label } = props;
   const mintLogoUrl = `${SERVER_URL.IMG}logo/logo-mint.png`;
   const whiteLogoUrl = `${SERVER_URL.IMG}logo/logo-white.png`;
   const leftArrowIconUrl = `${SERVER_URL.IMG}icon/arrow-left.svg`;
@@ -25,7 +26,11 @@ const header = (props) => {
     <section class="white-header-section">
       <img class="back-button" src="${leftArrowIconUrl}" alt="back-button" />
       <section class="logo-section">
-        <img class="small-logo-mint" src="${mintLogoUrl}" alt="small-logo-mint" />
+        ${
+          label
+            ? `${label}`
+            : `<img class="small-logo-mint" src="${mintLogoUrl}" alt="small-logo-mint" />`
+        }
       </section>
     </section>
   `;
@@ -36,17 +41,21 @@ const header = (props) => {
       </header>
     `;
 
+  const handleEvent = (fragment) => {
+    _.go(
+      fragment,
+      $.find('.small-logo-white'),
+      $.on('click', () => navigate('/')),
+    );
+  };
+
   // prettier-ignore
-  const render = () =>
+  const appendHeader = () =>
     _.go(
       headerTemp,
       $.el,
-      $.prepend($.qs(`${target}`)));
-
-  // prettier-ignore
-  const appendHeader = () => 
-    _.go(
-      render());
+      (fragment) => $.prepend(fragment, $.qs('#root')),
+      handleEvent);
 
   return appendHeader;
 };

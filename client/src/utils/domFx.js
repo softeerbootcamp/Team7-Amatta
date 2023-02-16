@@ -30,7 +30,7 @@ $.insert = _.curry((child, parent) => {
 $.prepend = _.curry((child, parent) => {
   parent.prepend(child);
 
-  return child;
+  return parent;
 });
 
 $.closest = _.curry((sel, el) => el.closest(sel));

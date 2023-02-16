@@ -1,6 +1,6 @@
 import { SERVER_URL, INPUT } from '@/constants/constant';
 import { inputForm, header } from '@/components/common';
-import { sendImage, sendImageInfo } from '@/apis/post';
+import { sendImage } from '@/apis/post';
 import { IO, $, drag, CalendarControl } from '@/utils';
 
 import { _, L } from '@/utils/customFx';
@@ -19,7 +19,9 @@ PostPage.tpl = `
     <section class="crop-section">
       <div class="crop-container">
         <img class='crop-image'></img>
-        <div data-drag class='crop-box' style='width: 40vw; height:40vw;'></div>
+        <div data-drag class='crop-area' style='width: 40vw; height:40vw;'>
+          <div class="resizer" style="width: 15px; height: 15px; background-color: black; position: absolute; bottom: 0; right: 0; cursor: se-resize"></div>
+        </div>
       </div>
     </section>
     <section class="post-info-section">
@@ -71,7 +73,8 @@ const uploadImg = (file) => {
 
     $.qs('.crop-section').style.display = 'flex';
     $.qs('.crop-image').src = reader.result;
-    $.qs('.crop-box').addEventListener('touchstart', drag);
+    drag();
+    // $.qs('.crop-box').addEventListener('touchstart', drag);
   };
 
   return file;
@@ -162,6 +165,8 @@ const initiatePostPage = () => {
       CalendarControl(),
       () => appendCalendar(),
       () => PostPage.resizeImg());
+
+  header({color: 'mint'})()
 }
 
 export default initiatePostPage;
