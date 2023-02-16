@@ -1,7 +1,9 @@
-export default function drag() {
-  const cropArea = document.querySelector('.crop-area');
+export default function drag(canvas) {
+  const cropWrapper = document.querySelector('.crop-section');
+  const cropSection = cropWrapper.querySelector('.crop-container');
+  const cropImage = cropSection.querySelector('.crop-image');
+  const cropArea = cropSection.querySelector('.crop-area');
   const resizer = cropArea.querySelector('.resizer');
-  const cropSection = document.querySelector('.crop-container');
 
   let isDragging = false;
   let isResizing = false;
@@ -15,7 +17,7 @@ export default function drag() {
 
   cropArea.addEventListener('touchstart', dragStart);
   cropArea.addEventListener('touchend', dragEnd);
-  cropArea.addEventListener('touchmove', drag);
+  cropArea.addEventListener('touchmove', dragging);
 
   resizer.addEventListener('touchstart', startResize);
   resizer.addEventListener('touchend', stopResize);
@@ -31,10 +33,12 @@ export default function drag() {
   }
 
   function dragEnd() {
+    calculateSize();
+
     isDragging = false;
   }
 
-  function drag(e) {
+  function dragging(e) {
     if (isDragging) {
       e.preventDefault();
       currentX = e.touches[0].clientX - initialX;
@@ -66,20 +70,55 @@ export default function drag() {
   }
 
   function stopResize() {
+    calculateSize();
     isResizing = false;
   }
 
   function resize(e) {
     if (isResizing) {
       const cropAreaRect = cropArea.getBoundingClientRect();
-      const cropSectionRect = cropSection.getBoundingClientRect();
+      const cropImageRect = cropImage.getBoundingClientRect();
       const currentX = e.touches[0].clientX - initialX;
       const width = initialWidth + currentX;
 
-      if (e.touches[0].clientX > cropSectionRect.right || width - cropAreaRect.x / 2 < 100) return;
+      if (e.touches[0].clientX > cropImageRect.right || width - cropAreaRect.x / 2 < 100) return;
 
       cropArea.style.width = `${width - cropAreaRect.x / 2}px`;
       cropArea.style.height = `${width - cropAreaRect.x / 2}px`;
     }
+  }
+
+  function calculateSize() {
+    const cropAreaRect = cropArea.getBoundingClientRect();
+    const cropImageRect = cropImage.getBoundingClientRect();
+
+    const sourceX = cropAreaRect.x - cropImageRect.x;
+    const sourceY = cropAreaRect.y - cropImageRect.y;
+    const sourceWidth = cropAreaRect.width;
+    const sourceHeight = cropAreaRect.width;
+    const destX = 0;
+    const destY = 0;
+    const destWidth = sourceWidth;
+    const destHeight = sourceHeight;
+
+    canvas.width = sourceWidth;
+    canvas.height = sourceWidth;
+    const ctx = canvas.getContext('2d');
+
+    ctx.drawImage(
+      cropImage,
+      sourceX * 2,
+      sourceY * 2,
+      sourceWidth * 2,
+      sourceHeight * 2,
+      destX,
+      destY,
+      destWidth,
+      destHeight,
+    );
+
+    const resizedImage = canvas.toDataURL('image/png');
+
+    cropWrapper.style.display = 'none';
   }
 }

@@ -4,16 +4,16 @@ import { _ } from '@/utils/customFx';
 import { $ } from '@/utils';
 
 const header = (props) => {
-  const { color, label } = props;
-  const mintLogoUrl = `${SERVER_URL.IMG}logo/logo-mint.png`;
-  const whiteLogoUrl = `${SERVER_URL.IMG}logo/logo-white.png`;
-  const leftArrowIconUrl = `${SERVER_URL.IMG}icon/arrow-left.svg`;
-  const searchIconUrl = `${SERVER_URL.IMG}icon/search.svg`;
+  const { color, label, path } = props;
+  const MINT_LOGO_URL = `${SERVER_URL.IMG}logo/logo-mint.png`;
+  const WHITE_LOGO_URL = `${SERVER_URL.IMG}logo/logo-white.png`;
+  const LEFT_ARROW_URL = `${SERVER_URL.IMG}icon/left-arrow.svg`;
+  const SEARCH_ICON_URL = `${SERVER_URL.IMG}icon/search.svg`;
 
   const mintTemp = `
-    <img class='small-logo-white' src='${whiteLogoUrl}' alt='amatta-small-logo'/>
+    <img class='small-logo-white' src='${WHITE_LOGO_URL}' alt='amatta-small-logo'/>
     <section class='header-button-section'>
-      <img class="search-button" src = '${searchIconUrl}' alt='search-button' />
+      <img class="search-button" src = '${SEARCH_ICON_URL}' alt='search-button' />
       <section class="trigger">
         <span></span>
         <span></span>
@@ -24,29 +24,31 @@ const header = (props) => {
 
   const whiteTemp = `
     <section class="white-header-section">
-      <img class="back-button" src="${leftArrowIconUrl}" alt="back-button" />
-      <section class="logo-section">
+      <img class="left-arrow-button" src="${LEFT_ARROW_URL}" alt="back-button" />
         ${
           label
-            ? `${label}`
-            : `<img class="small-logo-mint" src="${mintLogoUrl}" alt="small-logo-mint" />`
+            ? `<h4 class="header-label">${label}</h4>`
+            : `<img class="small-logo-mint" src="${MINT_LOGO_URL}" alt="small-logo-mint" />`
         }
-      </section>
     </section>
   `;
 
   const headerTemp = `
-      <header class = 'header-main'>
+      <header class = 'header-main ${color}'>
         ${color === 'mint' ? mintTemp : whiteTemp}
       </header>
     `;
 
-  const handleEvent = (fragment) => {
+  const navigatePath = (fragment, target, path) =>
     _.go(
       fragment,
-      $.find('.small-logo-white'),
-      $.on('click', () => navigate('/')),
+      $.find(target),
+      $.on('click', () => navigate(path)),
     );
+
+  const handleEvent = (fragment) => {
+    if (!label) return navigatePath(fragment, '.small-logo-white', '/');
+    return navigatePath(fragment, '.left-arrow-button', path);
   };
 
   // prettier-ignore

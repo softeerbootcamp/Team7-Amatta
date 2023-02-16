@@ -10,7 +10,7 @@ AuthPage.temp = (path) => `
     <article class="auth-article">
       <section class="white-header-section">
         <img class="left-arrow-button" src="${LEFT_ARROW_URL}" alt="left-arrow-button" /> 
-        <h4 class="auth-type">${AUTH[path.replace('/', '')]}</h4>
+        <h4 class="header-label">${AUTH[path.replace('/', '')]}</h4>
       </section>
       <section class="auth-form-section">
         <form class="auth-form">

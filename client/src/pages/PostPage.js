@@ -12,7 +12,6 @@ const PostPage = {};
 
 const inputImage = $.qs('.upload-image');
 const canvas = $.qs('.canvas');
-const imageContainer = $.qs('.post-upload-section');
 
 PostPage.tpl = `
   <main class="post-main">
@@ -28,7 +27,7 @@ PostPage.tpl = `
       <section class="post-upload-section">
         <img class="camera-icon" src="${cameraIconURL}" alt="camera-icon"/>
         <input class="upload-image" type="file" accept="image/*" />
-        <!-- <canvas class="canvas"></canvas> -->
+        <canvas class="canvas"></canvas>
       </section>
       <section class="input-info-section">
         <div class="calendar"></div>
@@ -55,9 +54,15 @@ const visibleCalendar = () => {
 
 const uploadImg = (file) => {
   const reader = new FileReader();
+  const canvas = $.qs('.canvas');
+
+  const imageContainer = $.qs('.post-upload-section');
+
   reader.readAsDataURL(file[0]);
 
   reader.onload = async () => {
+    document.querySelector('header').remove();
+    header({ color: 'white', label: '이미지 크롭', path: '/post' })();
     // const [imageType, base64URL] = reader.result.split(';base64,');
     // const imageData = { gifticonBase64: base64URL, format: imageType.replace('data:image/', '') };
     // const response = await sendImage(imageData);
@@ -73,45 +78,12 @@ const uploadImg = (file) => {
 
     $.qs('.crop-section').style.display = 'flex';
     $.qs('.crop-image').src = reader.result;
-    drag();
-    // $.qs('.crop-box').addEventListener('touchstart', drag);
+
+    drag(canvas);
   };
 
   return file;
 };
-
-const resizeImg1 = () => {
-  const file = inputImage.files[0];
-  const reader = new FileReader();
-
-  reader.addEventListener('load', () => {
-    const image = new Image();
-
-    image.addEventListener('load', () => {
-      canvas.width = 300;
-      canvas.height = 300;
-
-      const ctx = canvas.getContext('2d');
-      ctx.drawImage(image, 0, 0, 300, 300);
-
-      const resizedImage = canvas.toDataURL('image/jpeg');
-      const img = document.createElement('img');
-      img.src = resizedImage;
-      imageContainer.appendChild(img);
-      // sendImageToServer(resizedImage);
-    });
-
-    image.src = reader.result;
-  });
-
-  reader.readAsDataURL(file);
-};
-
-// prettier-ignore
-PostPage.resizeImg = () =>
-  _.go(
-    $.qs('.submit1'),
-    $.on('click', resizeImg1));
 
 const addInputForm = (fragment) => (input) => inputForm({ ...input, target: fragment })();
 const postInputs = ({ type }) => POST_INPUT_TYPE.includes(type);
@@ -161,10 +133,9 @@ const initiatePostPage = () => {
     PostPage.render,
     PostPage.addEvents);
 
-    _.go(
-      CalendarControl(),
-      () => appendCalendar(),
-      () => PostPage.resizeImg());
+  _.go(
+    CalendarControl(),
+    () => appendCalendar());
 
   header({color: 'mint'})()
 }
