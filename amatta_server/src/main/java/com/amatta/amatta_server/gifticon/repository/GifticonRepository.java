@@ -37,8 +37,8 @@ public interface GifticonRepository extends CrudRepository<Gifticon, Long> {
             " VALUES (:uid, :image, :thumbnail, :brandName, :itemName, :barcode, :expiresAt, :usedAt, :price)")
     void addGifticon(
             @Param("uid")       long uid,
-            @Param("image")     byte[] image,
-            @Param("thumbnail") byte[] thumbnail,
+            @Param("image")     String image,
+            @Param("thumbnail") String thumbnail,
             @Param("brandName") String brandName,
             @Param("itemName")  String itemName,
             @Param("barcode")   String barcode,
