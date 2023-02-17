@@ -108,10 +108,13 @@ public class GifticonService {
         gifticonRepository.useGifticon(dto.getGifticonId());
     }
 
-
     private Users getUserBySessionId() {
         HttpServletRequest request = ((ServletRequestAttributes) Objects.requireNonNull(RequestContextHolder.getRequestAttributes())).getRequest();
         HttpSession session = request.getSession(false);
         return (Users) session.getAttribute("User");
+    }
+
+    public List<Gifticon> test() {
+        return gifticonRepository.test();
     }
 }

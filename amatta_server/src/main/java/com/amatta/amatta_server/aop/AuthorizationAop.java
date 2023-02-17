@@ -22,8 +22,8 @@ public class AuthorizationAop {
     @Before("within(@com.amatta.amatta_server.aop.ClassRequiresAuth *)")
     public void authorizeClass() throws NotAuthenticatedException, NullPointerException {
         logger.info("AuthorizationAop.authorize");
-
-        HttpServletRequest request = ((ServletRequestAttributes) Objects.requireNonNull(RequestContextHolder.getRequestAttributes())).getRequest();
+        //TODO: 테스트 후 복구!!!
+        /*HttpServletRequest request = ((ServletRequestAttributes) Objects.requireNonNull(RequestContextHolder.getRequestAttributes())).getRequest();
         HttpSession session = request.getSession(false);
         if(session == null) {
             throw new NotAuthenticatedException();
@@ -31,7 +31,7 @@ public class AuthorizationAop {
         Users user = (Users) session.getAttribute("User");
         if(user == null) {
             throw new NotAuthenticatedException();
-        }
+        }*/
     }
 
     @Before("@annotation(com.amatta.amatta_server.aop.MethodRequiresAuth)")
