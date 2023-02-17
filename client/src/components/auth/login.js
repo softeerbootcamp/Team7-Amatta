@@ -5,6 +5,9 @@ import { INPUT } from '@/constants/constant';
 import { $ } from '@/utils';
 import { _ } from '@/utils/customFx';
 
+import { initializeApp } from "firebase/app";
+import { getMessaging, getToken } from "firebase/messaging";
+
 const login = () => {
   const LOGIN_INPUT_TYPE = ['email', 'password'];
 
@@ -51,6 +54,31 @@ const login = () => {
 
     await loginU(userData);
     navigate('/card');
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyCsLBsvozvTnYlDH-5cS0A8X_AjV5o4jjM",
+      authDomain: "amatta-4934f.firebaseapp.com",
+      projectId: "amatta-4934f",
+      storageBucket: "amatta-4934f.appspot.com",
+      messagingSenderId: "196308516589",
+      appId: "1:196308516589:web:64545440aa5021e8a496e4",
+      measurementId: "G-4JBCQPF50K"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const messaging = getMessaging(app);
+
+    Notification.requestPermission().then((res)=>{
+      console.log(res);
+      if(res == 'granted') {
+        getToken(messaging, {vapidKey: "BPTfJAoUaJeyzryOu29dcccPl_1Db8OC4I_yBCC4qRTn_CfSHa_F10PoafMgkUkc7ynARCpU1RGyWRb-kAoDN4Q"})
+        .then((res)=>{
+          console.log(res);})
+        }
+      if(res == 'denied') {
+        window.alert("알림을 받으시려면 알림을 허용해주세요");
+      }  
+    }).catch((err)=>{console.log(err)});
   };
 
   // prettier-ignore
