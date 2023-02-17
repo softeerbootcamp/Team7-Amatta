@@ -13,4 +13,12 @@
   margin: 0;
   padding: 0;
   font-family: 'Nanum Gothic', sans-serif;
+  overflow-x: hidden;
+
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera*/
+  }
 }

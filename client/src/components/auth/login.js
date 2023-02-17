@@ -2,7 +2,7 @@ import { inputForm } from '@/components/common';
 import { loginU } from '@/apis/auth';
 import { navigate } from '@/core/router';
 import { INPUT } from '@/constants/constant';
-import { EventMonad, timer, $ } from '@/utils';
+import { $ } from '@/utils';
 import { _ } from '@/utils/customFx';
 
 const login = () => {
@@ -24,6 +24,9 @@ const login = () => {
 
     return newUserData;
   };
+
+  const addInputForm = (fragment) => (input) => inputForm({ ...input, target: fragment })();
+  const loginInputs = ({ type }) => LOGIN_INPUT_TYPE.includes(type);
 
   // const handleChange = EventMonad.of(({ target }) => {
   //   if (!target.validity.valid) return;
@@ -47,9 +50,6 @@ const login = () => {
     navigate('/card');
     loginU(userData);
   };
-  // prettier-ignore
-  // const composedEvents =
-  //   handleChange
 
   // prettier-ignore
   const handleSubmitData = (target) => 
@@ -64,11 +64,14 @@ const login = () => {
       $.on('input', handleChange))(target);
 
   // prettier-ignore
-  const loginInput = (target) =>
-    _.go(
-      INPUT,
-      _.filter((input) => LOGIN_INPUT_TYPE.includes(input.dataType)),
-      _.map((input) => inputForm({ ...input, target})()));
+  const appendInputForm = (fragment) => 
+      _.go(
+        INPUT,
+        _.filter(loginInputs),
+        // console.log,
+        ([passwordCheck, password, email]) => [password, email] ,
+        _.map(addInputForm(fragment)),
+        _.flatOne);
 
   // prettier-ignore
   const appendLogin = (fragment) => 
@@ -76,8 +79,7 @@ const login = () => {
       fragment,
       $.find('.auth-form-section'),
       $.insert(loginTemp),
-      $.find('.auth-form'),
-      loginInput,
+      appendInputForm,
       () => handleChangeInput(document),
       () => handleSubmitData(fragment),
       () => fragment);

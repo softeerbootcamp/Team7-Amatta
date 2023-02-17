@@ -1,18 +1,19 @@
 import { SERVER_URL } from '@/constants/constant';
+import { navigate } from '@/core/router';
 import { _ } from '@/utils/customFx';
 import { $ } from '@/utils';
 
 const header = (props) => {
-  const { color, label, target } = props;
-  const mintLogoUrl = `${SERVER_URL.IMG}logo/logo-mint.png`;
-  const whiteLogoUrl = `${SERVER_URL.IMG}logo/logo-white.png`;
-  const leftArrowIconUrl = `${SERVER_URL.IMG}icon/arrow-left.svg`;
-  const searchIconUrl = `${SERVER_URL.IMG}icon/search.svg`;
+  const { color, label, path } = props;
+  const MINT_LOGO_URL = `${SERVER_URL.IMG}logo/logo-mint.png`;
+  const WHITE_LOGO_URL = `${SERVER_URL.IMG}logo/logo-white.png`;
+  const LEFT_ARROW_URL = `${SERVER_URL.IMG}icon/left-arrow.svg`;
+  const SEARCH_ICON_URL = `${SERVER_URL.IMG}icon/search.svg`;
 
   const mintTemp = `
-    <img class='small-logo-white' src='${whiteLogoUrl}' alt='amatta-small-logo'/>
+    <img class='small-logo-white' src='${WHITE_LOGO_URL}' alt='amatta-small-logo'/>
     <section class='header-button-section'>
-      <img class="search-button" src = '${searchIconUrl}' alt='search-button' />
+      <img class="search-button" src = '${SEARCH_ICON_URL}' alt='search-button' />
       <section class="trigger">
         <span></span>
         <span></span>
@@ -23,30 +24,40 @@ const header = (props) => {
 
   const whiteTemp = `
     <section class="white-header-section">
-      <img class="back-button" src="${leftArrowIconUrl}" alt="back-button" />
-      <section class="logo-section">
-        <img class="small-logo-mint" src="${mintLogoUrl}" alt="small-logo-mint" />
-      </section>
+      <img class="left-arrow-button" src="${LEFT_ARROW_URL}" alt="back-button" />
+        ${
+          label
+            ? `<h4 class="header-label">${label}</h4>`
+            : `<img class="small-logo-mint" src="${MINT_LOGO_URL}" alt="small-logo-mint" />`
+        }
     </section>
   `;
 
   const headerTemp = `
-      <header class = 'header-main'>
+      <header class = 'header-main ${color}'>
         ${color === 'mint' ? mintTemp : whiteTemp}
       </header>
     `;
 
+  const navigatePath = (fragment, target, path) =>
+    _.go(
+      fragment,
+      $.find(target),
+      $.on('click', () => navigate(path)),
+    );
+
+  const handleEvent = (fragment) => {
+    if (!label) return navigatePath(fragment, '.small-logo-white', '/');
+    return navigatePath(fragment, '.left-arrow-button', path);
+  };
+
   // prettier-ignore
-  const render = () =>
+  const appendHeader = () =>
     _.go(
       headerTemp,
       $.el,
-      $.prepend($.qs(`${target}`)));
-
-  // prettier-ignore
-  const appendHeader = () => 
-    _.go(
-      render());
+      (fragment) => $.prepend(fragment, $.qs('#root')),
+      handleEvent);
 
   return appendHeader;
 };

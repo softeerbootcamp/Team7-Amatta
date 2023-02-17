@@ -131,6 +131,9 @@ const register = () => {
     await regiseterUser(data);
   };
 
+  const addInputForm = (fragment) => (input) => inputForm({ ...input, target: fragment })();
+  const registerInputs = ({ type }) => REGISTER_INPUT_TYPE.includes(type);
+
   // prettier-ignore
   const composedEvents = 
     handleChange
@@ -142,12 +145,6 @@ const register = () => {
     _.pipe(
       $.find('.auth-article'),
       $.on('input', composedEvents.value[0]))(target);
-
-  // prettier-ignore
-  const handleClickGoBack = (target) => {
-    _.pipe(
-      $.find('.left-arrow-button'),
-      $.on('click', composedEvents.value[2]))(target);}
 
   // prettier-ignore
   const handleClickEye = (target) =>
@@ -208,6 +205,14 @@ const register = () => {
       _.map((input) => inputForm({ ...input, target})()))
 
   // prettier-ignore
+  const appendInputForm = (fragment) => 
+      _.go(
+        INPUT,
+        _.filter(registerInputs),
+        _.map(addInputForm(fragment)),
+        _.flatOne);
+
+  // prettier-ignore
   const renderText = (textData) =>
     _.go(
       textData,
@@ -231,10 +236,8 @@ const register = () => {
       fragment,
       $.find('.auth-form-section'),
       $.insert(registerTemp),
-      $.find('.auth-form'),
-      renderInput,
+      appendInputForm,
       () => handleChangeInput(fragment),
-      () => handleClickGoBack(fragment),
       () => handleClickEye(fragment),
       () => validateEmail(fragment),
       () => validatePhone(fragment),

@@ -1,12 +1,11 @@
 @include mobile {
   .post-main {
     position: relative;
-    height: calc(calc(var(--vh, 1vh) * 100) - 4.5rem);
     padding: 4.5rem 10% 0 10%;
     display: flex;
     flex-direction: column;
 
-    .test {
+    .crop-section {
       position: absolute;
       display: none;
       flex-direction: column;
@@ -15,35 +14,32 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background-color: rgba(0, 0, 0, 0.5);
+      background-color: rgba(0, 0, 0, 0.7);
+      z-index: 5;
 
-      .test2 {
+      .crop-container {
         display: flex;
         align-content: center;
         justify-content: center;
         position: relative;
-        width: 100%;
+        margin: auto;
+        width: 90%;
         max-height: 80%;
 
         img {
-          max-width: 100%;
-          min-width: 90%;
+          position: relative;
+          width: 100%;
           height: 100%;
           object-fit: fill;
         }
 
-        div {
+        .crop-area {
           position: absolute;
-          width: 40vw;
-          height: 40vw;
           top: 0;
           left: 0;
-          // top: 50%;
-          // left: 50%;
-          // transform: translate(-50%, -50%);
-          // transform: translate(0, 0);
-          background-color: rgba(0, 0, 0, 0.5);
+          border: 1px solid $gray700;
           border-radius: 0.75rem;
+          background-color: rgb(255 255 255 / 40%);
         }
       }
 
@@ -66,6 +62,7 @@
       align-items: center;
 
       .post-upload-section {
+        position: relative;
         display: flex;
         align-content: center;
         justify-content: center;
@@ -89,7 +86,7 @@
         }
       }
 
-      .input-info-section {
+      .input-section {
         display: flex;
         flex-direction: column;
         width: 100%;
@@ -114,6 +111,12 @@
           margin-left: 0.25rem;
           font-size: 1.125rem;
           margin-bottom: 1rem;
+        }
+
+        #date-input {
+          background-image: url('https://amatta-icons.s3.ap-northeast-2.amazonaws.com/icon/calendar.svg');
+          background-repeat: no-repeat;
+          background-size: 1.5rem;
         }
       }
     }

@@ -4,28 +4,7 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-
-  .white-header-section {
-    position: relative;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100vw;
-    height: 4.5rem;
-    border-bottom: 1px solid $gray400;
-
-    .left-arrow-button {
-      position: absolute;
-      height: 1.5rem;
-      left: 1.5rem;
-      top: 1.5rem;
-    }
-
-    .auth-type {
-      font-weight: normal;
-      font-size: 1.375rem;
-    }
-  }
+  padding-top: 4.5rem;
 
   .auth-form-section {
     width: 80%;
@@ -48,7 +27,7 @@
       color: $gray400;
     }
 
-    .auth-form {
+    .input-section {
       margin-top: 2rem;
 
       #verification-code-input-section {

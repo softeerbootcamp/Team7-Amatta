@@ -17,6 +17,13 @@ const NAME_REG = '^[ㄱ-ㅎ|가-힣|a-z|A-Z|]+$';
 
 export const INPUT = [
   {
+    type: 'expirationDate',
+    name: 'date-input',
+    label: '유효 기간',
+    required: false,
+    readonly: 'readonly',
+  },
+  {
     type: 'price',
     name: 'price-input',
     label: '상품 가격',

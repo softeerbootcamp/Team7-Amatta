@@ -1,19 +1,15 @@
-import { SERVER_URL, AUTH } from '@/constants/constant';
+import { AUTH } from '@/constants/constant';
 import { register, login } from '@/components/auth';
+import { header } from '@/components/common';
 import { _ } from '@/utils/customFx';
 import { $ } from '@/utils';
 
 const AuthPage = {};
-const LEFT_ARROW_URL = `${SERVER_URL.IMG}icon/left-arrow.svg`;
 
-AuthPage.temp = (path) => `
+AuthPage.temp = `
     <article class="auth-article">
-      <section class="white-header-section">
-        <img class="left-arrow-button" src="${LEFT_ARROW_URL}" alt="left-arrow-button" /> 
-        <h4 class="auth-type">${AUTH[path.replace('/', '')]}</h4>
-      </section>
       <section class="auth-form-section">
-        <form class="auth-form">
+        <form class="input-section">
           <div class="auth-button-container">
             <input type="submit" class="auth-button" name="auth-button" value="완료" />
           </div>
@@ -33,16 +29,18 @@ AuthPage.appendComponent = (path) => (fragment) =>
 // prettier-ignore
 AuthPage.makeFragment = (path) => 
   _.go(
-    path,
     AuthPage.temp,
     $.el);
 // prettier-ignore
-const navigateAuth = (path) =>
+const navigateAuth = (path) => {
     _.go(
       path,
       AuthPage.makeFragment,
       AuthPage.appendComponent(path)(),
       $.replace($.qs('#root')));
+
+      header({color: 'white', label:`${AUTH[path.replace('/', '')]}`, path:'/' })();
+    }
 // () => AuthPage.renderComponent(),
 // ([f]) => f());
 

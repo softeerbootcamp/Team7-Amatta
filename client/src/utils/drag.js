@@ -1,112 +1,135 @@
-// export default function drag(event) {
-//   const elementToDrag = event.target.closest('[data-drag]');
+export default function drag(changeHeader) {
+  const cropWrapper = document.querySelector('.crop-section');
+  const submit = document.querySelector('.x-button');
+  const imageContainer = document.querySelector('.camera-icon');
+  const cropSection = cropWrapper.querySelector('.crop-container');
+  const cropImage = cropSection.querySelector('.crop-image');
+  const cropArea = cropSection.querySelector('.crop-area');
+  const resizer = cropArea.querySelector('.resizer');
 
-//   const startX = event.touches[0].clientX;
-//   const startY = event.touches[0].clientY;
-
-//   const origX = elementToDrag.offsetLeft;
-//   const origY = elementToDrag.offsetTop;
-
-//   const deltaX = startX - origX;
-//   const deltaY = startY - origY;
-
-//   function moveHandler(e) {
-//     elementToDrag.style.left = `${e.touches[0].clientX - deltaX}px`;
-//     elementToDrag.style.top = `${e.touches[0].clientY - deltaY}px`;
-
-//     e.stopPropagation();
-//   }
-
-//   function upHandler(e) {
-//     elementToDrag.removeEventListener('touchend', upHandler, true);
-//     elementToDrag.removeEventListener('touchmove', moveHandler, true);
-
-//     e.stopPropagation();
-//   }
-
-//   elementToDrag.addEventListener('touchmove', moveHandler, true);
-//   elementToDrag.addEventListener('touchend', upHandler, true);
-
-//   event.stopPropagation();
-//   event.preventDefault();
-// }
-
-export default function drag(e) {
-  let initialX = e.touches[0].clientX;
-  let initialY = e.touches[0].clientY;
+  let isDragging = false;
+  let isResizing = false;
   let currentX;
   let currentY;
-  let isResizing = false;
+  let initialX;
+  let initialY;
+  let xOffset = 0;
+  let yOffset = 0;
+  let initialWidth;
 
-  const element = e.target.closest('[data-drag]');
-  const image = document.querySelector('.asd2');
+  cropArea.addEventListener('touchstart', dragStart);
+  cropArea.addEventListener('touchend', dragEnd);
+  cropArea.addEventListener('touchmove', dragging);
 
-  const bottomRight =
-    element.getBoundingClientRect().bottom - initialY < 20 &&
-    element.getBoundingClientRect().right - initialX < 20;
-  if (bottomRight) {
-    isResizing = true;
+  resizer.addEventListener('touchstart', startResize);
+  resizer.addEventListener('touchend', stopResize);
+  resizer.addEventListener('touchmove', resize);
+
+  submit.addEventListener('click', drawCanvas);
+
+  function dragStart(e) {
+    initialX = e.touches[0].clientX - xOffset;
+    initialY = e.touches[0].clientY - yOffset;
+
+    if (e.target === cropArea) {
+      isDragging = true;
+    }
   }
 
-  const moveHandler = (event) => {
-    if (event.targetTouches.length === 1) {
-      event.preventDefault();
-      event.stopPropagation();
-      currentX = event.targetTouches[0].clientX;
-      currentY = event.targetTouches[0].clientY;
+  function dragEnd() {
+    isDragging = false;
+  }
 
-      if (isResizing) {
-        const diffX = currentX - initialX;
-        const diffY = currentY - initialY;
-        const currentWidth = element.offsetWidth;
-        const currentHeight = element.offsetHeight;
-        const newWidth = currentWidth + diffX;
-        const newHeight = currentHeight + diffY;
+  function dragging(e) {
+    if (isDragging) {
+      e.preventDefault();
+      currentX = e.touches[0].clientX - initialX;
+      currentY = e.touches[0].clientY - initialY;
 
-        if (
-          newWidth >= 50 &&
-          newWidth <= image.offsetWidth - element.offsetLeft &&
-          newHeight >= 50 &&
-          newHeight <= image.offsetHeight - element.offsetTop
-        ) {
-          // element.style.left = `${diffX}px`;
-          console.log(newWidth / currentWidth, newWidth / currentWidth);
-          element.style.transform = `scale(${newWidth / currentWidth}, ${newWidth / currentWidth})`;
-        }
-        // initialX = currentX;
-        // initialY = currentY;
-      } else {
-        const diffX = currentX - initialX;
-        const diffY = currentY - initialY;
-        const currentLeft = element.offsetLeft;
-        const currentTop = element.offsetTop;
-        const newLeft = currentLeft + diffX;
-        const newTop = currentTop + diffY;
+      const sectionRect = e.currentTarget.parentElement.getBoundingClientRect();
+      const cropAreaRect = cropArea.getBoundingClientRect();
 
-        if (
-          newLeft >= 0 &&
-          newLeft + element.offsetWidth <= image.offsetWidth &&
-          newTop >= 0 &&
-          newTop + element.offsetHeight <= image.offsetHeight
-        ) {
-          console.log(currentY, initialX);
+      const maxX = sectionRect.width - cropAreaRect.width;
+      const maxY = sectionRect.height - cropAreaRect.height;
 
-          element.style.left = `${newLeft}px`;
-          element.style.top = `${newTop}px`;
-          element.style.transform = `scale(${element.offsetWidth / element.offsetWidth}, ${
-            element.offsetHeight / element.offsetHeight
-          })`;
-        }
-        initialX = currentX;
-        initialY = currentY;
-      }
+      xOffset = currentX < 0 ? 0 : currentX > maxX ? maxX : currentX;
+      yOffset = currentY < 0 ? 0 : currentY > maxY ? maxY : currentY;
+
+      setTranslate(xOffset, yOffset, cropArea);
     }
-  };
+  }
 
-  element.addEventListener('touchmove', moveHandler);
+  function setTranslate(xPos, yPos, el) {
+    el.style.transform = `translate3d(${xPos}px, ${yPos}px, 0)`;
+  }
 
-  element.addEventListener('touchend', () => {
+  function startResize(e) {
+    initialWidth = cropArea.clientWidth;
+    isResizing = true;
+    initialX = e.touches[0].clientX;
+    initialY = e.touches[0].clientY;
+    e.preventDefault();
+  }
+
+  function stopResize() {
     isResizing = false;
-    element.removeEventListener('touchmove', moveHandler);
-  });
+  }
+
+  function resize(e) {
+    if (isResizing) {
+      const cropAreaRect = cropArea.getBoundingClientRect();
+      const cropImageRect = cropImage.getBoundingClientRect();
+      const currentX = e.touches[0].clientX - initialX;
+      const width = initialWidth + currentX;
+
+      if (e.touches[0].clientX > cropImageRect.right || width - cropAreaRect.x / 2 < 100) return;
+
+      cropArea.style.width = `${width - cropAreaRect.x / 2}px`;
+      cropArea.style.height = `${width - cropAreaRect.x / 2}px`;
+    }
+  }
+
+  function drawCanvas() {
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d');
+
+    const cropAreaRect = cropArea.getBoundingClientRect();
+    const cropImageRect = cropImage.getBoundingClientRect();
+
+    const sourceX = cropAreaRect.x - cropImageRect.x;
+    const sourceY = cropAreaRect.y - cropImageRect.y;
+    const sourceWidth = cropAreaRect.width;
+    const sourceHeight = cropAreaRect.width;
+    const destX = 0;
+    const destY = 0;
+    const destWidth = sourceWidth;
+    const destHeight = sourceHeight;
+
+    canvas.width = sourceWidth;
+    canvas.height = sourceWidth;
+
+    ctx.drawImage(
+      cropImage,
+      sourceX * 2,
+      sourceY * 2,
+      sourceWidth * 2,
+      sourceHeight * 2,
+      destX,
+      destY,
+      destWidth,
+      destHeight,
+    );
+
+    const resizedImage = canvas.toDataURL('image/png');
+
+    changeHeader('mint');
+
+    imageContainer.src = resizedImage;
+    imageContainer.style.width = '100%';
+    imageContainer.style.objectFit = 'contain';
+    imageContainer.style.filter = 'none';
+
+    setTranslate(0, 0, cropArea);
+    cropWrapper.style.display = 'none';
+  }
 }

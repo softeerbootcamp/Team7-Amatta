@@ -1,26 +1,95 @@
 .header-main {
   width: 100%;
+  z-index: 1;
   height: 4.5rem;
   background-color: $primary-color;
   position: fixed;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  z-index: 10;
   top: 0;
 
+  &.white {
+    background-color: $white-color;
+
+    .white-header-section {
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100vw;
+      height: 4.5rem;
+      border-bottom: 1px solid $gray400;
+
+      .left-arrow-button {
+        position: absolute;
+        height: 1.5rem;
+        left: 1.5rem;
+        top: 1.5rem;
+      }
+
+      .header-label {
+        font-weight: normal;
+        font-size: 1.375rem;
+      }
+    }
+  }
+
   .small-logo-white {
-    height: 2rem;
+    height: 1.5rem;
     margin-left: 5%;
   }
 
   .header-button-section {
+    display: flex;
     justify-content: space-between;
     margin-right: 5%;
   }
 
   .search-button {
-    height: 2rem;
-    width: 2rem;
+    height: 1.75rem;
+    width: 1.75rem;
     filter: invert(100%) sepia(0%) saturate(0%) hue-rotate(113deg) brightness(104%) contrast(101%);
+  }
+
+  /* Header - Trigger */
+  .trigger {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    width: 1.75rem;
+    height: 1.75rem;
+    margin-left: 1rem;
+    align-items: flex-end;
+
+    span {
+      height: 0.175rem;
+      width: 100%;
+      background-color: $white-color;
+      transition: 0.5s;
+
+      &:nth-child(2) {
+        width: 80%;
+      }
+    }
+
+    &.active {
+      align-items: center;
+      justify-content: center;
+      span {
+        width: 70%;
+
+        &:nth-child(1) {
+          transform: rotate(45deg);
+        }
+        &:nth-child(2) {
+          display: none;
+        }
+        &:nth-child(3) {
+          transform: rotate(-45deg);
+        }
+      }
+    }
   }
 }

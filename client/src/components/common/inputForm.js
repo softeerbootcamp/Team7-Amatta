@@ -12,6 +12,7 @@ const inputForm = (props) => {
     target,
     maxlength = 20,
     pattern = null,
+    readonly = null,
     dataType = '',
     placeholder = ' ',
   } = props;
@@ -20,7 +21,9 @@ const inputForm = (props) => {
 
   const inputFormTemplate = `
     <section class="input-section" id="${name}-section">
-      <input type="${type}" class="text-input" id="${name}" ${pattern && `pattern="${pattern}"`} 
+      <input type="${type}" class="text-input" id="${name}" ${readonly} ${
+    pattern && `pattern="${pattern}"`
+  } 
         name="${name}" required="${required}" placeholder="${placeholder}" data-input="${dataType}" autocomplete="off" maxlength=${maxlength}/>
       <label for="${name}" class="input-label">
         ${label}
@@ -35,7 +38,7 @@ const inputForm = (props) => {
   const appendForm = () => {
     _.go(
       inputFormTemplate,
-      (tmp) => $.insert(tmp, $.qs('.input-info-section', target)));
+      (tmp) => $.insert(tmp, $.qs('.input-section', target)));
 
     return target;
   };
