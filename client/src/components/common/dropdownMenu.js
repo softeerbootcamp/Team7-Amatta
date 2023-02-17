@@ -10,31 +10,12 @@ const dropdownMenu = () => {
       등록순
       <img class='main-dropdown-image' src='${dropdownIconUrl}' alt='dropdown-image' />
     </button>
-    <ul class="dropdown-list hidden">
-      <li>마감순</li>
-      <li>금액순</li>
+    <ul class="dropdown-list">
+      <li class="due-date-button">마감순</li>
+      <li class="price-button">금액순</li>
     </ul>
   `;
 
-  // const dropdownSection = $.qs('.main-dropdown-section');
-  // // document.querySelector('.dropdown-btn').addEventListener('click', function() {
-  // // document.querySelector('.dropdown').classList.toggle('active');
-  // const toggleDropdown = () => dropdownSection.classList.toggle('drop');
-
-  // //prettier-ignore
-  // const render = () =>
-  //   _.go(
-  //     dropdownTemp,
-  //     $.el,
-  //     $.prepend($.qs('.dropdown-section')));
-
-  // // prettier-ignore
-  // const dropDown = () =>
-  //   _.go(
-  //     render(),
-  //     () => $.qs('.main-dropdown-button'),
-  //     $.on('click', toggleDropdown)
-  //   );
   return dropdownTemp;
 };
 

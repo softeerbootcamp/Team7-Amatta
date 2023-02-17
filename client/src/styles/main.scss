@@ -21,6 +21,7 @@
       display: flex;
       justify-content: space-between;
       margin-bottom: 5%;
+      height: 2.5rem;
 
       .show-card-section {
         display: flex;
@@ -40,6 +41,10 @@
       .main-dropdown-section {
         height: 2.5rem;
         z-index: 9;
+
+        &.hidden {
+          display: none;
+        }
 
         .main-dropdown-button {
           display: flex;
@@ -67,10 +72,7 @@
           opacity: 0;
           transition: opacity 0.3s ease-in-out;
           z-index: 5;
-
-          // &.hidden {
-          //   display: none;
-          // }
+          pointer-events: none;
 
           li {
             background-color: #fff;
@@ -101,6 +103,7 @@
 
         &.drop > .dropdown-list {
           opacity: 1;
+          pointer-events: auto;
 
           li {
             opacity: 0;
@@ -140,6 +143,14 @@
       &.list {
         // width: 90vw !important;
         flex-direction: column;
+        overflow-x: hidden;
+
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+
+        &::-webkit-scrollbar {
+          display: none;
+        }
 
         section:nth-last-of-type(1) {
           border: none;
@@ -164,6 +175,10 @@
         margin-right: 2.5rem;
         width: calc(90vw - 2.5rem - 2px);
 
+        &.gray {
+          filter: grayscale(1);
+        }
+
         .card-image {
           max-height: 55%;
           //height: 55%;
@@ -177,8 +192,7 @@
           align-items: center;
           justify-content: space-around;
           text-align: center;
-          margin-top: 15%;
-          // margin: 10% 0;
+          margin-top: 10%;
 
           .shop-name {
             color: $gray500;
@@ -194,9 +208,16 @@
             color: $gray900;
           }
 
+          .item-price {
+            margin-bottom: 0.25rem;
+            font-size: 1rem;
+            color: $gray700;
+          }
+
           .date-of-use {
-            font-size: 1.125rem;
+            font-size: 0.75rem;
             color: $gray600;
+            margin-bottom: 0.75rem;
           }
         }
 
@@ -208,8 +229,8 @@
           border: none;
           background-color: $primary-color;
           color: $white-color;
-          margin-bottom: 2rem;
-          margin-top: 30%;
+          margin-bottom: 1rem;
+          margin-top: 10%;
         }
       }
 
@@ -217,17 +238,90 @@
         display: flex;
         flex-direction: row;
         height: 30%;
-        width: 72vw;
-        //margin-bottom: 1rem;
-        // border-radius: 10px;
-        // border: 1px solid $primary-color;
-        border-bottom: 1px solid $primary-color;
+        position: relative;
+
+        //width: calc(72vw + 148px);
+        margin-bottom: 1rem;
+        border-radius: 10px;
+        //border: 1px solid $primary-color;
+        box-shadow: inset -3px -2px 3px 0px rgb(0 0 0 / 16%), 0 3px 6px rgba(0, 0, 0, 0.23);
+        //border-bottom: 1px solid $primary-color;
         padding: 1rem;
+
+        touch-action: none;
+        transition: transform 0.2s ease-in-out;
+        //margin-left: -74px;
+
+        &.swiped-right {
+          transform: translateX(64px);
+          transition: transform 0.5s;
+        }
+
+        &.swiped-left {
+          transform: translateX(-64px);
+          transition: transform 0.5s;
+        }
+
+        &.gray {
+          filter: grayscale(1);
+        }
+
+        .list-card-content {
+          // width: 100%;
+          width: calc(90vw - 2.5rem - 2px);
+          height: 100%;
+          display: flex;
+        }
+
+        .card-actions-section {
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: calc(90vw - 2.5rem - 2px + 128px);
+          height: 100%;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          transition: transform 0.2s ease-in-out;
+          margin-left: -64px;
+
+          .card-used-button {
+            background-color: $primary-color;
+            width: 4rem;
+            height: 100%;
+            color: black;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: transform 0.2s ease-in-out;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: $white-color;
+            border-radius: 0.5rem;
+            text-align: center;
+          }
+
+          .card-delete-button {
+            background-color: $pink-color;
+            width: 4rem;
+            height: 100%;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: transform 0.2s ease-in-out;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 0.5rem;
+            color: $white-color;
+          }
+        }
 
         .card-list-image {
           max-height: 6rem;
           width: 6.5rem;
-          border-radius: 10px;
+          border-radius: 0.625rem;
           border: 1px solid $gray300;
         }
 
