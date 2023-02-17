@@ -1,6 +1,6 @@
 import { SERVER_URL } from '@/constants/constant';
 import { cardDetail, cardList } from '@/components/main';
-import { dropdownMenu } from '@/components/common';
+import { dropdownMenu, header } from '@/components/common';
 import { $, slider } from '@/utils';
 import { _ } from '@/utils/customFx';
 import { navigate } from '@/core/router';
@@ -162,7 +162,7 @@ const handleTouchEnd = (e) => {
 
 const changeToList = (cardsSection) => cardsSection.classList.add('list');
 
-const scrollEvent = (targets) => targets.forEach((target) => target.scrollIntoView(true));
+const scrollEvent = (target) => target.scrollIntoView(true);
 
 const renderListTpl = () =>
   _.go(cards.map(cardList).join(''), $.el, $.replace($.qs('.cards-section')));
@@ -247,7 +247,7 @@ MainPage.render = () =>
       $.replace($.qs('#root')));
 
 // prettier-ignore
-const navigateMain = () => 
+const navigateMain = () => {
     _.go(
       MainPage.render(),
       slider(),
@@ -260,5 +260,8 @@ const navigateMain = () =>
       () => $.qs('.list-card-button'),
       $.on('click', renderList),
       () => MainPage.handleClickaddCard());
+
+      header({color: 'mint'})();
+    }
 
 export default navigateMain;
