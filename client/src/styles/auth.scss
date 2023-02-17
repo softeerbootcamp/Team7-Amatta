@@ -4,6 +4,7 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  padding-top: 4.5rem;
 
   .auth-form-section {
     width: 80%;
@@ -26,7 +27,7 @@
       color: $gray400;
     }
 
-    .auth-form {
+    .input-section {
       margin-top: 2rem;
 
       #verification-code-input-section {

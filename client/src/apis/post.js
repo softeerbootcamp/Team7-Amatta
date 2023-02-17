@@ -13,7 +13,7 @@ export const sendImage = async (imageData) => {
 export const sendImageInfo = async (imageInfo) => {
   try {
     const response = await client.post('/gifticon/map', imageInfo);
-    console.log(response.data);
+
     return response.data;
   } catch (error) {
     console.error(error);

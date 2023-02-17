@@ -73,12 +73,6 @@
         margin: 3.5rem 0;
         overflow: hidden;
 
-        .canvas {
-          position: absolute;
-          top: 0;
-          left: 0;
-        }
-
         img {
           z-index: -1;
           width: 30%;
@@ -92,7 +86,7 @@
         }
       }
 
-      .input-info-section {
+      .input-section {
         display: flex;
         flex-direction: column;
         width: 100%;

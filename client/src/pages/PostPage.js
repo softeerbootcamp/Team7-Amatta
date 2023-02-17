@@ -1,17 +1,24 @@
 import { SERVER_URL, INPUT } from '@/constants/constant';
 import { inputForm, header } from '@/components/common';
-import { sendImage } from '@/apis/post';
+import { sendImage, sendImageInfo } from '@/apis/post';
 import { IO, $, drag, CalendarControl } from '@/utils';
 
 import { _, L } from '@/utils/customFx';
 
 const POST_INPUT_TYPE = ['menu', 'shop', 'price', 'expirationDate'];
+const CAMERA_ICON_URL = `${SERVER_URL.IMG}icon/camera.svg`;
+const ARROW_RIGHT_ICON_URL = `${SERVER_URL.IMG}icon/arrow-right.svg`;
+const X_ICON_URL = `${SERVER_URL.IMG}icon/x.svg`;
 const $root = $.qs('#root');
-const cameraIconURL = `${SERVER_URL.IMG}icon/camera.svg`;
 const PostPage = {};
 
-const inputImage = $.qs('.upload-image');
-const canvas = $.qs('.canvas');
+const gifticonData = {
+  itemName: '',
+  brandName: '',
+  price: '0',
+  expiresAt: '',
+  barcode: '',
+};
 
 PostPage.tpl = `
   <main class="post-main">
@@ -25,11 +32,10 @@ PostPage.tpl = `
     </section>
     <section class="post-info-section">
       <section class="post-upload-section">
-        <img class="camera-icon" src="${cameraIconURL}" alt="camera-icon"/>
+        <img class="camera-icon" src="${CAMERA_ICON_URL}" alt="camera-icon"/>
         <input class="upload-image" type="file" accept="image/*" />
-        <canvas class="canvas"></canvas>
       </section>
-      <section class="input-info-section">
+      <section class="input-section">
         <div class="calendar"></div>
       </section>
     </section>
@@ -37,9 +43,39 @@ PostPage.tpl = `
       <button class="submit">완료</button>
       <button class="cancel">취소</button>
     </section>
-    <button class="submit1">aaaaa</button>
   </main>
 `;
+
+const createImage = (src, target) => {
+  const newImage = document.createElement('img');
+  newImage.src = src;
+  newImage.classList.add('x-button');
+  newImage.style.position = 'absolute';
+  newImage.style.right = '1.5rem';
+  newImage.style.height = '1.75rem';
+  newImage.style.top = '1.5rem';
+
+  target.appendChild(newImage);
+};
+
+const setGifticonData = (gifticonData, type, newData) => {
+  const newGifticonData = { ...gifticonData };
+  newGifticonData[type] = newData;
+
+  return newGifticonData;
+};
+
+const changeHeader = (color) => {
+  document.querySelector('header').remove();
+
+  if (color === 'white') {
+    header({ color, label: '이미지 등록', path: '/post' })();
+
+    const headerMain = document.querySelector('.white-header-section');
+    headerMain.querySelector('.left-arrow-button').src = X_ICON_URL;
+    createImage(ARROW_RIGHT_ICON_URL, headerMain);
+  } else header({ color })();
+};
 
 const appendCalendar = () => {
   const target = $.qs('#date-input');
@@ -52,17 +88,19 @@ const visibleCalendar = () => {
   target.classList.toggle('active');
 };
 
+const resetInput = () => {
+  const input = $.qs('.upload-image');
+  input.value = '';
+};
+
 const uploadImg = (file) => {
   const reader = new FileReader();
-  const canvas = $.qs('.canvas');
-
-  const imageContainer = $.qs('.post-upload-section');
 
   reader.readAsDataURL(file[0]);
+  resetInput();
 
   reader.onload = async () => {
-    document.querySelector('header').remove();
-    header({ color: 'white', label: '이미지 크롭', path: '/post' })();
+    changeHeader('white');
     // const [imageType, base64URL] = reader.result.split(';base64,');
     // const imageData = { gifticonBase64: base64URL, format: imageType.replace('data:image/', '') };
     // const response = await sendImage(imageData);
@@ -74,12 +112,27 @@ const uploadImg = (file) => {
     //   _.map((text) => temp.push(text.inferText)),
     // );
 
-    // sendImageInfo({ texts: temp });
+    // const { itemName, brandName, expiresAt, barcode } = sendImageInfo({ texts: temp });
+    // console.log(itemName, brandName, expiresAt, barcode);
+    // setGifticonData(gifticonData, 'itemName', itemName);
+    // setGifticonData(gifticonData, 'brandName', brandName);
+    // setGifticonData(gifticonData, 'expiresAt', expiresAt);
+    // setGifticonData(gifticonData, 'barcode', barcode);
+
+    // $.qs('#menu-input').value = itemName;
+    // $.qs('#shop-input').value = brandName;
+    // $.qs('#price-input').value = 0;
+    // $.qs('#date-input').value = expiresAt;
+
+    $.qs('#menu-input').value = '아메리카노';
+    $.qs('#shop-input').value = 'STARBUKS';
+    $.qs('#price-input').value = 0;
+    $.qs('#date-input').value = '1996-11-01';
 
     $.qs('.crop-section').style.display = 'flex';
     $.qs('.crop-image').src = reader.result;
 
-    drag(canvas);
+    drag(changeHeader);
   };
 
   return file;

@@ -38,7 +38,7 @@ const inputForm = (props) => {
   const appendForm = () => {
     _.go(
       inputFormTemplate,
-      (tmp) => $.insert(tmp, $.qs('.input-info-section', target)));
+      (tmp) => $.insert(tmp, $.qs('.input-section', target)));
 
     return target;
   };

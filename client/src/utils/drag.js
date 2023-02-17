@@ -1,5 +1,7 @@
-export default function drag(canvas) {
+export default function drag(changeHeader) {
   const cropWrapper = document.querySelector('.crop-section');
+  const submit = document.querySelector('.x-button');
+  const imageContainer = document.querySelector('.camera-icon');
   const cropSection = cropWrapper.querySelector('.crop-container');
   const cropImage = cropSection.querySelector('.crop-image');
   const cropArea = cropSection.querySelector('.crop-area');
@@ -23,6 +25,8 @@ export default function drag(canvas) {
   resizer.addEventListener('touchend', stopResize);
   resizer.addEventListener('touchmove', resize);
 
+  submit.addEventListener('click', drawCanvas);
+
   function dragStart(e) {
     initialX = e.touches[0].clientX - xOffset;
     initialY = e.touches[0].clientY - yOffset;
@@ -33,8 +37,6 @@ export default function drag(canvas) {
   }
 
   function dragEnd() {
-    calculateSize();
-
     isDragging = false;
   }
 
@@ -70,7 +72,6 @@ export default function drag(canvas) {
   }
 
   function stopResize() {
-    calculateSize();
     isResizing = false;
   }
 
@@ -88,7 +89,10 @@ export default function drag(canvas) {
     }
   }
 
-  function calculateSize() {
+  function drawCanvas() {
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d');
+
     const cropAreaRect = cropArea.getBoundingClientRect();
     const cropImageRect = cropImage.getBoundingClientRect();
 
@@ -103,7 +107,6 @@ export default function drag(canvas) {
 
     canvas.width = sourceWidth;
     canvas.height = sourceWidth;
-    const ctx = canvas.getContext('2d');
 
     ctx.drawImage(
       cropImage,
@@ -119,6 +122,14 @@ export default function drag(canvas) {
 
     const resizedImage = canvas.toDataURL('image/png');
 
+    changeHeader('mint');
+
+    imageContainer.src = resizedImage;
+    imageContainer.style.width = '100%';
+    imageContainer.style.objectFit = 'contain';
+    imageContainer.style.filter = 'none';
+
+    setTranslate(0, 0, cropArea);
     cropWrapper.style.display = 'none';
   }
 }
