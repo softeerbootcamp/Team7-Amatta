@@ -14,7 +14,9 @@ const login = () => {
   };
 
   const loginTemp = `
-    <h4>로그인</h4>
+    <h1>Welcome Back!</h1>
+    <h4>Amatta 로그인하기</h4>
+    <h5>기프티콘을 효율적으로 관리해보세요</h5>
   `;
 
   const setUserData = (userData, target) => {
