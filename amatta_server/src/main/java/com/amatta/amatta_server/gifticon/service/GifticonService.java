@@ -14,7 +14,12 @@ import com.amatta.amatta_server.gifticon.util.GifticonMapper;
 import com.amatta.amatta_server.gifticon.util.GifticonMapperFactory;
 import com.amatta.amatta_server.gifticon.util.RequestGenerator;
 import com.amatta.amatta_server.user.model.Users;
+import com.amazonaws.services.s3.AmazonS3Client;
+import com.amazonaws.services.s3.model.CannedAccessControlList;
+import com.amazonaws.services.s3.model.ObjectMetadata;
+import com.amazonaws.services.s3.model.PutObjectRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -22,9 +27,11 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -35,6 +42,12 @@ import java.util.Objects;
 public class GifticonService {
     private final GifticonRepository gifticonRepository;
     private final RequestGenerator requestGenerator;
+
+    @Value("${cloud.aws.s3.bucket}")
+    private String S3Bucket;
+
+    @Autowired
+    AmazonS3Client amazonS3Client;
 
     @Autowired
     public GifticonService(GifticonRepository gifticonRepository, RequestGenerator requestGenerator) {
@@ -58,10 +71,8 @@ public class GifticonService {
     }
 
     @Transactional
-    public void addGifticon(GifticonDto dto) throws DuplicateGifticonException {
-        long uid = getUserBySessionId().getId();
-        byte[] image = dto.getImage().getBytes();
-        byte[] thumbnail = dto.getThumbnail().getBytes();
+    public void addGifticon(GifticonDto dto, MultipartFile image, MultipartFile thumbnail) throws DuplicateGifticonException, IOException {
+        long uid = 2;
         String brandName = dto.getBrandName();
         String itemName = dto.getItemName();
         String barcode = dto.getBarcode();
@@ -72,11 +83,32 @@ public class GifticonService {
         if(gifticonRepository.findByBarcode(barcode).isPresent()) {
             throw new DuplicateGifticonException();
         }
+        String originalName = String.valueOf(System.currentTimeMillis()); // 파일 이름
+        long size = image.getSize(); // 파일 크기
+        ObjectMetadata objectMetaData = new ObjectMetadata();
+        objectMetaData.setContentType(image.getContentType());
+        objectMetaData.setContentLength(size);
+        amazonS3Client.putObject(
+                new PutObjectRequest(S3Bucket, originalName, image.getInputStream(), objectMetaData)
+                        .withCannedAcl(CannedAccessControlList.PublicRead)
+        );
+        String imagePath = amazonS3Client.getUrl(S3Bucket, originalName).toString();
+
+        String originalName2 = String.valueOf(System.currentTimeMillis()); // 파일 이름
+        long size2 = thumbnail.getSize(); // 파일 크기
+        ObjectMetadata objectMetaData2 = new ObjectMetadata();
+        objectMetaData2.setContentType(thumbnail.getContentType());
+        objectMetaData2.setContentLength(size2);
+        amazonS3Client.putObject(
+                new PutObjectRequest(S3Bucket, originalName2, thumbnail.getInputStream(), objectMetaData2)
+                        .withCannedAcl(CannedAccessControlList.PublicRead)
+        );
+        String imagePath2 = amazonS3Client.getUrl(S3Bucket, originalName2).toString();
 
         gifticonRepository.addGifticon(
                 uid,
-                image,
-                thumbnail,
+                imagePath,
+                imagePath2,
                 brandName,
                 itemName,
                 barcode,
