@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 
 @RestController
-@CrossOrigin(origins = {"https://amatta.site", "http://localhost:5173"}, allowCredentials = "true")
+@CrossOrigin(origins = {"https://amatta.site"}, allowCredentials = "true")
 @RequestMapping("/gifticon")
 public class GifticonController {
     private final GifticonService gifticonService;
