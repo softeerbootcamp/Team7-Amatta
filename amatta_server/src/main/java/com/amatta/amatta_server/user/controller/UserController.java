@@ -15,8 +15,11 @@ import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.util.Objects;
 
+import static org.springframework.web.bind.annotation.RequestMethod.*;
+
 @RestController
-@CrossOrigin(origins = {"https://amatta.site", "http://localhost:5173"}, allowCredentials = "true")
+@CrossOrigin(origins = {"https://amatta.site", "http://localhost:5173"}, allowCredentials = "true",
+        methods = {GET, HEAD, POST, PUT, PATCH, DELETE, OPTIONS, TRACE})
 @RequestMapping("/user")
 public class UserController {
 
