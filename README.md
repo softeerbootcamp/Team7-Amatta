@@ -137,7 +137,102 @@
     <img width="1141" alt="erd" src="https://user-images.githubusercontent.com/65708461/218037413-a551fc8d-16a2-4308-a6f1-66eaea9778a0.png">
     
 
-### :wrench: Structures    
+### :wrench: Structures
+```bash
+    📦
+    src
+    ├── main
+    │   ├── generated
+    │   ├── java
+    │   │   └── com
+    │   │       └── amatta
+    │   │           └── amatta_server
+    │   │               ├── AmattaServerApplication.java
+    │   │               ├── aop
+    │   │               │   ├── AuthorizationAop.java
+    │   │               │   ├── ClassRequiresAuth.java
+    │   │               │   └── MethodRequiresAuth.java
+    │   │               ├── exception
+    │   │               │   ├── DuplicateGifticonException.java
+    │   │               │   ├── GifticonNotSupportedException.java
+    │   │               │   └── NotAuthenticatedException.java
+    │   │               ├── fcm
+    │   │               │   ├── FCMInitializer.java
+    │   │               │   ├── controller
+    │   │               │   │   └── FCMController.java
+    │   │               │   ├── dto
+    │   │               │   │   └── TokenRegisterDto.java
+    │   │               │   ├── model
+    │   │               │   │   └── FCMToken.java
+    │   │               │   ├── repository
+    │   │               │   │   └── DeviceTokenRepository.java
+    │   │               │   └── service
+    │   │               │       └── FCMService.java
+    │   │               ├── gifticon
+    │   │               │   ├── controller
+    │   │               │   │   └── GifticonController.java
+    │   │               │   ├── dto
+    │   │               │   │   ├── GifticonDto.java
+    │   │               │   │   ├── GifticonImageDto.java
+    │   │               │   │   └── GifticonTextDto.java
+    │   │               │   ├── enums
+    │   │               │   │   └── GifticonMapperEnum.java
+    │   │               │   ├── model
+    │   │               │   │   └── Gifticon.java
+    │   │               │   ├── repository
+    │   │               │   │   └── GifticonRepository.java
+    │   │               │   ├── service
+    │   │               │   │   └── GifticonService.java
+    │   │               │   └── util
+    │   │               │       ├── GifticonMapper.java
+    │   │               │       ├── GifticonMapperFactory.java
+    │   │               │       ├── KakaoGifticonMapper.java
+    │   │               │       ├── NaverAPIRequestGenerator.java
+    │   │               │       ├── NoMatchMapper.java
+    │   │               │       └── RequestGenerator.java
+    │   │               ├── index
+    │   │               │   └── IndexController.java
+    │   │               └── user
+    │   │                   ├── controller
+    │   │                   │   └── UserController.java
+    │   │                   ├── dto
+    │   │                   │   ├── UserChangePasswordReq.java
+    │   │                   │   ├── UserChangePasswordRes.java
+    │   │                   │   ├── UserEmailExistRes.java
+    │   │                   │   ├── UserFindEmailReq.java
+    │   │                   │   ├── UserFindEmailRes.java
+    │   │                   │   ├── UserFindPasswordByEmailReq.java
+    │   │                   │   ├── UserFindPasswordByEmailRes.java
+    │   │                   │   ├── UserJoinReq.java
+    │   │                   │   ├── UserJoinRes.java
+    │   │                   │   ├── UserLoginReq.java
+    │   │                   │   ├── UserLoginRes.java
+    │   │                   │   ├── UserLogoutRes.java
+    │   │                   │   ├── UserMypageRes.java
+    │   │                   │   └── UserPhoneNumExistRes.java
+    │   │                   ├── model
+    │   │                   │   └── Users.java
+    │   │                   ├── repository
+    │   │                   │   └── UserRepository.java
+    │   │                   └── service
+    │   │                       ├── MailService.java
+    │   │                       └── UserService.java
+    │   └── resources
+    │       ├── application.properties
+    │       └── team7-amatta-firebase-adminsdk-pa4f5-612a44bb30.json
+    └── test
+        ├── generated_tests
+        └── java
+            └── com
+                └── amatta
+                    └── amatta_server
+                        ├── AmattaServerApplicationTests.java
+                        ├── DatabaseTest.java
+                        ├── FCMRepoTest.java
+                        ├── GifticonControllerTest.java
+                        └── user
+                            └── UserControllerTest.java
+ ```
 <br>
 
 ## 👩‍👩‍👧‍👧 Contributors
