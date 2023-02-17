@@ -15,8 +15,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
+import java.io.IOException;
 
 @RestController
 @CrossOrigin(origins = {"https://amatta.site", "http://localhost:5173"}, allowCredentials = "true")
@@ -44,8 +46,9 @@ public class GifticonController {
     }
 
     @PostMapping("")
-    public ResponseEntity<?> gifticonAdd(@Valid @RequestBody GifticonDto dto) {
-        gifticonService.addGifticon(dto);
+    public ResponseEntity<?> gifticonAdd(@Valid @RequestPart GifticonDto dto,
+                                         @RequestPart MultipartFile image, @RequestPart MultipartFile thumbnail) throws IOException {
+        gifticonService.addGifticon(dto, image, thumbnail);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
@@ -94,4 +97,4 @@ public class GifticonController {
     public ResponseEntity<?> test() {
         return new ResponseEntity<>(gifticonService.test(), HttpStatus.OK);
     }
- }
+}
