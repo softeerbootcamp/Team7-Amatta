@@ -17,7 +17,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -47,6 +46,27 @@ public class GifticonControllerTest {
     @Test
     public void NoCookieRequestExpected4xxResponse() throws Exception {
         gMock.perform(post("/gifticon")).andExpect(status().is4xxClientError());
+    }
+
+    @Test
+    public void InvalidSessionRequestExpected401Response() throws Exception {
+        MockHttpSession session = new MockHttpSession();
+        RegisterAndLoginSetup(session);
+        session.invalidate();
+        String requestBody = "{" +
+                "\"itemName\": \"아메리카노\", " +
+                "\"brandName\": \"스타벅스\", " +
+                "\"image\": \"adfadf\", " +
+                "\"thumbnail\": \"adfadfa\", " +
+                "\"price\": \"3000\", " +
+                "\"barcode\": \"12341234\", " +
+                "\"expiresAtInString\": \"2023/11/11\"" +
+                "}";
+        gMock.perform(post("/gifticon")
+                .session(session)
+                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(requestBody)).andExpect(status().isUnauthorized()).andDo(print());
     }
 
     @Test
