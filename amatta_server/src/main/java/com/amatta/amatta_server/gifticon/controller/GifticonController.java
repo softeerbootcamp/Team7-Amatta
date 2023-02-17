@@ -89,4 +89,9 @@ public class GifticonController {
     public ResponseEntity<?> illegalArgumentExceptionHandler(IllegalArgumentException exception) {
         return new ResponseEntity<>(exception.getMessage(), HttpStatus.BAD_REQUEST);
     }
+
+    @GetMapping("/test")
+    public ResponseEntity<?> test() {
+        return new ResponseEntity<>(gifticonService.test(), HttpStatus.OK);
+    }
  }

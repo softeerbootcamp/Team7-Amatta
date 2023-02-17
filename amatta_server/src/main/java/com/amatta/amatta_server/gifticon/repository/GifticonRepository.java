@@ -63,4 +63,7 @@ public interface GifticonRepository extends CrudRepository<Gifticon, Long> {
     @Modifying
     @Query("UPDATE gifticon SET usedAt = (SELECT now()) WHERE id = :id")
     void useGifticon(@Param("id") long id);
+
+    @Query("SELECT * FROM gifticon")
+    List<Gifticon> test();
 }
