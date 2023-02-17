@@ -1,4 +1,4 @@
-export default function CalendarControl() {
+export default function CalendarControl(gifticonData, setGifticonData) {
   const calendar = new Date();
   const calendarControl = {
     localDate: new Date(),
@@ -67,6 +67,14 @@ export default function CalendarControl() {
       monthLabel.innerHTML = calendarControl.calMonthName[calendar.getMonth()];
     },
     selectDate(e) {
+      const date = `${calendar.getFullYear()}-${calendar.getMonth()}-${e.target.textContent}`;
+      const dateTarget = document.querySelector('#date-input');
+      const calendarTarget = document.querySelector('.calendar');
+
+      calendarTarget.classList.toggle('active');
+      dateTarget.value = date;
+      setGifticonData(gifticonData, 'expiresAt', date);
+
       return `${calendar.getFullYear()}-${calendar.getMonth()}-${e.target.textContent}`;
     },
 

@@ -1,4 +1,4 @@
-export default function drag(changeHeader) {
+export default async function drag(changeHeader, resolve) {
   const cropWrapper = document.querySelector('.crop-section');
   const submit = document.querySelector('.x-button');
   const imageContainer = document.querySelector('.camera-icon');
@@ -131,5 +131,7 @@ export default function drag(changeHeader) {
 
     setTranslate(0, 0, cropArea);
     cropWrapper.style.display = 'none';
+
+    resolve(resizedImage);
   }
 }

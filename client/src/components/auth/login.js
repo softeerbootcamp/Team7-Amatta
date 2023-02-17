@@ -43,12 +43,12 @@ const login = () => {
     userData = updatedUserData;
   };
 
-  const submitData = (e) => {
+  const submitData = async (e) => {
     e.stopPropagation();
     e.preventDefault();
 
+    await loginU(userData);
     navigate('/card');
-    loginU(userData);
   };
 
   // prettier-ignore
