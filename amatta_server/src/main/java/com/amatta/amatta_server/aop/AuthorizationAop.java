@@ -25,7 +25,9 @@ public class AuthorizationAop {
 
         HttpServletRequest request = ((ServletRequestAttributes) Objects.requireNonNull(RequestContextHolder.getRequestAttributes())).getRequest();
         HttpSession session = request.getSession(false);
-
+        if(session == null) {
+            throw new NotAuthenticatedException();
+        }
         Users user = (Users) session.getAttribute("User");
         if(user == null) {
             throw new NotAuthenticatedException();
@@ -38,7 +40,9 @@ public class AuthorizationAop {
 
         HttpServletRequest request = ((ServletRequestAttributes) Objects.requireNonNull(RequestContextHolder.getRequestAttributes())).getRequest();
         HttpSession session = request.getSession(false);
-
+        if(session == null) {
+            throw new NotAuthenticatedException();
+        }
         Users user = (Users) session.getAttribute("User");
         if(user == null) {
             throw new NotAuthenticatedException();
