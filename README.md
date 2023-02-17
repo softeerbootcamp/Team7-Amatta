@@ -39,7 +39,6 @@
 
 ### 🧬 Our Architecture
 
-<img src="https://amatta-icons.s3.ap-northeast-2.amazonaws.com/images/architecture.png" width="900" />
 
 <br>
 
