@@ -4,6 +4,7 @@ import { dropdownMenu, header } from '@/components/common';
 import { $, slider } from '@/utils';
 import { _ } from '@/utils/customFx';
 import { navigate } from '@/core/router';
+import { verificateEmail } from '@/apis/card';
 
 const oneCardIconUrl = `${SERVER_URL.IMG}icon/image-icon.svg`;
 const listIconUrl = `${SERVER_URL.IMG}icon/list-icon.svg`;
@@ -262,6 +263,7 @@ const navigateMain = () => {
       () => MainPage.handleClickaddCard());
 
       header({color: 'mint'})();
+      verificateEmail();
     }
 
 export default navigateMain;

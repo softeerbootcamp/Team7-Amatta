@@ -6,7 +6,7 @@ const dropdownMenu = () => {
   const dropdownIconUrl = `${SERVER_URL.IMG}icon/angle-down.svg`;
   const sortOption = { 1: '등록순', 2: '마감순', 3: '금액순' };
 
-  const dropdownTemp = `   
+  const dropdownTemp = `  
     <button class='main-dropdown-button'>
       ${sortOption[1]}
       <img class='main-dropdown-image' src='${dropdownIconUrl}' alt='dropdown-image' />
