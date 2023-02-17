@@ -76,7 +76,7 @@ const login = () => {
         _.flatOne);
 
   // prettier-ignore
-  const appendLogin = (fragment) => 
+  const appendLogin = (fragment) =>  
     _.go(
       fragment,
       $.find('.auth-form-section'),

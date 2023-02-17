@@ -4,7 +4,7 @@ import { dropdownMenu, header } from '@/components/common';
 import { $, slider } from '@/utils';
 import { _ } from '@/utils/customFx';
 import { navigate } from '@/core/router';
-import { verificateEmail } from '@/apis/card';
+// import { verificateEmail } from '@/apis/card';
 
 const oneCardIconUrl = `${SERVER_URL.IMG}icon/image-icon.svg`;
 const listIconUrl = `${SERVER_URL.IMG}icon/list-icon.svg`;
@@ -17,42 +17,42 @@ let isSwipping = false;
 
 const cards = [
   {
-    image: '../src/assets/starbucks2.jpg',
+    image: `${SERVER_URL.IMG}images/starbucks2.jpg`,
     shopName: 'TWOSOME PLACE',
     itemName: 'Americano & Tiramisu',
     itemPrice: 11000,
     dateOfUse: '2023-07-07',
   },
   {
-    image: '../src/assets/starbucks3.jpeg',
+    image: `${SERVER_URL.IMG}images/starbucks3.jpeg`,
     shopName: 'STARBUCKS',
     itemName: 'Latte',
     itemPrice: 5000,
     dateOfUse: '2023-07-22',
   },
   {
-    image: '../src/assets/starbucks2.jpg',
+    image: `${SERVER_URL.IMG}images/starbucks2.jpg`,
     shopName: 'THE VENTI',
     itemName: 'Vanilla Latte',
     itemPrice: 3500,
     dateOfUse: '2023-09-01',
   },
   {
-    image: '../src/assets/starbucks3.jpeg',
+    image: `${SERVER_URL.IMG}images/starbucks3.jpeg`,
     shopName: 'twosome place',
     itemName: 'Americano & Tiramisu',
     itemPrice: 11000,
     dateOfUse: '2023-11-01',
   },
   {
-    image: '../src/assets/starbucks2.jpg',
+    image: `${SERVER_URL.IMG}images/starbucks2.jpg`,
     shopName: 'starbucks',
     itemName: 'Latte',
     itemPrice: 5000,
     dateOfUse: '2023-07-07',
   },
   {
-    image: '../src/assets/starbucks3.jpeg',
+    image: `${SERVER_URL.IMG}images/starbucks2.jpg`,
     shopName: 'THE VENTI',
     itemName: 'Vanilla Latte',
     itemPrice: 3500,
@@ -263,7 +263,7 @@ const navigateMain = () => {
       () => MainPage.handleClickaddCard());
 
       header({color: 'mint'})();
-      verificateEmail();
+      //verificateEmail();
     }
 
 export default navigateMain;
