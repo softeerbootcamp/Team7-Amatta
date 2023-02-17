@@ -4,6 +4,7 @@ import { sendImage, sendImageInfo, submitImage } from '@/apis/post';
 import { IO, $, drag, CalendarControl } from '@/utils';
 
 import { _, L } from '@/utils/customFx';
+import { navigate } from '@/core/router';
 
 const POST_INPUT_TYPE = ['menu', 'shop', 'price', 'expirationDate'];
 const CAMERA_ICON_URL = `${SERVER_URL.IMG}icon/camera.svg`;
@@ -12,7 +13,7 @@ const X_ICON_URL = `${SERVER_URL.IMG}icon/x.svg`;
 const $root = $.qs('#root');
 const PostPage = {};
 
-const gifticonData = {
+let gifticonData = {
   itemName: '',
   brandName: '',
   price: '0',
@@ -102,7 +103,6 @@ const uploadImg = (file) => {
   resetInput();
 
   reader.onload = async () => {
-    changeHeader('white');
     const [imageType, base64URL] = reader.result.split(';base64,');
     const imageData = { gifticonBase64: base64URL, format: imageType.replace('data:image/', '') };
     const response = await sendImage(imageData);
@@ -116,11 +116,12 @@ const uploadImg = (file) => {
 
     const { itemName, brandName, expiresAt, barcode } = await sendImageInfo({ texts: temp });
 
-    setGifticonData(gifticonData, 'itemName', itemName);
-    setGifticonData(gifticonData, 'brandName', brandName);
-    setGifticonData(gifticonData, 'expiresAt', expiresAt);
-    setGifticonData(gifticonData, 'barcode', barcode);
-    setGifticonData(gifticonData, 'image', base64URL);
+    changeHeader('white');
+    gifticonData = setGifticonData(gifticonData, 'itemName', itemName);
+    gifticonData = setGifticonData(gifticonData, 'brandName', brandName);
+    gifticonData = setGifticonData(gifticonData, 'expiresAt', expiresAt);
+    gifticonData = setGifticonData(gifticonData, 'barcode', barcode);
+    gifticonData = setGifticonData(gifticonData, 'image', base64URL);
     $.qs('#menu-input').value = itemName;
     $.qs('#shop-input').value = brandName;
     $.qs('#price-input').value = '5000';
@@ -135,13 +136,13 @@ const uploadImg = (file) => {
     $.qs('.crop-image').src = reader.result;
 
     const croppedImage = await new Promise((resolve) => drag(changeHeader, resolve));
-    setGifticonData(gifticonData, 'thumbnail', croppedImage);
+    gifticonData = setGifticonData(gifticonData, 'thumbnail', croppedImage);
   };
 
   return file;
 };
 
-const sendCardData = () => {
+const sendCardData = async () => {
   const cardData = {
     itemName: gifticonData.itemName,
     brandName: gifticonData.brandName,
@@ -152,7 +153,8 @@ const sendCardData = () => {
     price: '5000',
   };
 
-  submitImage(cardData);
+  await submitImage(cardData);
+  navigate('/card');
 };
 
 const addInputForm = (fragment) => (input) => inputForm({ ...input, target: fragment })();

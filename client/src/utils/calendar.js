@@ -67,13 +67,13 @@ export default function CalendarControl(gifticonData, setGifticonData) {
       monthLabel.innerHTML = calendarControl.calMonthName[calendar.getMonth()];
     },
     selectDate(e) {
-      const date = `${calendar.getFullYear()}-${calendar.getMonth()}-${e.target.textContent}`;
+      const date = `${calendar.getFullYear()}-${calendar.getMonth() + 1}-${e.target.textContent}`;
       const dateTarget = document.querySelector('#date-input');
       const calendarTarget = document.querySelector('.calendar');
 
       calendarTarget.classList.toggle('active');
       dateTarget.value = date;
-      setGifticonData(gifticonData, 'expiresAt', date);
+      gifticonData = setGifticonData(gifticonData, 'expiresAt', date);
 
       return `${calendar.getFullYear()}-${calendar.getMonth()}-${e.target.textContent}`;
     },
