@@ -39,7 +39,7 @@
 
 ### 🧬 Our Architecture
 
-![image](https://user-images.githubusercontent.com/81309465/219401376-8d30c836-82df-4085-bab7-94d069846d0d.png)
+<img src="https://amatta-icons.s3.ap-northeast-2.amazonaws.com/images/architecture.png" width="900" />
 
 <br>
 
@@ -51,14 +51,72 @@
 <img src="https://img.shields.io/badge/AmazonS3-569A31?style=for-the-badge&logo=AmazonS3&logoColor=white">
 
 ### :wrench: Structures
-[client/src/apis](https://github.com/softeerbootcamp/Team7-Amatta/tree/dev/client/src/apis) : api를 호출하는 부분    
-[client/src/components](https://github.com/softeerbootcamp/Team7-Amatta/tree/dev/client/src/components) : 화면을 구성하는 컴포넌트들을 모아둔 디렉토리   
-[client/src/constants](https://github.com/softeerbootcamp/Team7-Amatta/tree/dev/client/src/constants) : 여러 상수들을 모아둔 디렉토리   
-[client/src/core](https://github.com/softeerbootcamp/Team7-Amatta/tree/dev/client/src/core) : 라우터가 있는 디렉토리   
-[client/src/pages](https://github.com/softeerbootcamp/Team7-Amatta/tree/dev/client/src/pages) : 화면에 보여지는 페이지들을 모아둔 디렉토리   
-[client/src/styles](https://github.com/softeerbootcamp/Team7-Amatta/tree/dev/client/src/styles) : scss 코드들을 모아둔 디렉토리   
-[client/src/utils](https://github.com/softeerbootcamp/Team7-Amatta/tree/dev/client/src/utils) : 재사용되는 여러 유틸 함수들을 모아둔 디렉토리   
 
+```bash
+  📦
+  client
+   │ src
+   │  ├─ apis
+   │  │  ├─ auth.js
+   │  │  ├─ client.js
+   │  │  └─ post.js
+   │  ├─ assets
+   │  │  ├─ gifticonSample.jpeg
+   │  │  ├─ starbucks.jpg
+   │  │  ├─ starbucks2.jpg
+   │  │  └─ starbucks3.jpeg
+   │  ├─ components
+   │  │  ├─ auth
+   │  │  │  ├─ confirm.js
+   │  │  │  ├─ index.js
+   │  │  │  ├─ login.js
+   │  │  │  ├─ register.js
+   │  │  │  └─ verify.js
+   │  │  ├─ common
+   │  │  │  ├─ dropdownMenu.js
+   │  │  │  ├─ header.js
+   │  │  │  ├─ index.js
+   │  │  │  └─ inputForm.js
+   │  │  └─ main
+   │  │     ├─ cardDetail.js
+   │  │     ├─ cardList.js
+   │  │     └─ index.js
+   │  ├─ constants
+   │  │  └─ constant.js
+   │  ├─ core
+   │  │  └─ router.js
+   │  ├─ main.js
+   │  ├─ pages
+   │  │  ├─ AuthPage.js
+   │  │  ├─ HomePage.js
+   │  │  ├─ MainPage.js
+   │  │  ├─ NotFoundPage.js
+   │  │  ├─ PostPage.js
+   │  │  └─ index.js
+   │  ├─ styles
+   │  │  ├─ auth.scss
+   │  │  ├─ color.scss
+   │  │  ├─ common.scss
+   │  │  ├─ global.scss
+   │  │  ├─ header.scss
+   │  │  ├─ home.scss
+   │  │  ├─ main.scss
+   │  │  ├─ post.scss
+   │  │  └─ util.scss
+   │  └─ utils
+   │     ├─ EventMonad.js
+   │     ├─ IOMonad.js
+   │     ├─ Maybe.js
+   │     ├─ customFx.js
+   │     ├─ domFx.js
+   │     ├─ drag.js
+   │     ├─ index.js
+   │     ├─ screenSize.js
+   │     ├─ slider.js
+   │     ├─ templateGenerator.js
+   │     └─ timer.js
+   └─ vite.config.js
+```
 
 <br>
 
@@ -72,7 +130,7 @@
 
 - [API 명세서](https://viridian-canvas-adb.notion.site/API-b21612efb02445ccb16a34baeebc83ce)
   <br>
-  <img src="https://amatta-icons.s3.ap-northeast-2.amazonaws.com/images/api.png" width="700" alt="api-document">
+  <img src="https://amatta-icons.s3.ap-northeast-2.amazonaws.com/images/api.png" width="900" alt="api-document">
 
 - <h3>ERD</h3>
   <br>
