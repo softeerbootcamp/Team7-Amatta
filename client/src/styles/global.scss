@@ -15,8 +15,8 @@
   font-family: 'Nanum Gothic', sans-serif;
   overflow-x: hidden;
 
-  -ms-overflow-style: none; /* IE and Edge */
-  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 
   &::-webkit-scrollbar {
     display: none; /* Chrome, Safari, Opera*/

@@ -6,7 +6,7 @@ import java.sql.Date;
 
 @Builder
 public class Gifticon {
-
+    public final static int expirationThresholdDays = 3;
     private long id;
     private long uid;
     private byte[] image;

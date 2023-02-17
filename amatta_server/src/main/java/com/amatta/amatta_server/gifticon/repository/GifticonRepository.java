@@ -62,7 +62,8 @@ public interface GifticonRepository extends CrudRepository<Gifticon, Long> {
             "price FROM gifticon WHERE uid = :uid")
     List<Gifticon> findByUid(@Param("uid") long uid);
 
+    //TODO: 쿼리 수정 - WHERE uid = uid 부분 수정
     @Modifying
-    @Query( "UPDATE gifticon SET usedAt = :usedAt WHERE uid = :uid")
+    @Query("UPDATE gifticon SET usedAt = :usedAt WHERE uid = :uid")
     void useGifticon(@Param("uid") long uid, @Param("usedAt") LocalDate usedAt);
 }

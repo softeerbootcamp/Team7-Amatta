@@ -7,6 +7,7 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Repository
@@ -21,4 +22,11 @@ public interface DeviceTokenRepository extends CrudRepository<FCMToken, Long> {
 
     @Query("SELECT id, uid, token FROM device_token WHERE uid = :uid")
     List<FCMToken> findByUid(@Param("uid") long uid);
+
+    @Query("SELECT * FROM device_token")
+    List<FCMToken> findAllTokens();
+
+    @Query("SELECT token FROM device_token WHERE uid IN " +
+            "(SELECT uid FROM gifticon WHERE expiresat BETWEEN (SELECT now()) AND :expirationThresholdDays AND usedat > (SELECT now()))")
+    List<String> findTokensByUidsOfGifticonsAboutToExpire(@Param("expirationThresholdDays") LocalDate date);
 }
