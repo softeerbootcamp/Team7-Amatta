@@ -19,3 +19,13 @@ export const sendImageInfo = async (imageInfo) => {
     console.error(error);
   }
 };
+
+export const submitImage = async (imageData) => {
+  try {
+    const response = await client.post('/gifticon', imageData);
+
+    return response.data;
+  } catch (error) {
+    console.error(error);
+  }
+};

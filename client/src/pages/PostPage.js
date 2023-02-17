@@ -1,6 +1,6 @@
 import { SERVER_URL, INPUT } from '@/constants/constant';
 import { inputForm, header } from '@/components/common';
-import { sendImage, sendImageInfo } from '@/apis/post';
+import { sendImage, sendImageInfo, submitImage } from '@/apis/post';
 import { IO, $, drag, CalendarControl } from '@/utils';
 
 import { _, L } from '@/utils/customFx';
@@ -18,6 +18,8 @@ const gifticonData = {
   price: '0',
   expiresAt: '',
   barcode: '',
+  image: '',
+  thumbnail: '',
 };
 
 PostPage.tpl = `
@@ -101,41 +103,56 @@ const uploadImg = (file) => {
 
   reader.onload = async () => {
     changeHeader('white');
-    // const [imageType, base64URL] = reader.result.split(';base64,');
-    // const imageData = { gifticonBase64: base64URL, format: imageType.replace('data:image/', '') };
-    // const response = await sendImage(imageData);
-    // const temp = [];
+    const [imageType, base64URL] = reader.result.split(';base64,');
+    const imageData = { gifticonBase64: base64URL, format: imageType.replace('data:image/', '') };
+    const response = await sendImage(imageData);
+    const temp = [];
 
-    // _.go(
-    //   response.images,
-    //   ([res]) => res.fields,
-    //   _.map((text) => temp.push(text.inferText)),
-    // );
+    _.go(
+      response.images,
+      ([res]) => res.fields,
+      _.map((text) => temp.push(text.inferText)),
+    );
 
-    // const { itemName, brandName, expiresAt, barcode } = sendImageInfo({ texts: temp });
-    // console.log(itemName, brandName, expiresAt, barcode);
-    // setGifticonData(gifticonData, 'itemName', itemName);
-    // setGifticonData(gifticonData, 'brandName', brandName);
-    // setGifticonData(gifticonData, 'expiresAt', expiresAt);
-    // setGifticonData(gifticonData, 'barcode', barcode);
+    const { itemName, brandName, expiresAt, barcode } = await sendImageInfo({ texts: temp });
 
-    // $.qs('#menu-input').value = itemName;
-    // $.qs('#shop-input').value = brandName;
+    setGifticonData(gifticonData, 'itemName', itemName);
+    setGifticonData(gifticonData, 'brandName', brandName);
+    setGifticonData(gifticonData, 'expiresAt', expiresAt);
+    setGifticonData(gifticonData, 'barcode', barcode);
+    setGifticonData(gifticonData, 'image', base64URL);
+    $.qs('#menu-input').value = itemName;
+    $.qs('#shop-input').value = brandName;
+    $.qs('#price-input').value = '5000';
+    $.qs('#date-input').value = expiresAt;
+
+    // $.qs('#menu-input').value = '아메리카노';
+    // $.qs('#shop-input').value = 'STARBUKS';
     // $.qs('#price-input').value = 0;
-    // $.qs('#date-input').value = expiresAt;
-
-    $.qs('#menu-input').value = '아메리카노';
-    $.qs('#shop-input').value = 'STARBUKS';
-    $.qs('#price-input').value = 0;
-    $.qs('#date-input').value = '1996-11-01';
+    // $.qs('#date-input').value = '1996-11-01';
 
     $.qs('.crop-section').style.display = 'flex';
     $.qs('.crop-image').src = reader.result;
 
-    drag(changeHeader);
+    const croppedImage = await new Promise((resolve) => drag(changeHeader, resolve));
+    setGifticonData(gifticonData, 'thumbnail', croppedImage);
   };
 
   return file;
+};
+
+const sendCardData = () => {
+  const cardData = {
+    itemName: gifticonData.itemName,
+    brandName: gifticonData.brandName,
+    thumbnail: gifticonData.thumbnail,
+    image: gifticonData.image,
+    barcode: gifticonData.barcode,
+    expiresAtInString: gifticonData.expiresAt,
+    price: '5000',
+  };
+
+  submitImage(cardData);
 };
 
 const addInputForm = (fragment) => (input) => inputForm({ ...input, target: fragment })();
@@ -145,6 +162,7 @@ const findTarget = (child, parent) => () => $.qs(child, parent);
 
 const handleClickUploadBtn = () => $.qs('.upload-image').click();
 const handleSubmitImg = ({ target }) => uploadImg(target.files);
+const handleSubmitCardData = ({ target }) => sendCardData();
 
 const eventTrigger = (type, target, fn) => () => $.on(type, fn)(target);
 const setEvent = (type, fn) => (target) => IO.of(eventTrigger(type, target, fn));
@@ -177,6 +195,10 @@ PostPage.addEvents = (target) => {
   IO.of(findTarget('.upload-image', target))
     .chain(setEvent('input', handleSubmitImg))
     .run();
+
+  IO.of(findTarget('.submit', target))
+    .chain(setEvent('click', handleSubmitCardData))
+    .run();
 };
 
 // prettier-ignore
@@ -187,7 +209,7 @@ const initiatePostPage = () => {
     PostPage.addEvents);
 
   _.go(
-    CalendarControl(),
+    CalendarControl(gifticonData, setGifticonData),
     () => appendCalendar());
 
   header({color: 'mint'})()
