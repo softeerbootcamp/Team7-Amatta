@@ -27,7 +27,6 @@ public interface GifticonRepository extends CrudRepository<Gifticon, Long> {
             "image,  " +
             "thumbnail, " +
             "barcode, " +
-            "price, " +
             "expiresAt, " +
             "usedAt, " +
             "price FROM gifticon WHERE id = :id")
@@ -56,14 +55,12 @@ public interface GifticonRepository extends CrudRepository<Gifticon, Long> {
             "image,  " +
             "thumbnail, " +
             "barcode, " +
-            "price, " +
             "expiresAt, " +
             "usedAt, " +
             "price FROM gifticon WHERE uid = :uid")
     List<Gifticon> findByUid(@Param("uid") long uid);
 
-    //TODO: 쿼리 수정 - WHERE uid = uid 부분 수정
     @Modifying
-    @Query("UPDATE gifticon SET usedAt = :usedAt WHERE uid = :uid")
-    void useGifticon(@Param("uid") long uid, @Param("usedAt") LocalDate usedAt);
+    @Query("UPDATE gifticon SET usedAt = (SELECT now()) WHERE id = :id")
+    void useGifticon(@Param("id") long id);
 }

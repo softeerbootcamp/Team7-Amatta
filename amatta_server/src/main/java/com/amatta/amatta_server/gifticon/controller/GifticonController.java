@@ -4,6 +4,7 @@ import com.amatta.amatta_server.exception.DuplicateGifticonException;
 import com.amatta.amatta_server.exception.GifticonNotSupportedException;
 import com.amatta.amatta_server.exception.NotAuthenticatedException;
 import com.amatta.amatta_server.fcm.service.FCMService;
+import com.amatta.amatta_server.gifticon.dto.GifticonUseDto;
 import com.amatta.amatta_server.gifticon.dto.GifticonDto;
 import com.amatta.amatta_server.gifticon.dto.GifticonImageDto;
 import com.amatta.amatta_server.gifticon.dto.GifticonTextDto;
@@ -54,8 +55,8 @@ public class GifticonController {
     }
 
     @PutMapping("/used")
-    public ResponseEntity<?> useGifticon() {
-        gifticonService.useGifticon();
+    public ResponseEntity<?> useGifticon(@RequestBody GifticonUseDto dto) {
+        gifticonService.useGifticon(dto);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
@@ -83,4 +84,9 @@ public class GifticonController {
     public ResponseEntity<?> methodArgumentNotValidExceptionHandler(MethodArgumentNotValidException exception) {
         return new ResponseEntity<>(exception.getMessage(), HttpStatus.BAD_REQUEST);
     }
-}
+
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<?> illegalArgumentExceptionHandler(IllegalArgumentException exception) {
+        return new ResponseEntity<>(exception.getMessage(), HttpStatus.BAD_REQUEST);
+    }
+ }

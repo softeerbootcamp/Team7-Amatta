@@ -7,6 +7,7 @@ import com.amatta.amatta_server.exception.NotAuthenticatedException;
 import com.amatta.amatta_server.gifticon.dto.GifticonDto;
 import com.amatta.amatta_server.gifticon.dto.GifticonImageDto;
 import com.amatta.amatta_server.gifticon.dto.GifticonTextDto;
+import com.amatta.amatta_server.gifticon.dto.GifticonUseDto;
 import com.amatta.amatta_server.gifticon.model.Gifticon;
 import com.amatta.amatta_server.gifticon.repository.GifticonRepository;
 import com.amatta.amatta_server.gifticon.util.GifticonMapper;
@@ -95,13 +96,16 @@ public class GifticonService {
     }
 
     @Transactional
-    public void useGifticon() {
+    public void useGifticon(GifticonUseDto dto) throws IllegalArgumentException {
         Users user = getUserBySessionId();
         if(user == null) {
             throw new NotAuthenticatedException();
         }
-        LocalDate current = LocalDate.now();
-        gifticonRepository.useGifticon(user.getId(), current);
+        Gifticon gifticon = gifticonRepository.findById(dto.getGifticonId()).orElseThrow(()-> new IllegalArgumentException("기프티콘을 찾을 수 없습니다"));
+        if(gifticon.getUid() != user.getId()) {
+            throw new IllegalArgumentException("잘못된 요청입니다");
+        }
+        gifticonRepository.useGifticon(dto.getGifticonId());
     }
 
 
