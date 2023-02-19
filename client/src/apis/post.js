@@ -22,7 +22,9 @@ export const sendImageInfo = async (imageInfo) => {
 
 export const submitImage = async (imageData) => {
   try {
-    const response = await client.post('/gifticon', imageData);
+    const response = await client.post('/gifticon', imageData, {
+      headers: { 'Content-Type': 'multipart/form-data', processData: false },
+    });
 
     return response.data;
   } catch (error) {

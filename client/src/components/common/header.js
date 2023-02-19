@@ -47,7 +47,7 @@ const header = (props) => {
     );
 
   const handleEvent = (fragment) => {
-    if (!label) return navigatePath(fragment, '.small-logo-white', '/');
+    if (!label) return navigatePath(fragment, '.small-logo-white', '/card');
     return navigatePath(fragment, '.left-arrow-button', path);
   };
 

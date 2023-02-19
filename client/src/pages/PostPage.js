@@ -11,6 +11,7 @@ const CAMERA_ICON_URL = `${SERVER_URL.IMG}icon/camera.svg`;
 const ARROW_RIGHT_ICON_URL = `${SERVER_URL.IMG}icon/arrow-right.svg`;
 const X_ICON_URL = `${SERVER_URL.IMG}icon/x.svg`;
 const $root = $.qs('#root');
+const formData = new FormData();
 const PostPage = {};
 
 let gifticonData = {
@@ -98,8 +99,9 @@ const resetInput = () => {
 
 const uploadImg = (file) => {
   const reader = new FileReader();
+  formData.append('image', file);
 
-  reader.readAsDataURL(file[0]);
+  reader.readAsDataURL(file);
   resetInput();
 
   reader.onload = async () => {
@@ -127,18 +129,12 @@ const uploadImg = (file) => {
     $.qs('#price-input').value = '5000';
     $.qs('#date-input').value = expiresAt;
 
-    // $.qs('#menu-input').value = '아메리카노';
-    // $.qs('#shop-input').value = 'STARBUKS';
-    // $.qs('#price-input').value = 0;
-    // $.qs('#date-input').value = '1996-11-01';
-
     $.qs('.crop-section').style.display = 'flex';
     $.qs('.crop-image').src = reader.result;
 
     const croppedImage = await new Promise((resolve) => drag(changeHeader, resolve));
     gifticonData = setGifticonData(gifticonData, 'thumbnail', croppedImage);
   };
-
   return file;
 };
 
@@ -146,14 +142,20 @@ const sendCardData = async () => {
   const cardData = {
     itemName: gifticonData.itemName,
     brandName: gifticonData.brandName,
-    thumbnail: gifticonData.thumbnail,
-    image: gifticonData.image,
     barcode: gifticonData.barcode,
     expiresAtInString: gifticonData.expiresAt,
     price: '5000',
   };
 
-  await submitImage(cardData);
+  formData.append(
+    'dto',
+    new Blob([JSON.stringify(cardData)], {
+      type: 'application/json',
+    }),
+  );
+  formData.append('thumbnail', gifticonData.thumbnail);
+
+  await submitImage(formData);
   navigate('/card');
 };
 
@@ -163,8 +165,8 @@ const postInputs = ({ type }) => POST_INPUT_TYPE.includes(type);
 const findTarget = (child, parent) => () => $.qs(child, parent);
 
 const handleClickUploadBtn = () => $.qs('.upload-image').click();
-const handleSubmitImg = ({ target }) => uploadImg(target.files);
-const handleSubmitCardData = ({ target }) => sendCardData();
+const handleSubmitImg = ({ target }) => uploadImg(target.files[0]);
+const handleSubmitCardData = () => sendCardData();
 
 const eventTrigger = (type, target, fn) => () => $.on(type, fn)(target);
 const setEvent = (type, fn) => (target) => IO.of(eventTrigger(type, target, fn));
