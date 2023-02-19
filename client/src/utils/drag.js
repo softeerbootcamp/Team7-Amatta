@@ -122,6 +122,14 @@ export default async function drag(changeHeader, resolve) {
 
     const resizedImage = canvas.toDataURL('image/png');
 
+    const blobBin = atob(resizedImage.split(',')[1]);
+    const array = [];
+
+    for (let i = 0; i < blobBin.length; i++) {
+      array.push(blobBin.charCodeAt(i));
+    }
+
+    const file = new Blob([new Uint8Array(array)], { type: 'image/png' }); // Blob 생성
     changeHeader('mint');
 
     imageContainer.src = resizedImage;
@@ -132,6 +140,6 @@ export default async function drag(changeHeader, resolve) {
     setTranslate(0, 0, cropArea);
     cropWrapper.style.display = 'none';
 
-    resolve(resizedImage);
+    resolve(file);
   }
 }

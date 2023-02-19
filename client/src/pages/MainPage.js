@@ -4,12 +4,12 @@ import { dropdownMenu, header } from '@/components/common';
 import { $, slider } from '@/utils';
 import { _ } from '@/utils/customFx';
 import { navigate } from '@/core/router';
-// import { verificateEmail } from '@/apis/card';
+import { getCardList } from '@/apis/card';
 
-const oneCardIconUrl = `${SERVER_URL.IMG}icon/image-icon.svg`;
-const listIconUrl = `${SERVER_URL.IMG}icon/list-icon.svg`;
-const dropdownIconUrl = `${SERVER_URL.IMG}icon/angle-down.svg`;
-const plusIconUrl = `${SERVER_URL.IMG}icon/plus.svg`;
+const ONE_CARD_ICON_URL = `${SERVER_URL.IMG}icon/image-icon.svg`;
+const LIST_ICON_URL = `${SERVER_URL.IMG}icon/list-icon.svg`;
+const DROP_DOWN_ICON_URL = `${SERVER_URL.IMG}icon/angle-down.svg`;
+const PLUS_ICON_URL = `${SERVER_URL.IMG}icon/plus.svg`;
 
 let touchStartX = 0;
 let touchEndX = 0;
@@ -74,8 +74,8 @@ MainPage.temp = `
         <div class="main-card-box">
           <div class='main-button-container'>
             <section class='show-card-section'>
-              <img class='one-card-button' src='${oneCardIconUrl}' alt='square-card-button' />
-              <img class='list-card-button' src='${listIconUrl}' alt='list-card-button' />
+              <img class='one-card-button' src='${ONE_CARD_ICON_URL}' alt='square-card-button' />
+              <img class='list-card-button' src='${LIST_ICON_URL}' alt='list-card-button' />
             </section>
             <section class='main-dropdown-section hidden'>
             ${dropdownMenu()}
@@ -86,13 +86,13 @@ MainPage.temp = `
           </section>
           <ul class="card-pagination"></ul>
           <button type="button" id="plus-button">
-            <img class='plus-button-image' src='${plusIconUrl}' alt='plus-button' />
+            <img class='plus-button-image' src='${PLUS_ICON_URL}' alt='plus-button' />
           </button>
         </div>
       </div>
     </article>
   `;
-//${cards.map((detail) => cardDetail(detail)).join('')}
+// ${cards.map((detail) => cardDetail(detail)).join('')}
 
 const toggleDropdown = () => {
   const dropdownSection = $.qs('.main-dropdown-section');
@@ -116,7 +116,6 @@ const makeUsedState = (targets) =>
 // prettier-ignore
 const renderDetail = () =>
   _.go(
-    //cards.map((detail) => cardDetail(detail)).join(''),
     detailTemp,
     $.el,
     $.replace($.qs('.cards-section')),
@@ -143,8 +142,8 @@ const handleTouchMove = (e) => (touchEndX = e.touches[0].clientX);
 const handleTouchEnd = (e) => {
   const touchDeltaX = touchEndX - touchStartX;
   const card = e.currentTarget;
-  let isSwippingRight = card.classList.contains('swiped-right');
-  let isSwippingLeft = card.classList.contains('swiped-left');
+  const isSwippingRight = card.classList.contains('swiped-right');
+  const isSwippingLeft = card.classList.contains('swiped-left');
 
   if (touchDeltaX > 20 && !isSwipping && !isSwippingLeft) {
     isSwipping = true;
@@ -163,7 +162,7 @@ const handleTouchEnd = (e) => {
 
 const changeToList = (cardsSection) => cardsSection.classList.add('list');
 
-const scrollEvent = (target) => target.scrollIntoView(true);
+// const scrollEvent = (target) => target.scrollIntoView(true);
 
 const renderListTpl = () =>
   _.go(cards.map(cardList).join(''), $.el, $.replace($.qs('.cards-section')));
@@ -219,16 +218,12 @@ const usedCardEvent = (targets) =>
   targets.forEach((target) => target.addEventListener('click', (e) => usedStateCard(e.target)));
 
 const priceComparison = () => {
-  cards.sort(function (comp1, comp2) {
-    return comp1.itemPrice - comp2.itemPrice;
-  });
+  cards.sort((comp1, comp2) => comp1.itemPrice - comp2.itemPrice);
   renderListTpl();
 };
 
 const dateComparison = () => {
-  cards.sort(function (comp1, comp2) {
-    return new Date(comp1.dateOfUse) - new Date(comp2.dateOfUse);
-  });
+  cards.sort((comp1, comp2) => new Date(comp1.dateOfUse) - new Date(comp2.dateOfUse));
   renderListTpl();
 };
 
@@ -248,7 +243,7 @@ MainPage.render = () =>
       $.replace($.qs('#root')));
 
 // prettier-ignore
-const navigateMain = () => {
+const navigateMain = async () => {
     _.go(
       MainPage.render(),
       slider(),
@@ -263,7 +258,19 @@ const navigateMain = () => {
       () => MainPage.handleClickaddCard());
 
       header({color: 'mint'})();
-      //verificateEmail();
+      const test = await getCardList();
+      console.log(test[0].thumbnail);
+
+      const binaryData = test[0].thumbnail;
+
+      const reader = new FileReader();
+      reader.onload = function(event) {
+        const base64Data = event.target.result;
+        const imgTag = document.querySelector('.card-image');
+        imgTag.src = `data:image/png;base64, ${base64Data}`;
+      };
+
+reader.readAsDataURL(new Blob([binaryData], { type: 'image/png' }));
     }
 
 export default navigateMain;
