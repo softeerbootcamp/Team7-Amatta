@@ -66,7 +66,7 @@ const login = () => {
           vapidKey:
             'BPTfJAoUaJeyzryOu29dcccPl_1Db8OC4I_yBCC4qRTn_CfSHa_F10PoafMgkUkc7ynARCpU1RGyWRb-kAoDN4Q',
         }).then((tokens) => {
-          fcmToken('/fcm/token', tokens);
+          fcmToken(tokens);
         });
       }
       if (res === 'denied') window.alert('알림을 받으시려면 알림을 허용해주세요');
