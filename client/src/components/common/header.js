@@ -40,8 +40,11 @@ const header = (props) => {
       </header>
     `;
 
-  const logoutEvent = (target) => {
-    toggleActive(target);
+  const logoutEvent = () => {
+    modal('로그아웃', 'logout')();
+
+    const logoutModal = $.qs('.outside-modal-container');
+    toggleActive(logoutModal);
   };
 
   const openMenuEvent = () => {
@@ -50,9 +53,6 @@ const header = (props) => {
 
     toggleActive(trigger);
     toggleActive(menuTarget);
-
-    const logoutButton = $.qs('.logout-button');
-    logoutButton.addEventListener('click', toggleActive());
   };
 
   const toggleActive = (target) => target.classList.toggle('active');
@@ -79,7 +79,13 @@ const header = (props) => {
       () => sideMenu()(),
       () => $.qs('.trigger'),
       $.on('click', openMenuEvent),
-      () => modal("로그아웃", "logout")());
+      () => $.qs('.logout-button'),
+      $.on('click', logoutEvent),
+      // () => $.qs('.modal-button'),
+      // $.on('click', navigate('/')),
+      // () => $.qs('.cancel-button'),
+      // $.on('click', navigate('/card'))
+      );
 
   return appendHeader;
 };
