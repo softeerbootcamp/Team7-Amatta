@@ -13,7 +13,7 @@ const sideMenu = () => {
           <ul class='menu-button'>
             <li>마이페이지</li>
             <li>사용 내역</li>
-            <li>로그아웃</li>
+            <li class='logout-button'>로그아웃</li>
           </ul>
         </section>
         <img class='small-logo-mint' src='${MINT_LOGO_URL}' alt='amatta-small-logo'/>
