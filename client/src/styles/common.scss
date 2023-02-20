@@ -8,6 +8,26 @@
   margin: 0;
 }
 
+.notification-container {
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 1rem 1rem 0 0;
+  padding: 1.5rem 0;
+  width: 100%;
+  position: absolute;
+  bottom: calc(-50px - 3rem);
+  transition: transform 0.3s ease-in-out;
+  z-index: 15;
+
+  p {
+    font-size: calc(-50px - 3rem);
+    text-align: center;
+  }
+
+  &.show {
+    transform: translateY(-50px);
+  }
+}
+
 .outside-modal-container {
   position: fixed;
   top: 0;

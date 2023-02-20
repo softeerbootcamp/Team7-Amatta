@@ -1,6 +1,6 @@
 import { initializeApp } from 'firebase/app';
 import { getMessaging, getToken } from 'firebase/messaging';
-import { inputForm } from '@/components/common';
+import { inputForm, notification } from '@/components/common';
 import { loginU } from '@/apis/auth';
 import { navigate } from '@/core/router';
 import { INPUT } from '@/constants/constant';
@@ -46,6 +46,7 @@ const login = () => {
 
     await loginU(userData);
     navigate('/card');
+    await notification('로그인', 'login')();
 
     const firebaseConfig = {
       apiKey: 'AIzaSyCsLBsvozvTnYlDH-5cS0A8X_AjV5o4jjM',
@@ -72,6 +73,12 @@ const login = () => {
       if (res === 'denied') window.alert('알림을 받으시려면 알림을 허용해주세요');
     });
   };
+
+  // prettier-ignore
+  const handleSubmission = (target) => 
+    _.pipe(
+      handleSubmitData(target),
+      notification('로그인', 'login'));
 
   // prettier-ignore
   const handleSubmitData = (target) => 
@@ -104,6 +111,7 @@ const login = () => {
       appendInputForm,
       () => handleChangeInput(document),
       () => handleSubmitData(fragment),
+      // () => handleSubmission(fragment),
       () => fragment);
 
   return appendLogin;

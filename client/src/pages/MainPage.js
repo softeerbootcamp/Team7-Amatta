@@ -1,6 +1,6 @@
 import { SERVER_URL } from '@/constants/constant';
 import { cardDetail, cardList } from '@/components/main';
-import { dropdownMenu, header } from '@/components/common';
+import { dropdownMenu, header, notification } from '@/components/common';
 import { IO, $, slider } from '@/utils';
 import { _ } from '@/utils/customFx';
 import { navigate } from '@/core/router';
@@ -229,6 +229,7 @@ const navigateMain = async () => {
     MainPage.render(),
     addEvents,
     slider(),
+    // () => notification("logout", "logout")(),
     () => $.qsa('.mark-used-button'),
     makeUsedState,
     () => $.qs('.main-dropdown-button'),

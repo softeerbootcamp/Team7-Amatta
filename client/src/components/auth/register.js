@@ -1,4 +1,4 @@
-import { inputForm } from '@/components/common';
+import { inputForm, notification } from '@/components/common';
 import { regiseterUser, verificateEmail } from '@/apis/auth';
 import { navigate } from '@/core/router';
 import { INPUT } from '@/constants/constant';
@@ -129,6 +129,7 @@ const register = () => {
 
     navigate('/card');
     await regiseterUser(data);
+    notification('로그아웃', 'logout')();
   };
 
   const addInputForm = (fragment) => (input) => inputForm({ ...input, target: fragment })();
