@@ -1,5 +1,8 @@
+import { SERVER_URL } from '@/constants/constant.js';
+
 const cardDetail = (props) => (idx) => {
   const { image, thumbnail, brandName, itemName, expiresAt, price } = props;
+  const DOTS_ICON_URL = `${SERVER_URL.IMG}icon/dots.svg`;
 
   const cardDetailTemplate = `
     <article class='card-lists' data-idx="${idx}">
@@ -7,6 +10,7 @@ const cardDetail = (props) => (idx) => {
         <img class='card-image' src=${thumbnail} alt='card-image' />
         <section class='card-info'>
           <div class='card-text'>
+            <img class='more-dots-button' src='${DOTS_ICON_URL}' alt='more-dots-button' />
             <div class='date-of-use'>${expiresAt} </div>
             <div class='shop-name'> ${brandName} </div>
             <div class='item-name'> ${itemName} </div>

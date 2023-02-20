@@ -19,13 +19,11 @@ let cardDatas = [];
 const setCardDatas = (cardData) => (cardDatas = [...cardData]);
 
 const detailTemp = () => `
-  <div class='cards-detail-container'>
     ${_.go(
       cardDatas,
       _.map((card) => cardDetail(card)(idx++)),
       _.reduce((a, b) => `${a}${b}`),
     )}
-  </div>
 `;
 
 const MainPage = {};
@@ -46,7 +44,6 @@ MainPage.temp = () => `
           <section class='cards-section'>
             ${detailTemp()}
           </section>
-          <ul class="card-pagination"></ul>
           <button type="button" id="plus-button">
             <img class='plus-button-image' src='${PLUS_ICON_URL}' alt='plus-button' />
           </button>
@@ -77,7 +74,7 @@ const makeUsedState = (targets) =>
 // prettier-ignore
 const renderDetail = () =>
   _.go(
-    detailTemp,
+    detailTemp(),
     $.el,
     $.replace($.qs('.cards-section')),
     () => $.find('.cards-section')(),
@@ -120,6 +117,8 @@ const handleTouchEnd = (e) => {
     isSwipping = false;
   }
 };
+
+const switchLayout = () => document.querySelector('.cards-section').classList.toggle('list');
 
 const changeToList = (cardsSection) => cardsSection.classList.add('list');
 
@@ -198,9 +197,11 @@ const addEvents = (target) => {
     .run();
 };
 
-const handleClickOneCard = (e) => {
-  const a = e.target.closest('.card-lists');
-  a.classList.toggle('is-flipped');
+const handleClickOneCard = ({ target }) => {
+  if (target.closest('.mark-used-button')) return;
+
+  const cardTarget = target.closest('.card-lists');
+  cardTarget.classList.toggle('is-flipped');
 };
 const handleClickListCard = () => {
   console.log(2);
@@ -234,9 +235,11 @@ const navigateMain = async () => {
     () => $.qs('.main-dropdown-button'),
     $.on('click', toggleDropdown),
     () => $.qs('.one-card-button'),
-    $.on('click', renderDetail),
+    $.on('click', switchLayout),
+    // $.on('click', renderDetail),
     () => $.qs('.list-card-button'),
-    $.on('click', renderList),
+    $.on('click', switchLayout),
+    // $.on('click', renderList),
     () => MainPage.handleClickaddCard());
 
   header({color: 'mint'})();

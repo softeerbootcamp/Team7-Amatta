@@ -1,6 +1,6 @@
 .main-card-article {
   width: 100%;
-  height: 100%;
+  height: calc(calc(var(--vh, 1vh) * 100) - 4.5rem);
   background-color: $primary-color;
   overflow: hidden;
   padding-top: 4.5rem;
@@ -8,9 +8,10 @@
   .main-card-container {
     width: 90%;
     padding: 5%;
+    height: 85%;
 
     .main-card-box {
-      height: calc(var(--vh, 1vh) * 85);
+      height: 100%;
       border-radius: 1.25rem;
       background-color: $white-color;
       padding: 1.25rem;
@@ -140,23 +141,6 @@
       transition: transform 0.4s;
       height: 90%;
 
-      &.list {
-        flex-direction: column;
-        overflow-x: hidden;
-
-        -ms-overflow-style: none;
-        scrollbar-width: none;
-
-        &::-webkit-scrollbar {
-          display: none;
-        }
-
-        section:nth-last-of-type(1) {
-          border: none;
-        }
-      }
-
-      .cards-detail-container,
       .card-lists {
         display: flex;
         transition: 0.5s;
@@ -165,9 +149,9 @@
       .card-lists {
         position: relative;
         perspective: 800px;
-        // width: calc(90vw - 2.5rem - 2px);
 
         &.is-flipped {
+          height: 100%;
           .one-card-section {
             transform: rotateY(-180deg);
           }
@@ -183,8 +167,8 @@
         .one-card-section-back {
           transform: rotateY(180deg);
 
-          img {
-            max-height: 70vh;
+          .card-image {
+            height: 100% !important;
           }
         }
       }
@@ -200,17 +184,17 @@
         transition: transform 0.6s ease-out;
         border-radius: 1.25rem;
         border: 1px $primary-color solid;
-        // margin-right: 2.5rem;
         width: calc(90vw - 2.5rem - 2px);
         left: 0;
+        height: 100%;
 
         &.gray {
           filter: grayscale(1);
         }
 
         .card-image {
-          max-height: 55%;
           width: calc(80vw + 6px);
+          height: 45%;
         }
 
         .card-info {
@@ -219,32 +203,31 @@
           align-items: center;
           justify-content: space-around;
           text-align: center;
-          margin-top: 10%;
+          margin: auto;
 
           .shop-name {
             color: $gray500;
-            font-size: 0.875rem;
+            font-size: 1.25rem;
+            margin: 1rem 0;
+            margin-top: 0.875rem;
           }
 
           .item-name {
             font-weight: 300;
-            font-size: 1.5rem;
-            margin-top: 0.5rem;
-            margin-bottom: 1rem;
-            white-space: nowrap;
+            font-size: 1.75rem;
+            white-space: pre-line;
             color: $gray900;
           }
 
           .item-price {
-            margin-bottom: 0.25rem;
-            font-size: 1rem;
+            margin: 1rem 0;
+            font-size: 1.25rem;
             color: $gray700;
           }
 
           .date-of-use {
-            font-size: 0.75rem;
+            font-size: 1rem;
             color: $gray600;
-            margin-bottom: 0.75rem;
           }
         }
 
@@ -261,166 +244,244 @@
         }
       }
 
-      .one-list-section {
-        display: flex;
-        flex-direction: row;
-        height: 30%;
-        position: relative;
+      .more-dots-button {
+        display: none;
+      }
 
-        //width: calc(72vw + 148px);
-        margin-bottom: 1rem;
-        border-radius: 10px;
-        //border: 1px solid $primary-color;
-        box-shadow: inset -3px -2px 3px 0px rgb(0 0 0 / 16%), 0 3px 6px rgba(0, 0, 0, 0.23);
-        //border-bottom: 1px solid $primary-color;
-        padding: 1rem;
+      &.list {
+        flex-direction: column;
+        overflow-x: scroll;
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+        transition: 0s;
+        transform: translateX(0px) !important;
 
-        touch-action: none;
-        transition: transform 0.2s ease-in-out;
-        //margin-left: -74px;
-
-        &.swiped-right {
-          transform: translateX(64px);
-          transition: transform 0.5s;
+        &::-webkit-scrollbar {
+          display: none;
         }
 
-        &.swiped-left {
-          transform: translateX(-64px);
-          transition: transform 0.5s;
+        section:nth-last-of-type(1) {
+          border: none;
         }
 
-        &.gray {
-          filter: grayscale(1);
-        }
-
-        .list-card-content {
-          // width: 100%;
-          width: calc(90vw - 2.5rem - 2px);
-          height: 100%;
+        .card-lists {
           display: flex;
-        }
-
-        .card-actions-section {
-          position: absolute;
-          top: 0;
-          left: 0;
-          width: calc(90vw - 2.5rem - 2px + 128px);
-          height: 100%;
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
+          transform: 0;
+          left: 0 !important;
+          min-height: 15%;
+          position: relative;
+          margin-bottom: 1rem;
+          border-radius: 10px;
+          box-shadow: inset -3px -2px 3px 0px rgb(0 0 0 / 16%), 0 3px 6px rgba(0, 0, 0, 0.23);
+          padding: 1rem;
+          // touch-action: none;
           transition: transform 0.2s ease-in-out;
-          margin-left: -64px;
 
-          .card-used-button {
-            background-color: $primary-color;
-            width: 4rem;
-            height: 100%;
-            color: black;
-            font-size: 1rem;
-            cursor: pointer;
-            transition: transform 0.2s ease-in-out;
-            text-align: center;
+          .one-card-section {
+            transform: 0;
             display: flex;
-            align-items: center;
-            justify-content: center;
-            color: $white-color;
-            border-radius: 0.5rem;
-            text-align: center;
-          }
-
-          .card-delete-button {
-            background-color: $pink-color;
-            width: 4rem;
-            height: 100%;
-            font-size: 1rem;
-            cursor: pointer;
-            transition: transform 0.2s ease-in-out;
-            text-align: center;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 0.5rem;
-            color: $white-color;
-          }
-        }
-
-        .card-list-image {
-          max-height: 6rem;
-          width: 6.5rem;
-          border-radius: 0.625rem;
-          border: 1px solid $gray300;
-        }
-
-        .card-list-text {
-          display: flex;
-          flex-direction: column;
-          margin-left: 2rem;
-
-          .more-dots-button {
+            flex-direction: row;
+            border: none;
+            width: calc(100% - 2rem);
+            height: calc(100% - 2rem);
             position: absolute;
-            right: 0.75rem;
-            height: 1rem;
-            width: 2rem;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            border-radius: 0;
+
+            .card-image {
+              width: 30%;
+              height: auto;
+              border-radius: 0.625rem;
+              border: 1px solid #e0e0e0;
+            }
+            .card-info {
+              margin-left: 2rem;
+            }
           }
 
-          .list-d-day {
-            font-size: 0.5rem;
-            color: $gray600;
-            margin-bottom: 0.5rem;
+          .card-button {
+            display: none;
           }
 
-          .list-shop-name {
-            font-size: 0.75rem;
-            margin-bottom: 0.5rem;
-          }
+          .card-text {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            justify-content: center;
+            text-align: left;
 
-          .list-item-name {
-            font-size: 1rem;
-            font-weight: 200;
-            margin-bottom: 0.5rem;
-          }
+            .more-dots-button {
+              position: absolute;
+              right: 0.25rem;
+              height: 1rem;
+              width: 2rem;
+              top: 0;
+              display: flex;
+            }
 
-          .list-date-of-use {
-            font-size: 0.75rem;
+            .date-of-use {
+              font-size: 0.5rem;
+              color: #757575;
+            }
+
+            .shop-name {
+              font-size: 0.75rem;
+              margin: 0.5rem 0;
+            }
+
+            .item-name {
+              font-size: 1rem;
+              font-weight: 200;
+              margin-bottom: 0.5rem;
+            }
+
+            .item-price {
+              font-size: 0.75rem;
+              margin: 0;
+            }
           }
+        }
+
+        .card-lists:last-of-type {
+          margin-bottom: 0;
         }
       }
-    }
 
-    ul,
-    li {
-      list-style-type: none;
-      padding: 0;
-      margin: 0;
-    }
-    .card-pagination {
-      display: flex;
-      position: absolute;
-      left: 50%;
-      transform: translateX(-50%);
-    }
-    .card-pagination > li {
-      color: $gray300;
-      cursor: pointer;
-      font-size: 1.75rem;
-    }
-    .card-pagination > li.active {
-      color: $pink-color;
+      // .one-list-section {
+      //   display: flex;
+      //   flex-direction: row;
+      //   height: 30%;
+      //   position: relative;
+      //   margin-bottom: 1rem;
+      //   border-radius: 10px;
+      //   box-shadow: inset -3px -2px 3px 0px rgb(0 0 0 / 16%), 0 3px 6px rgba(0, 0, 0, 0.23);
+      //   padding: 1rem;
+      //   touch-action: none;
+      //   transition: transform 0.2s ease-in-out;
+
+      //   &.swiped-right {
+      //     transform: translateX(64px);
+      //     transition: transform 0.5s;
+      //   }
+
+      //   &.swiped-left {
+      //     transform: translateX(-64px);
+      //     transition: transform 0.5s;
+      //   }
+
+      //   &.gray {
+      //     filter: grayscale(1);
+      //   }
+
+      //   .list-card-content {
+      //     // width: 100%;
+      //     width: calc(90vw - 2.5rem - 2px);
+      //     height: 100%;
+      //     display: flex;
+      //   }
+
+      //   .card-actions-section {
+      //     position: absolute;
+      //     top: 0;
+      //     left: 0;
+      //     width: calc(90vw - 2.5rem - 2px + 128px);
+      //     height: 100%;
+      //     display: flex;
+      //     justify-content: space-between;
+      //     align-items: center;
+      //     transition: transform 0.2s ease-in-out;
+      //     margin-left: -64px;
+
+      //     .card-used-button {
+      //       background-color: $primary-color;
+      //       width: 4rem;
+      //       height: 100%;
+      //       color: black;
+      //       font-size: 1rem;
+      //       cursor: pointer;
+      //       transition: transform 0.2s ease-in-out;
+      //       text-align: center;
+      //       display: flex;
+      //       align-items: center;
+      //       justify-content: center;
+      //       color: $white-color;
+      //       border-radius: 0.5rem;
+      //       text-align: center;
+      //     }
+
+      //     .card-delete-button {
+      //       background-color: $pink-color;
+      //       width: 4rem;
+      //       height: 100%;
+      //       font-size: 1rem;
+      //       cursor: pointer;
+      //       transition: transform 0.2s ease-in-out;
+      //       text-align: center;
+      //       display: flex;
+      //       align-items: center;
+      //       justify-content: center;
+      //       border-radius: 0.5rem;
+      //       color: $white-color;
+      //     }
+      //   }
+
+      //   .card-list-image {
+      //     max-height: 6rem;
+      //     width: 6.5rem;
+      //     border-radius: 0.625rem;
+      //     border: 1px solid $gray300;
+      //   }
+
+      //   .card-list-text {
+      //     display: flex;
+      //     flex-direction: column;
+      //     margin-left: 2rem;
+
+      //     .more-dots-button {
+      //       position: absolute;
+      //       right: 0.75rem;
+      //       height: 1rem;
+      //       width: 2rem;
+      //     }
+
+      //     .list-d-day {
+      //       font-size: 0.5rem;
+      //       color: $gray600;
+      //       margin-bottom: 0.5rem;
+      //     }
+
+      //     .list-shop-name {
+      //       font-size: 0.75rem;
+      //       margin-bottom: 0.5rem;
+      //     }
+
+      //     .list-item-name {
+      //       font-size: 1rem;
+      //       font-weight: 200;
+      //       margin-bottom: 0.5rem;
+      //     }
+
+      //     .list-date-of-use {
+      //       font-size: 0.75rem;
+      //     }
+      //   }
+      // }
     }
 
     #plus-button {
       position: absolute;
-      right: 2rem;
-      bottom: 2rem;
-      background-color: $pink-color;
+      right: 5%;
+      bottom: 1.5rem;
+      background-color: #f3969a;
       border: none;
-      width: 4rem;
-      height: 4rem;
-      border-radius: 50%;
+      width: 7rem;
+      height: 2.25rem;
+      border-radius: 1rem;
 
       .plus-button-image {
-        width: 2rem;
+        width: 1.25rem;
         filter: invert(100%) sepia(0%) saturate(0%) hue-rotate(113deg) brightness(104%)
           contrast(101%);
       }
