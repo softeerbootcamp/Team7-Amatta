@@ -17,3 +17,9 @@ export const loginU = async (data) => {
 
   return response.data;
 };
+
+export const logoutU = async () => {
+  const response = await client.post('user/logout', {});
+
+  return response.data;
+};

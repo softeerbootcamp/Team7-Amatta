@@ -39,6 +39,7 @@ navigator.serviceWorker.register('../firebase-messaging-sw.js').then((res) => {
       badge: 'https://amatta-icons.s3.ap-northeast-2.amazonaws.com/logo/logo-pink.png',
       vibrate: [2000, 2000, 2000],
       sound: 'https://amatta-sound.s3.ap-northeast-2.amazonaws.com/logo/push.mp3',
+      link: payload.fcmOptions.link,
     };
     res.showNotification(payload.notification.title, option);
   });
