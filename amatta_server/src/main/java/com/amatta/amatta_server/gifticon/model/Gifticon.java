@@ -9,8 +9,8 @@ public class Gifticon {
     public final static int expirationThresholdDays = 3;
     private long id;
     private long uid;
-    private byte[] image;
-    private byte[] thumbnail;
+    private String image;
+    private String thumbnail;
     private String brandname;
     private String itemname;
     private String barcode;
@@ -26,11 +26,11 @@ public class Gifticon {
         return uid;
     }
 
-    public byte[] getImage() {
+    public String getImage() {
         return image;
     }
 
-    public byte[] getThumbnail() {
+    public String getThumbnail() {
         return thumbnail;
     }
 
