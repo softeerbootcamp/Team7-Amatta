@@ -14,17 +14,17 @@
   padding: 1.5rem 0;
   width: 100%;
   position: absolute;
-  bottom: calc(-50px - 3rem);
+  bottom: calc(-50px - 1.1rem);
   transition: transform 0.3s ease-in-out;
   z-index: 15;
 
   p {
-    font-size: calc(-50px - 3rem);
+    font-size: 1.5rem;
     text-align: center;
   }
 
   &.show {
-    transform: translateY(-50px);
+    transform: translateY(calc(-50px - 1.1rem));
   }
 }
 

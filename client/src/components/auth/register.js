@@ -129,7 +129,7 @@ const register = () => {
 
     navigate('/card');
     await regiseterUser(data);
-    notification('로그아웃', 'logout')();
+    await notification('회원가입', 'register')();
   };
 
   const addInputForm = (fragment) => (input) => inputForm({ ...input, target: fragment })();

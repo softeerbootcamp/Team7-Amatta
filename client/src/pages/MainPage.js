@@ -229,7 +229,7 @@ const navigateMain = async () => {
     MainPage.render(),
     addEvents,
     slider(),
-    // () => notification("logout", "logout")(),
+    //() => notification("logout", "logout")(),
     () => $.qsa('.mark-used-button'),
     makeUsedState,
     () => $.qs('.main-dropdown-button'),
