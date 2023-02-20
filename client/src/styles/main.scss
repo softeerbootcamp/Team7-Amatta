@@ -165,6 +165,7 @@
       .card-lists {
         position: relative;
         perspective: 800px;
+        // width: calc(90vw - 2.5rem - 2px);
 
         &.is-flipped {
           .one-card-section {
@@ -199,7 +200,7 @@
         transition: transform 0.6s ease-out;
         border-radius: 1.25rem;
         border: 1px $primary-color solid;
-        margin-right: 2.5rem;
+        // margin-right: 2.5rem;
         width: calc(90vw - 2.5rem - 2px);
         left: 0;
 

@@ -1,8 +1,8 @@
-const cardDetail = (props) => {
+const cardDetail = (props) => (idx) => {
   const { image, thumbnail, brandName, itemName, expiresAt, price } = props;
 
   const cardDetailTemplate = `
-    <article class='card-lists'>
+    <article class='card-lists' data-idx="${idx}">
       <section class='one-card-section'>
         <img class='card-image' src=${thumbnail} alt='card-image' />
         <section class='card-info'>
