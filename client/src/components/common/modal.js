@@ -3,8 +3,8 @@ import { _ } from '@/utils/customFx';
 
 const logout = (label, classname) => {
   const logoutTpl = `
-  <div class='outside-modal-container outside-${classname} active'>
-    <section class='modal-section-wrapper ${classname}'>
+  <div class='outside-modal-container outside-${classname}'>
+    <section class='modal-section-wrapper ${classname}-wrapper'>
       <section class='modal-section  ${classname}'>
       <div class='modal-text-container'>
       <h4 class='modal-text'>${label}</h4>

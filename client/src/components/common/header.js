@@ -1,5 +1,6 @@
 import { SERVER_URL } from '@/constants/constant';
 import { navigate } from '@/core/router';
+import { logoutU } from '@/apis/auth';
 import { _ } from '@/utils/customFx';
 import { $ } from '@/utils';
 import { sideMenu, modal } from '@/components/common';
@@ -40,22 +41,43 @@ const header = (props) => {
       </header>
     `;
 
-  const logoutEvent = (target) => {
-    toggleActive(target);
+  const toggleModal = () => {
+    const logoutModal = $.qs('.outside-modal-container');
+    toggleActive(logoutModal);
   };
 
-  const openMenuEvent = () => {
+  const closeModal = () => {
+    const cancelButton = $.qs('.cancel-button');
+    cancelButton.addEventListener('click', toggleModal);
+  };
+
+  const logoutModal = () => {
+    const logoutButton = $.qs('.modal-button');
+    logoutButton.addEventListener('click', () => {
+      toggleModal();
+      navigate('/');
+      logoutU();
+    });
+  };
+
+  const logoutEvent = () => {
+    modal('로그아웃', 'logout')();
+
+    toggleModal();
+    closeModal();
+    logoutModal();
+  };
+
+  const openMenuEvent = async () => {
     const trigger = $.qs('.trigger');
     const menuTarget = $.qs('.menu-section');
-
-    toggleActive(trigger);
+    await toggleActive(trigger);
     toggleActive(menuTarget);
 
-    const logoutButton = $.qs('.logout-button');
-    logoutButton.addEventListener('click', toggleActive());
+    $.on('click', logoutEvent)($.qs('.modal-button'));
   };
 
-  const toggleActive = (target) => target.classList.toggle('active');
+  const toggleActive = async (target) => target.classList.toggle('active');
 
   const navigatePath = (fragment, target, path) =>
     _.go(
@@ -70,16 +92,18 @@ const header = (props) => {
   };
 
   // prettier-ignore
-  const appendHeader = () =>
+  const appendHeader = () => {
     _.go(
       headerTemp,
       $.el,
       (fragment) => $.prepend(fragment, $.qs('#root')),
-      handleEvent,
-      () => sideMenu()(),
-      () => $.qs('.trigger'),
-      $.on('click', openMenuEvent),
-      () => modal("로그아웃", "logout")());
+      handleEvent);
+
+    // color === 'mint' && _.go(
+    //   sideMenu(),
+    //   () => $.qs('.trigger'),
+    //   $.on('click', openMenuEvent));
+  }
 
   return appendHeader;
 };
