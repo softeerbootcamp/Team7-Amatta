@@ -5,7 +5,6 @@ const slider = () => {
   const mainArticle = $.qs('.main-card-article');
   const slide = $.qs('.cards-detail-container');
 
-  // const slide = $.qs('.cards-section');
   const slideWidth = mainArticle.clientWidth;
   const slideItems = $.qsa('.one-card-section');
   const maxSlide = slideItems.length;
@@ -16,21 +15,18 @@ const slider = () => {
 
   const setWidth = (slideWidth) => (slide.style.width = `${slideWidth * slideItems.length}px`);
 
-  //prettier-ignore
-  // const addActiveClass = (template, element) =>
-  //   _.go(
-  //     template,
-  //     $.el,
-  //     $.prepend(element));
-  // const setPagination = () => {
-  //   const pagination = $.qs('.card-pagination');
-  //   const paginationTemp = `<li>•</li>`;
-  //   const activePaginationTemp = `<li class="active">•</li>`;
-  //   for (let i = 0; i < maxSlide; i++) {
-  //     if (i === maxSlide - 1) addActiveClass(activePaginationTemp, pagination);
-  //     else addActiveClass(paginationTemp, pagination);
-  //   }
-  // };
+  const parent = document.querySelector('.cards-section');
+  const children = parent.querySelectorAll('.card-lists');
+  const childCount = children.length;
+  const parentWidth = parent.offsetWidth;
+
+  const childWidth = children[0].offsetWidth;
+  const spaceBetweenChildren = (parentWidth - childCount * childWidth) / (childCount - 1);
+
+  children.forEach((child, index) => {
+    const left = index * (childWidth + spaceBetweenChildren);
+    left !== 0 && (child.style.left = `calc(${left}px + 2.5rem)`);
+  });
 
   const setOffset = () => {
     const offset = slideWidth * 0.95 - 20;
@@ -56,42 +52,32 @@ const slider = () => {
       currentSlide++;
     }
   };
+  let startX = 0;
+  const touchStartEvent = ({ touches }) => (startX = touches[0].pageX);
+  const touchEndEvent = () => (startX = 0);
 
-  // const clickPagination = (targets) => {
-  //   for (let i = 0; i < maxSlide; i++) {
-  //     targets[i].addEventListener('click', () => {
-  //       currentSlide = i + 1;
-  //       setOffset();
-  //     });
-  //   }
-  // };
-
-  const touchStartEvent = (target) => (startPoint = target.touches[0].pageX);
-  const touchEndEvent = (e) => {
-    endPoint = e.changedTouches[0].pageX;
-
-    if (Math.abs(endPoint - startPoint) < 10) return;
-
-    if (startPoint < endPoint) {
-      prevMove();
-    } else if (startPoint > endPoint) {
-      nextMove();
-    }
+  const touchMoveEvent = ({ touches }) => {
+    const left = childWidth + spaceBetweenChildren;
+    startX - touches[0].clientX > 7 &&
+      (parent.style.transform = `translateX(calc(-${left}px - 2.5rem))`);
   };
 
+  // const left = index * (childWidth + spaceBetweenChildren);
+
   // prettier-ignore
-  const cardSlider = () =>
-    _.go(
-      setWidth(slideWidth),
-      // () => setPagination(),
-      // $.findAll('.card-pagination > li'),
-      // changeActive,
-      // clickPagination,
-      () => $.qs('.cards-detail-container'),
-      _.tap(
-        $.on('touchstart', touchStartEvent)),
-      _.tap(
-        $.on('touchend', touchEndEvent)));
+  const cardSlider = () => 
+  // _.go(
+  //   $.qs('.cards-section'),
+  //   console.log,
+  // )
+  _.go(
+    // setWidth(slideWidth),
+    $.qs('.cards-section'),
+    _.tap($.on('touchstart', touchStartEvent)),
+    _.tap($.on('touchmove', touchMoveEvent)),
+    _.tap($.on('touchend', touchEndEvent)),
+  );
+
   return cardSlider;
 };
 

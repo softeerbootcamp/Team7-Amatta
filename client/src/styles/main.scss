@@ -10,7 +10,7 @@
     padding: 5%;
 
     .main-card-box {
-      height: calc(var(--vh, 1vh) * 70);
+      height: calc(var(--vh, 1vh) * 85);
       border-radius: 1.25rem;
       background-color: $white-color;
       padding: 1.25rem;
@@ -76,7 +76,7 @@
           pointer-events: none;
 
           li {
-            background-color: #fff;
+            background-color: $white-color;
             font-size: 0.875rem;
 
             width: calc(100% - 0.5rem - 2px);
@@ -137,12 +137,10 @@
     .cards-section {
       position: relative;
       display: flex;
-      transition: transform 0.3s;
+      transition: transform 0.4s;
       height: 90%;
-      //overflow: hidden;
 
       &.list {
-        // width: 90vw !important;
         flex-direction: column;
         overflow-x: hidden;
 
@@ -158,23 +156,52 @@
         }
       }
 
-      .cards-detail-container {
+      .cards-detail-container,
+      .card-lists {
         display: flex;
         transition: 0.5s;
       }
 
-      .one-card-section {
+      .card-lists {
+        position: relative;
+        perspective: 800px;
+
+        &.is-flipped {
+          .one-card-section {
+            transform: rotateY(-180deg);
+          }
+          .one-card-section-back {
+            transform: rotateY(0deg);
+          }
+        }
+
+        .one-card-section {
+          transform: rotateY(0deg);
+        }
+
+        .one-card-section-back {
+          transform: rotateY(180deg);
+
+          img {
+            max-height: 70vh;
+          }
+        }
+      }
+
+      .one-card-section,
+      .one-card-section-back {
+        position: absolute;
+        backface-visibility: hidden;
         display: flex;
         overflow: hidden;
         flex-direction: column;
         align-items: center;
-        // justify-content: space-between;
-        position: relative;
-        transition: left 0.2s;
+        transition: transform 0.6s ease-out;
         border-radius: 1.25rem;
         border: 1px $primary-color solid;
         margin-right: 2.5rem;
         width: calc(90vw - 2.5rem - 2px);
+        left: 0;
 
         &.gray {
           filter: grayscale(1);
@@ -182,8 +209,6 @@
 
         .card-image {
           max-height: 55%;
-          //height: 55%;
-          //width: calc(80vw + 2px);
           width: calc(80vw + 6px);
         }
 
