@@ -3,7 +3,6 @@ import { $ } from '@/utils';
 import { _ } from '@/utils/customFx';
 
 const sideMenu = () => {
-  const xIconUrl = `${SERVER_URL.IMG}icon/x.svg`;
   const MINT_LOGO_URL = `${SERVER_URL.IMG}logo/logo-mint.png`;
 
   const sideMenuTpl = `
