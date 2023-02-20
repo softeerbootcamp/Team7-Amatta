@@ -10,7 +10,7 @@
     padding: 5%;
 
     .main-card-box {
-      height: 85vh;
+      height: calc(var(--vh, 1vh) * 85);
       border-radius: 1.25rem;
       background-color: $white-color;
       padding: 1.25rem;
