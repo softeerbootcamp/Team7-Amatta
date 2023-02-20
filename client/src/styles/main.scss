@@ -7,11 +7,11 @@
 
   .main-card-container {
     width: 90%;
-    padding: 5%;
+    padding: 1.5rem;
     height: 85%;
 
     .main-card-box {
-      height: 100%;
+      height: calc(100% - 1.25rem);
       border-radius: 1.25rem;
       background-color: $white-color;
       padding: 1.25rem;
@@ -64,6 +64,11 @@
           .main-dropdown-image {
             height: 100%;
             margin-left: 0.5rem;
+            transition: transform 0.5s;
+
+            &.active {
+              transform: rotateX(-180deg);
+            }
           }
         }
 
@@ -139,7 +144,7 @@
       position: relative;
       display: flex;
       transition: transform 0.4s;
-      height: 90%;
+      height: calc(100% - 4rem + 2px);
 
       .card-lists {
         display: flex;
@@ -169,6 +174,11 @@
 
           .card-image {
             height: 100% !important;
+            display: flex;
+          }
+
+          .card-barcode {
+            display: none;
           }
         }
       }
@@ -277,18 +287,53 @@
           // touch-action: none;
           transition: transform 0.2s ease-in-out;
 
+          &.is-flipped {
+            .one-card-section {
+              transform: translate(-50%, -50%) rotateX(-180deg);
+            }
+
+            .one-card-section-back {
+              transform: rotateX(0deg);
+            }
+          }
+
           .one-card-section {
-            transform: 0;
-            display: flex;
-            flex-direction: row;
+            transform: rotateX(0deg);
+          }
+
+          .one-card-section-back {
+            transform: rotateX(180deg);
+
+            .card-image {
+              display: none;
+            }
+            .card-barcode {
+              display: flex;
+            }
+          }
+
+          .one-card-section,
+          .one-card-section-back {
             border: none;
             width: calc(100% - 2rem);
             height: calc(100% - 2rem);
             position: absolute;
             top: 50%;
             left: 50%;
-            transform: translate(-50%, -50%);
             border-radius: 0;
+          }
+
+          .one-card-section-back {
+            top: 1rem;
+            left: 1rem;
+            backface-visibility: hidden;
+          }
+
+          .one-card-section {
+            transform: 0;
+            display: flex;
+            flex-direction: row;
+            transform: translate(-50%, -50%);
 
             .card-image {
               width: 30%;
@@ -472,7 +517,7 @@
 
     #plus-button {
       position: absolute;
-      right: 5%;
+      right: 1.5rem;
       bottom: 1.5rem;
       background-color: #f3969a;
       border: none;

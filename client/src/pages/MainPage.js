@@ -1,3 +1,4 @@
+import JsBarcode from 'jsbarcode';
 import { SERVER_URL } from '@/constants/constant';
 import { cardDetail, cardList } from '@/components/main';
 import { dropdownMenu, header } from '@/components/common';
@@ -12,19 +13,36 @@ const PLUS_ICON_URL = `${SERVER_URL.IMG}icon/plus.svg`;
 
 let touchStartX = 0;
 let touchEndX = 0;
-let idx = 0;
+// let idx = 0;
 let isSwipping = false;
 let cardDatas = [];
 
 const setCardDatas = (cardData) => (cardDatas = [...cardData]);
+const sortOption = { 0: '마감순', 1: '등록순', 2: '금액순' };
 
-const detailTemp = () => `
+const detailTemp = (newCardDatas) => {
+  let idx = 0;
+
+  return `
     ${_.go(
-      cardDatas,
+      newCardDatas,
       _.map((card) => cardDetail(card)(idx++)),
       _.reduce((a, b) => `${a}${b}`),
     )}
 `;
+};
+
+// 바코드 생성
+const createBarcode = () =>
+  cardDatas.forEach((data) =>
+    JsBarcode(`[data-barcode="${data.barcode}"]`, data.barcode, {
+      format: 'CODE128',
+      displayValue: true,
+      fontSize: 20,
+      width: 2,
+      height: 50,
+    }),
+  );
 
 const MainPage = {};
 
@@ -37,12 +55,12 @@ MainPage.temp = () => `
               <img class='one-card-button' src='${ONE_CARD_ICON_URL}' alt='square-card-button' />
               <img class='list-card-button' src='${LIST_ICON_URL}' alt='list-card-button' />
             </section>
-            <section class='main-dropdown-section hidden'>
-            ${dropdownMenu()}
+            <section class='main-dropdown-section'>
+              ${dropdownMenu(sortOption)}
             </section>
           </div>
           <section class='cards-section'>
-            ${detailTemp()}
+            ${detailTemp(cardDatas)}
           </section>
           <button type="button" id="plus-button">
             <img class='plus-button-image' src='${PLUS_ICON_URL}' alt='plus-button' />
@@ -52,12 +70,29 @@ MainPage.temp = () => `
     </article>
   `;
 
+const handleSortClick = ({ target }, dropdownSection) => {
+  const clickedText = target.textContent;
+  const clickedIndex = Object.values(sortOption).indexOf(clickedText);
+
+  const temp = sortOption[clickedIndex];
+  sortOption[clickedIndex] = sortOption[0];
+  sortOption[0] = temp;
+
+  dropdownSection.innerHTML = dropdownMenu(sortOption);
+  $.on('click', toggleDropdown)($.qs('.main-dropdown-button'));
+  dropdownSection.classList.remove('drop');
+  changeCardData(cardDatas);
+};
+
 const toggleDropdown = () => {
   const dropdownSection = $.qs('.main-dropdown-section');
+  const dropdownImage = $.qs('.main-dropdown-image', dropdownSection);
+  const dropDownTarget = $.qs('.dropdown-list');
+
+  dropdownImage.classList.toggle('active');
   dropdownSection.classList.toggle('drop');
 
-  const dropdownList = $.qs('.dropdown-list');
-  toggleHidden(dropdownList);
+  dropDownTarget.addEventListener('click', (e) => handleSortClick(e, dropdownSection));
 };
 
 const toggleHidden = (target) => target.classList.toggle('hidden');
@@ -118,8 +153,24 @@ const handleTouchEnd = (e) => {
   }
 };
 
-const switchLayout = () => document.querySelector('.cards-section').classList.toggle('list');
+const switchLayout = ({ target }) => {
+  console.log(target);
+  if (target.className === 'one-card-button') {
+    $.qs('.cards-section').classList.remove('list');
+    // $.qs('.card-barcode').style.display = 'none';
+    // $.qs('.card-image').style.display = 'flex';
+  } else {
+    // $.qs('.card-barcode').style.display = 'flex';
+    $.qs('.cards-section').classList.add('list');
+    // $.qs('.card-image').style.display = 'none';
+  }
+};
+const changeCardData = (cardDatas) => {
+  const newCardDatas = [...cardDatas];
+  const target = $.qs('.cards-section');
 
+  target.innerHTML = detailTemp(newCardDatas);
+};
 const changeToList = (cardsSection) => cardsSection.classList.add('list');
 
 const renderListTpl = () =>
@@ -178,7 +229,7 @@ const priceComparison = () => {
 
 const dateComparison = () => {
   cardDatas.sort((comp1, comp2) => new Date(comp1.dateOfUse) - new Date(comp2.dateOfUse));
-  renderListTpl();
+  // renderListTpl();
 };
 
 const findTarget = (child, parent) => () => $.qsa(child, parent);
@@ -191,10 +242,6 @@ const addEvents = (target) => {
   IO.of(findTarget('.card-lists', target))
     .chain(setEvent('click', handleClickOneCard))
     .run();
-
-  IO.of(findTarget('.one-list-section', target))
-    .chain(setEvent('click', handleClickListCard))
-    .run();
 };
 
 const handleClickOneCard = ({ target }) => {
@@ -202,9 +249,6 @@ const handleClickOneCard = ({ target }) => {
 
   const cardTarget = target.closest('.card-lists');
   cardTarget.classList.toggle('is-flipped');
-};
-const handleClickListCard = () => {
-  console.log(2);
 };
 
 const navigateToPost = () => navigate('/post');
@@ -225,6 +269,7 @@ MainPage.render = () =>
 // prettier-ignore
 const navigateMain = async () => {
   setCardDatas(await getCardList());
+  dateComparison();
 
   _.go(
     MainPage.render(),
@@ -243,8 +288,7 @@ const navigateMain = async () => {
     () => MainPage.handleClickaddCard());
 
   header({color: 'mint'})();
+  createBarcode();
 }
 
 export default navigateMain;
-// one - list - section;
-// one - card - section;

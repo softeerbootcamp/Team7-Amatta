@@ -19,7 +19,6 @@ const slider = () => {
   let rightMargin = 0;
 
   const touchStartEvent = (e) => {
-    console.log(parentWidth, spaceBetweenChildren, cardIdx);
     startX = e.touches[0].pageX;
     cardIdx = parseInt(e.target.closest('.card-lists').dataset.idx, 10) + 1;
     leftMargin = (parentWidth + spaceBetweenChildren) * cardIdx;
@@ -32,10 +31,8 @@ const slider = () => {
     leftMargin = 0;
     rightMargin = 0;
   };
-  console.log(1, leftMargin);
-  const touchMoveEvent = (e) => {
-    console.log(2, leftMargin);
 
+  const touchMoveEvent = (e) => {
     if (childrenCount !== cardIdx && startX - e.touches[0].clientX > 7)
       parent.style.transform = `translateX(-${leftMargin}px)`;
     e.touches[0].clientX - startX > -7 &&

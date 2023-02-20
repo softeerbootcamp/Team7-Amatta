@@ -3,7 +3,7 @@ import { inputForm, header } from '@/components/common';
 import { sendImage, sendImageInfo, submitImage } from '@/apis/post';
 import { IO, $, drag, CalendarControl } from '@/utils';
 
-import { _, L } from '@/utils/customFx';
+import { _ } from '@/utils/customFx';
 import { navigate } from '@/core/router';
 
 const POST_INPUT_TYPE = ['menu', 'shop', 'price', 'expirationDate'];
@@ -143,7 +143,7 @@ const sendCardData = async () => {
     itemName: gifticonData.itemName,
     brandName: gifticonData.brandName,
     barcode: gifticonData.barcode,
-    expiresAtInString: gifticonData.expiresAt,
+    expiresAtInString: $.qs('#date-input').value,
     price: '5000',
   };
 
@@ -167,7 +167,10 @@ const findTarget = (child, parent) => () => $.qs(child, parent);
 const handleClickUploadBtn = () => $.qs('.upload-image').click();
 const handleSubmitImg = ({ target }) => uploadImg(target.files[0]);
 const handleSubmitCardData = () => sendCardData();
-
+const handleChangeInput =
+  (type) =>
+  ({ target }) =>
+    (gifticonData = setGifticonData(gifticonData, type, target.value));
 const eventTrigger = (type, target, fn) => () => $.on(type, fn)(target);
 const setEvent = (type, fn) => (target) => IO.of(eventTrigger(type, target, fn));
 
@@ -202,6 +205,22 @@ PostPage.addEvents = (target) => {
 
   IO.of(findTarget('.submit', target))
     .chain(setEvent('click', handleSubmitCardData))
+    .run();
+
+  IO.of(findTarget('.cancel', target))
+    .chain(setEvent('click', () => navigate('/card')))
+    .run();
+
+  IO.of(findTarget('#menu-input', target))
+    .chain(setEvent('input', handleChangeInput('itemName')))
+    .run();
+
+  IO.of(findTarget('#shop-input', target))
+    .chain(setEvent('input', handleChangeInput('brandName')))
+    .run();
+
+  IO.of(findTarget('#price-input', target))
+    .chain(setEvent('input', handleChangeInput('price')))
     .run();
 };
 
