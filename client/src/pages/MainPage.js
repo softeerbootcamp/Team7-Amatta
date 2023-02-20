@@ -12,6 +12,7 @@ const PLUS_ICON_URL = `${SERVER_URL.IMG}icon/plus.svg`;
 
 let touchStartX = 0;
 let touchEndX = 0;
+let idx = 0;
 let isSwipping = false;
 let cardDatas = [];
 
@@ -21,8 +22,7 @@ const detailTemp = () => `
   <div class='cards-detail-container'>
     ${_.go(
       cardDatas,
-      _.map((card) => cardDetail(card)),
-      // _.flatOne,
+      _.map((card) => cardDetail(card)(idx++)),
       _.reduce((a, b) => `${a}${b}`),
     )}
   </div>

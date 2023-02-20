@@ -12,9 +12,10 @@ routes.push(
   { path: '/card', component: navigateMain },
   { path: '/post', component: initiatePostPage },
 );
-
 const path = window.location.pathname;
+
 navigate(path);
+
 window.addEventListener('resize', setScreenSize);
 
 const firebaseConfig = {
@@ -30,10 +31,15 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const messaging = getMessaging(app);
 
-onMessage(messaging, (payload) => {
-  console.log('foreground', payload);
-  const option = {
-    body: payload.notification.body,
-  };
-  return new Notification(payload.notification.title, option);
+navigator.serviceWorker.register('../firebase-messaging-sw.js').then((res) => {
+  onMessage(messaging, (payload) => {
+    const option = {
+      body: payload.notification.body,
+      icon: payload.notification.icon,
+      badge: 'https://amatta-icons.s3.ap-northeast-2.amazonaws.com/logo/logo-pink.png',
+      vibrate: [2000, 2000, 2000],
+      sound: 'https://amatta-sound.s3.ap-northeast-2.amazonaws.com/logo/push.mp3',
+    };
+    res.showNotification(payload.notification.title, option);
+  });
 });
