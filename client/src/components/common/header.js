@@ -2,6 +2,7 @@ import { SERVER_URL } from '@/constants/constant';
 import { navigate } from '@/core/router';
 import { _ } from '@/utils/customFx';
 import { $ } from '@/utils';
+import { sideMenu } from '@/components/common';
 
 const header = (props) => {
   const { color, label, path } = props;
@@ -39,6 +40,36 @@ const header = (props) => {
       </header>
     `;
 
+  const hideElement = (target) => {
+    target.style.display = 'none';
+  };
+
+  const openMenuEvent = ({ target }) => {
+    const trigger = $.qs('.trigger');
+    const menuTarget = $.qs('.menu-section');
+    // if (trigger.classList.contains('active')) closeMenuEvent(target);
+
+    toggleActive(trigger);
+    toggleActive(menuTarget);
+  };
+
+  // //prettier-ignore
+  // const openMenuEvent = () =>
+  //   _.go(
+  //     sideMenu()(),
+  //     () => $.qs('.trigger'),
+  //     toggleActive,
+  //     () => $.qs('.active'),
+  //     $.on('click', closeMenuEvent));
+
+  const closeMenuEvent = () => {
+    console.log(1);
+    const target = $.qs('.menu-section');
+    target.style.display = 'none';
+  };
+
+  const toggleActive = (target) => target.classList.toggle('active');
+
   const navigatePath = (fragment, target, path) =>
     _.go(
       fragment,
@@ -57,7 +88,10 @@ const header = (props) => {
       headerTemp,
       $.el,
       (fragment) => $.prepend(fragment, $.qs('#root')),
-      handleEvent);
+      handleEvent,
+      () => sideMenu()(),
+      () => $.qs('.trigger'),
+      $.on('click', openMenuEvent));
 
   return appendHeader;
 };

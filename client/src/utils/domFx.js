@@ -33,6 +33,12 @@ $.prepend = _.curry((child, parent) => {
   return parent;
 });
 
+$.append = _.curry((parent, child) => {
+  parent.appendChild(child);
+
+  return parent;
+});
+
 $.closest = _.curry((sel, el) => el.closest(sel));
 
 $.remove = (el) => el.parentNode.removeChild(el);
