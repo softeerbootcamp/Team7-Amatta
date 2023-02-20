@@ -27,7 +27,7 @@
     opacity: 1;
     pointer-events: auto;
     transition: max-height 0.5s ease-in-out;
-    max-height: 100vh;
+    max-height: calc(var(--vh, 1vh) * 100);
   }
 }
 
