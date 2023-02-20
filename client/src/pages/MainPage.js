@@ -1,74 +1,36 @@
 import { SERVER_URL } from '@/constants/constant';
 import { cardDetail, cardList } from '@/components/main';
 import { dropdownMenu, header } from '@/components/common';
-import { $, slider } from '@/utils';
+import { IO, $, slider } from '@/utils';
 import { _ } from '@/utils/customFx';
 import { navigate } from '@/core/router';
 import { getCardList } from '@/apis/card';
 
 const ONE_CARD_ICON_URL = `${SERVER_URL.IMG}icon/image-icon.svg`;
 const LIST_ICON_URL = `${SERVER_URL.IMG}icon/list-icon.svg`;
-const DROP_DOWN_ICON_URL = `${SERVER_URL.IMG}icon/angle-down.svg`;
 const PLUS_ICON_URL = `${SERVER_URL.IMG}icon/plus.svg`;
 
 let touchStartX = 0;
 let touchEndX = 0;
 let isSwipping = false;
+let cardDatas = [];
 
-const cards = [
-  {
-    image: `${SERVER_URL.IMG}images/starbucks2.jpg`,
-    shopName: 'TWOSOME PLACE',
-    itemName: 'Americano & Tiramisu',
-    itemPrice: 11000,
-    dateOfUse: '2023-07-07',
-  },
-  {
-    image: `${SERVER_URL.IMG}images/starbucks3.jpeg`,
-    shopName: 'STARBUCKS',
-    itemName: 'Latte',
-    itemPrice: 5000,
-    dateOfUse: '2023-07-22',
-  },
-  {
-    image: `${SERVER_URL.IMG}images/starbucks2.jpg`,
-    shopName: 'THE VENTI',
-    itemName: 'Vanilla Latte',
-    itemPrice: 3500,
-    dateOfUse: '2023-09-01',
-  },
-  {
-    image: `${SERVER_URL.IMG}images/starbucks3.jpeg`,
-    shopName: 'twosome place',
-    itemName: 'Americano & Tiramisu',
-    itemPrice: 11000,
-    dateOfUse: '2023-11-01',
-  },
-  {
-    image: `${SERVER_URL.IMG}images/starbucks2.jpg`,
-    shopName: 'starbucks',
-    itemName: 'Latte',
-    itemPrice: 5000,
-    dateOfUse: '2023-07-07',
-  },
-  {
-    image: `${SERVER_URL.IMG}images/starbucks2.jpg`,
-    shopName: 'THE VENTI',
-    itemName: 'Vanilla Latte',
-    itemPrice: 3500,
-    dateOfUse: '2023-09-01',
-  },
-];
+const setCardDatas = (cardData) => (cardDatas = [...cardData]);
 
-const detailTemp = `
+const detailTemp = () => `
   <div class='cards-detail-container'>
-    ${cards.map((detail) => cardDetail(detail)).join('')}
+    ${_.go(
+      cardDatas,
+      _.map((card) => cardDetail(card)),
+      // _.flatOne,
+      _.reduce((a, b) => `${a}${b}`),
+    )}
   </div>
 `;
 
 const MainPage = {};
 
-MainPage.temp = `
+MainPage.temp = () => `
     <article class='main-card-article'>
       <div class='main-card-container'>
         <div class="main-card-box">
@@ -82,7 +44,7 @@ MainPage.temp = `
             </section>
           </div>
           <section class='cards-section'>
-            ${detailTemp}
+            ${detailTemp()}
           </section>
           <ul class="card-pagination"></ul>
           <button type="button" id="plus-button">
@@ -92,7 +54,6 @@ MainPage.temp = `
       </div>
     </article>
   `;
-// ${cards.map((detail) => cardDetail(detail)).join('')}
 
 const toggleDropdown = () => {
   const dropdownSection = $.qs('.main-dropdown-section');
@@ -162,10 +123,8 @@ const handleTouchEnd = (e) => {
 
 const changeToList = (cardsSection) => cardsSection.classList.add('list');
 
-// const scrollEvent = (target) => target.scrollIntoView(true);
-
 const renderListTpl = () =>
-  _.go(cards.map(cardList).join(''), $.el, $.replace($.qs('.cards-section')));
+  _.go(cardDatas.map(cardList).join(''), $.el, $.replace($.qs('.cards-section')));
 
 // prettier-ignore
 const renderList = () => 
@@ -185,9 +144,7 @@ const renderList = () =>
     $.on('click', priceComparison),
     () => $.qs('.due-date-button'),
     $.on('click', dateComparison));
-// ,
-//     () => $.qsa('.one-list-section'),
-//     scrollEvent
+
 const findCardIndex = (target) => {
   const cards = [...$.qsa('.one-list-section')];
   const card = target.closest('.one-list-section');
@@ -198,8 +155,7 @@ const findCardIndex = (target) => {
 const deleteCard = (target) => {
   const index = findCardIndex(target);
   target.closest('.one-list-section').remove();
-  cards.splice(index, 1);
-  console.log(cards);
+  cardDatas.splice(index, 1);
 };
 
 const deleteListEvent = (targets) => {
@@ -207,7 +163,6 @@ const deleteListEvent = (targets) => {
 };
 
 const usedStateCard = (target) => {
-  const index = findCardIndex(target);
   const list = target.closest('.one-list-section');
   list.classList.add('gray');
   list.style.transform = 'translateX(0)';
@@ -218,13 +173,37 @@ const usedCardEvent = (targets) =>
   targets.forEach((target) => target.addEventListener('click', (e) => usedStateCard(e.target)));
 
 const priceComparison = () => {
-  cards.sort((comp1, comp2) => comp1.itemPrice - comp2.itemPrice);
+  cardDatas.sort((comp1, comp2) => comp1.itemPrice - comp2.itemPrice);
   renderListTpl();
 };
 
 const dateComparison = () => {
-  cards.sort((comp1, comp2) => new Date(comp1.dateOfUse) - new Date(comp2.dateOfUse));
+  cardDatas.sort((comp1, comp2) => new Date(comp1.dateOfUse) - new Date(comp2.dateOfUse));
   renderListTpl();
+};
+
+const findTarget = (child, parent) => () => $.qsa(child, parent);
+const eventTrigger = (type, targets, fn) => () =>
+  targets.forEach((target) => $.on(type, fn)(target));
+const setEvent = (type, fn) => (target) => IO.of(eventTrigger(type, target, fn));
+
+// prettier-ignore
+const addEvents = (target) => {
+  IO.of(findTarget('.card-lists', target))
+    .chain(setEvent('click', handleClickOneCard))
+    .run();
+
+  IO.of(findTarget('.one-list-section', target))
+    .chain(setEvent('click', handleClickListCard))
+    .run();
+};
+
+const handleClickOneCard = (e) => {
+  const a = e.target.closest('.card-lists');
+  a.classList.toggle('is-flipped');
+};
+const handleClickListCard = () => {
+  console.log(2);
 };
 
 const navigateToPost = () => navigate('/post');
@@ -238,39 +217,31 @@ MainPage.handleClickaddCard = (target) =>
 // prettier-ignore
 MainPage.render = () =>
     _.go(
-      MainPage.temp,
+      MainPage.temp(),
       $.el,
       $.replace($.qs('#root')));
 
 // prettier-ignore
 const navigateMain = async () => {
-    _.go(
-      MainPage.render(),
-      slider(),
-      () => $.qsa('.mark-used-button'),
-      makeUsedState,
-      () => $.qs('.main-dropdown-button'),
-      $.on('click', toggleDropdown),
-      () => $.qs('.one-card-button'),
-      $.on('click', renderDetail),
-      () => $.qs('.list-card-button'),
-      $.on('click', renderList),
-      () => MainPage.handleClickaddCard());
+  setCardDatas(await getCardList());
 
-      header({color: 'mint'})();
-      const test = await getCardList();
-      console.log(test[0].thumbnail);
+  _.go(
+    MainPage.render(),
+    addEvents,
+    slider(),
+    () => $.qsa('.mark-used-button'),
+    makeUsedState,
+    () => $.qs('.main-dropdown-button'),
+    $.on('click', toggleDropdown),
+    () => $.qs('.one-card-button'),
+    $.on('click', renderDetail),
+    () => $.qs('.list-card-button'),
+    $.on('click', renderList),
+    () => MainPage.handleClickaddCard());
 
-      const binaryData = test[0].thumbnail;
-
-      const reader = new FileReader();
-      reader.onload = function(event) {
-        const base64Data = event.target.result;
-        const imgTag = document.querySelector('.card-image');
-        imgTag.src = `data:image/png;base64, ${base64Data}`;
-      };
-
-reader.readAsDataURL(new Blob([binaryData], { type: 'image/png' }));
-    }
+  header({color: 'mint'})();
+}
 
 export default navigateMain;
+// one - list - section;
+// one - card - section;
