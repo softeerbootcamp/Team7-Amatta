@@ -98,20 +98,12 @@ const header = (props) => {
       $.el,
       (fragment) => $.prepend(fragment, $.qs('#root')),
       handleEvent);
-<<<<<<< HEAD
 
     // color === 'mint' && _.go(
     //   sideMenu(),
     //   () => $.qs('.trigger'),
     //   $.on('click', openMenuEvent));
   }
-=======
-  // () => sideMenu()(),
-  // () => $.qs('.trigger'));
-  // $.on('click', openMenuEvent));
-  // () => modal("로그아웃", "logout")());
->>>>>>> 137215d (feat(FE) : firebase 링크 추가(#164))
-
   return appendHeader;
 };
 
