@@ -7,9 +7,13 @@ import javax.validation.constraints.NotEmpty;
 @Getter
 public class TokenRegisterDto {
     @NotEmpty
-    private final String token;
+    private String token;
 
     public TokenRegisterDto(String token) {
         this.token = token;
+    }
+
+    public TokenRegisterDto() {
+
     }
 }
