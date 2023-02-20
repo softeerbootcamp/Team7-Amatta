@@ -30,8 +30,8 @@ public class FCMService {
 
     //    @MethodRequiresAuth
     public void addToken(TokenRegisterDto tokenRegisterDto) {
-        Users user = getUserBySessionId();
-        tokenRepository.addToken(user.getId(), tokenRegisterDto.getToken());
+//        Users user = getUserBySessionId();
+        tokenRepository.addToken(2, tokenRegisterDto.getToken());
     }
 
     private void sendMessage(List<String> tokens, String title, String body) throws FirebaseMessagingException {
@@ -52,7 +52,7 @@ public class FCMService {
                 .setToken(token)
                 .setWebpushConfig(WebpushConfig.builder()
                         .setFcmOptions(WebpushFcmOptions.builder()
-                                .setLink("https://amatta.site")
+                                .setLink("https://amatta.site/card")
                                 .build())
                         .setNotification(WebpushNotification.builder()
                                 .setTitle(title)
@@ -89,7 +89,7 @@ public class FCMService {
         List<FCMToken> tokens = tokenRepository.findAllTokens();
         if (!tokens.isEmpty()) {
             try {
-                sendMessage(tokens.get(0).getToken(), "A! matta", "거의 만료된 기프티콘이 있어요");
+                sendMessage(tokens.get(0).getToken(), "A! matta", "만료 기간이 얼마 남지 않은 기프티콘이 있습니다!!");
             } catch (FirebaseMessagingException e) {
                 e.printStackTrace();
             }
