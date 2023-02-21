@@ -1,9 +1,8 @@
 package com.amatta.amatta_server.fcm.service;
 
-import com.amatta.amatta_server.aop.MethodRequiresAuth;
 import com.amatta.amatta_server.fcm.dto.TokenRegisterDto;
+import com.amatta.amatta_server.fcm.model.FCMToken;
 import com.amatta.amatta_server.fcm.repository.DeviceTokenRepository;
-import com.amatta.amatta_server.gifticon.model.Gifticon;
 import com.amatta.amatta_server.user.model.Users;
 import com.google.firebase.messaging.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,10 +28,10 @@ public class FCMService {
         this.tokenRepository = tokenRepository;
     }
 
-    @MethodRequiresAuth
+    //    @MethodRequiresAuth
     public void addToken(TokenRegisterDto tokenRegisterDto) {
-        Users user = getUserBySessionId();
-        tokenRepository.addToken(user.getId(), tokenRegisterDto.getToken());
+//        Users user = getUserBySessionId();
+        tokenRepository.addToken(2, tokenRegisterDto.getToken());
     }
 
     private void sendMessage(List<String> tokens, String title, String body) throws FirebaseMessagingException {
@@ -52,10 +51,14 @@ public class FCMService {
         return Message.builder()
                 .setToken(token)
                 .setWebpushConfig(WebpushConfig.builder()
+                        .setFcmOptions(WebpushFcmOptions.builder()
+                                .setLink("https://amatta.site/card")
+                                .build())
                         .setNotification(WebpushNotification.builder()
                                 .setTitle(title)
                                 .setBody(body)
-                                .setIcon("icon")
+                                .setIcon("https://amatta-icons.s3.ap-northeast-2.amazonaws.com/logo/logo-pink.png")
+                                .setBadge("https://amatta-icons.s3.ap-northeast-2.amazonaws.com/logo/logo-pink.png")
                                 .setVibrate(new int[]{200, 100, 200, 100, 200, 100, 200})
                                 .build())
                         .build())
@@ -77,15 +80,16 @@ public class FCMService {
         FirebaseMessaging.getInstance().send(message);
     }
 
-    @Scheduled(cron = "*/20 * * * * *")
+    @Scheduled(cron = "*/10 * * * * *")
     @Transactional(readOnly = true)
     public void scheduleExpirationAlarmMessage() {
         System.out.println("expire");
         LocalDate now = LocalDate.now();
-        List<String> tokens = tokenRepository.findTokensByUidsOfGifticonsAboutToExpire(now.plusDays(Gifticon.expirationThresholdDays));
-        if (!tokens.isEmpty()){
+//        List<String> tokens = tokenRepository.findTokensByUidsOfGifticonsAboutToExpire(now.plusDays(Gifticon.expirationThresholdDays));
+        List<FCMToken> tokens = tokenRepository.findAllTokens();
+        if (!tokens.isEmpty()) {
             try {
-                sendMessage(tokens, "A! matta", "거의 만료된 기프티콘이 있어요");
+                sendMessage(tokens.get(0).getToken(), "A! matta", "만료 기간이 얼마 남지 않은 기프티콘이 있습니다!!");
             } catch (FirebaseMessagingException e) {
                 e.printStackTrace();
             }

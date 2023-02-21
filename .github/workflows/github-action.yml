@@ -81,7 +81,6 @@ jobs:
         username: ${{ secrets.USERNAME }}
         key: ${{ secrets.AWS_PEM_KEY_TEST }}
         port: 22
-        command_timeout: 30s
         script: |
             sudo docker rm -f $(docker ps -qa)
             sudo docker pull ${{ secrets.DOCKER_REPO }}

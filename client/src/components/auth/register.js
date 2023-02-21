@@ -94,7 +94,7 @@ const register = () => {
     }
   });
 
-  const aaa = EventMonad.of(() => navigate('/'));
+  const navigateHome = EventMonad.of(() => navigate('/'));
   const checkEmail = async (e, data) => {
     await verificateEmail(data);
     addCodeForm(e);
@@ -138,7 +138,7 @@ const register = () => {
   const composedEvents = 
     handleChange
       .chain(e => changeVisibility.map(me => [e, me]))
-      .chain(em => aaa.map(ke => [...em, ke]));
+      .chain(em => navigateHome.map(ke => [...em, ke]));
 
   // prettier-ignore
   const handleChangeInput = (target) => 

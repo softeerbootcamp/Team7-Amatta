@@ -1,12 +1,12 @@
+import { initializeApp } from 'firebase/app';
+import { getMessaging, getToken } from 'firebase/messaging';
 import { inputForm } from '@/components/common';
 import { loginU } from '@/apis/auth';
 import { navigate } from '@/core/router';
 import { INPUT } from '@/constants/constant';
 import { $ } from '@/utils';
 import { _ } from '@/utils/customFx';
-
-import { initializeApp } from "firebase/app";
-import { getMessaging, getToken } from "firebase/messaging";
+import { fcmToken } from '@/apis/firebase';
 
 const login = () => {
   const LOGIN_INPUT_TYPE = ['email', 'password'];
@@ -33,14 +33,6 @@ const login = () => {
   const addInputForm = (fragment) => (input) => inputForm({ ...input, target: fragment })();
   const loginInputs = ({ type }) => LOGIN_INPUT_TYPE.includes(type);
 
-  // const handleChange = EventMonad.of(({ target }) => {
-  //   if (!target.validity.valid) return;
-
-  //   const updatedUserData = setUserData(userData, target);
-  //   userData = updatedUserData;
-  //   console.log(userData);
-  // });
-
   const handleChange = ({ target }) => {
     if (!target.validity.valid) return;
 
@@ -56,29 +48,29 @@ const login = () => {
     navigate('/card');
 
     const firebaseConfig = {
-      apiKey: "AIzaSyCsLBsvozvTnYlDH-5cS0A8X_AjV5o4jjM",
-      authDomain: "amatta-4934f.firebaseapp.com",
-      projectId: "amatta-4934f",
-      storageBucket: "amatta-4934f.appspot.com",
-      messagingSenderId: "196308516589",
-      appId: "1:196308516589:web:64545440aa5021e8a496e4",
-      measurementId: "G-4JBCQPF50K"
+      apiKey: 'AIzaSyCsLBsvozvTnYlDH-5cS0A8X_AjV5o4jjM',
+      authDomain: 'amatta-4934f.firebaseapp.com',
+      projectId: 'amatta-4934f',
+      storageBucket: 'amatta-4934f.appspot.com',
+      messagingSenderId: '196308516589',
+      appId: '1:196308516589:web:64545440aa5021e8a496e4',
+      measurementId: 'G-4JBCQPF50K',
     };
 
     const app = initializeApp(firebaseConfig);
     const messaging = getMessaging(app);
 
-    Notification.requestPermission().then((res)=>{
-      console.log(res);
-      if(res == 'granted') {
-        getToken(messaging, {vapidKey: "BPTfJAoUaJeyzryOu29dcccPl_1Db8OC4I_yBCC4qRTn_CfSHa_F10PoafMgkUkc7ynARCpU1RGyWRb-kAoDN4Q"})
-        .then((res)=>{
-          console.log(res);})
-        }
-      if(res == 'denied') {
-        window.alert("알림을 받으시려면 알림을 허용해주세요");
-      }  
-    }).catch((err)=>{console.log(err)});
+    Notification.requestPermission().then((res) => {
+      if (res === 'granted') {
+        getToken(messaging, {
+          vapidKey:
+            'BPTfJAoUaJeyzryOu29dcccPl_1Db8OC4I_yBCC4qRTn_CfSHa_F10PoafMgkUkc7ynARCpU1RGyWRb-kAoDN4Q',
+        }).then((tokens) => {
+          fcmToken(tokens);
+        });
+      }
+      if (res === 'denied') window.alert('알림을 받으시려면 알림을 허용해주세요');
+    });
   };
 
   // prettier-ignore
@@ -98,7 +90,6 @@ const login = () => {
       _.go(
         INPUT,
         _.filter(loginInputs),
-        // console.log,
         ([passwordCheck, password, email]) => [password, email] ,
         _.map(addInputForm(fragment)),
         _.flatOne);

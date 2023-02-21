@@ -3,7 +3,7 @@ import { inputForm, header } from '@/components/common';
 import { sendImage, sendImageInfo, submitImage } from '@/apis/post';
 import { IO, $, drag, CalendarControl } from '@/utils';
 
-import { _, L } from '@/utils/customFx';
+import { _ } from '@/utils/customFx';
 import { navigate } from '@/core/router';
 
 const POST_INPUT_TYPE = ['menu', 'shop', 'price', 'expirationDate'];
@@ -107,16 +107,44 @@ const uploadImg = (file) => {
   reader.onload = async () => {
     const [imageType, base64URL] = reader.result.split(';base64,');
     const imageData = { gifticonBase64: base64URL, format: imageType.replace('data:image/', '') };
+    const list = [];
     const response = await sendImage(imageData);
-    const temp = [];
+    console.log(response);
+    response.images[0].fields.forEach((field) => {
+      if (field.inferConfidence >= 0.92) {
+        const object = {};
+        object.text = field.inferText;
+        object.minX = Math.min(
+          field.boundingPoly.vertices[0].x,
+          field.boundingPoly.vertices[1].x,
+          field.boundingPoly.vertices[2].x,
+          field.boundingPoly.vertices[3].x,
+        );
+        object.avgY =
+          (field.boundingPoly.vertices[0].y +
+            field.boundingPoly.vertices[1].y +
+            field.boundingPoly.vertices[2].y +
+            field.boundingPoly.vertices[3].y) /
+          4;
+        list.push(object);
+      }
+    });
 
-    _.go(
-      response.images,
-      ([res]) => res.fields,
-      _.map((text) => temp.push(text.inferText)),
+    const newList = list.sort((a, b) =>
+      Math.abs(a.avgY - b.avgY) <= 10 ? a.minX - b.minX : a.avgY - b.avgY,
     );
 
-    const { itemName, brandName, expiresAt, barcode } = await sendImageInfo({ texts: temp });
+    const lastArr = newList.reduce((acc, cur, index) => {
+      if (index === 0) {
+        acc.push(cur.text);
+        return acc;
+      }
+      const diff = cur.avgY - newList[index - 1].avgY;
+      diff <= 10 ? (acc[acc.length - 1] += cur.text) : acc.push(cur.text);
+      return acc;
+    }, []);
+    console.log(lastArr);
+    const { itemName, brandName, expiresAt, barcode } = await sendImageInfo({ texts: lastArr });
 
     changeHeader('white');
     gifticonData = setGifticonData(gifticonData, 'itemName', itemName);
@@ -143,7 +171,7 @@ const sendCardData = async () => {
     itemName: gifticonData.itemName,
     brandName: gifticonData.brandName,
     barcode: gifticonData.barcode,
-    expiresAtInString: gifticonData.expiresAt,
+    expiresAtInString: $.qs('#date-input').value,
     price: '5000',
   };
 
@@ -167,7 +195,10 @@ const findTarget = (child, parent) => () => $.qs(child, parent);
 const handleClickUploadBtn = () => $.qs('.upload-image').click();
 const handleSubmitImg = ({ target }) => uploadImg(target.files[0]);
 const handleSubmitCardData = () => sendCardData();
-
+const handleChangeInput =
+  (type) =>
+  ({ target }) =>
+    (gifticonData = setGifticonData(gifticonData, type, target.value));
 const eventTrigger = (type, target, fn) => () => $.on(type, fn)(target);
 const setEvent = (type, fn) => (target) => IO.of(eventTrigger(type, target, fn));
 
@@ -203,6 +234,22 @@ PostPage.addEvents = (target) => {
   IO.of(findTarget('.submit', target))
     .chain(setEvent('click', handleSubmitCardData))
     .run();
+
+  IO.of(findTarget('.cancel', target))
+    .chain(setEvent('click', () => navigate('/card')))
+    .run();
+
+  IO.of(findTarget('#menu-input', target))
+    .chain(setEvent('input', handleChangeInput('itemName')))
+    .run();
+
+  IO.of(findTarget('#shop-input', target))
+    .chain(setEvent('input', handleChangeInput('brandName')))
+    .run();
+
+  IO.of(findTarget('#price-input', target))
+    .chain(setEvent('input', handleChangeInput('price')))
+    .run();
 };
 
 // prettier-ignore
@@ -216,7 +263,7 @@ const initiatePostPage = () => {
     CalendarControl(gifticonData, setGifticonData),
     () => appendCalendar());
 
-  header({color: 'mint'})()
+  header({color: 'mint'})();
 }
 
 export default initiatePostPage;
