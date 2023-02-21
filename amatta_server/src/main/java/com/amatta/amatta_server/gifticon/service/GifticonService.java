@@ -141,6 +141,15 @@ public class GifticonService {
         gifticonRepository.useGifticon(dto.getGifticonId());
     }
 
+    @Transactional
+    public List<Gifticon> usedGifticonList() {
+        Users user = getUserBySessionId();
+        if(user == null) {
+            throw new NotAuthenticatedException();
+        }
+        return gifticonRepository.findUsedByUid(user.getId());
+    }
+
     private Users getUserBySessionId() {
         HttpServletRequest request = ((ServletRequestAttributes) Objects.requireNonNull(RequestContextHolder.getRequestAttributes())).getRequest();
         HttpSession session = request.getSession(false);
@@ -149,5 +158,9 @@ public class GifticonService {
 
     public List<Gifticon> test(String keyword) {
         return gifticonRepository.test(keyword);
+    }
+
+    public List<Gifticon> usedTest() {
+        return gifticonRepository.findUsedByUid(2);
     }
 }
