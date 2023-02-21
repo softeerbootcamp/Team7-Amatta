@@ -1,6 +1,6 @@
 import { $ } from '@/utils';
 import { _ } from '@/utils/customFx';
-import { usedCard } from '@/apis/card';
+import { getUsedCard } from '@/apis/card';
 import { header } from '@/components/common';
 import { cardDetail } from '@/components/main';
 
@@ -41,10 +41,11 @@ UsedCardPage.render = () =>
     $.replace($.qs('#root')));
 
 const navigateUsed = async () => {
-  ///////여기추가
-  setCardDatas(await usedCard());
+  setCardDatas(await getUsedCard());
+  //cardDatas = await getUsedCard();
 
-  UsedCardPage.render();
+  _.go(UsedCardPage.render());
+
   header({ color: 'mint' })();
 };
 

@@ -19,3 +19,13 @@ export const usedCard = (data) => {
     console.error(e);
   }
 };
+
+export const getUsedCard = async () => {
+  try {
+    const response = await client.get(`gifticon/used`);
+
+    return response.data;
+  } catch (e) {
+    console.error(e);
+  }
+};
