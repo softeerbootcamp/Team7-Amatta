@@ -107,16 +107,44 @@ const uploadImg = (file) => {
   reader.onload = async () => {
     const [imageType, base64URL] = reader.result.split(';base64,');
     const imageData = { gifticonBase64: base64URL, format: imageType.replace('data:image/', '') };
+    const list = [];
     const response = await sendImage(imageData);
-    const temp = [];
+    console.log(response);
+    response.images[0].fields.forEach((field) => {
+      if (field.inferConfidence >= 0.92) {
+        const object = {};
+        object.text = field.inferText;
+        object.minX = Math.min(
+          field.boundingPoly.vertices[0].x,
+          field.boundingPoly.vertices[1].x,
+          field.boundingPoly.vertices[2].x,
+          field.boundingPoly.vertices[3].x,
+        );
+        object.avgY =
+          (field.boundingPoly.vertices[0].y +
+            field.boundingPoly.vertices[1].y +
+            field.boundingPoly.vertices[2].y +
+            field.boundingPoly.vertices[3].y) /
+          4;
+        list.push(object);
+      }
+    });
 
-    _.go(
-      response.images,
-      ([res]) => res.fields,
-      _.map((text) => temp.push(text.inferText)),
+    const newList = list.sort((a, b) =>
+      Math.abs(a.avgY - b.avgY) <= 10 ? a.minX - b.minX : a.avgY - b.avgY,
     );
 
-    const { itemName, brandName, expiresAt, barcode } = await sendImageInfo({ texts: temp });
+    const lastArr = newList.reduce((acc, cur, index) => {
+      if (index === 0) {
+        acc.push(cur.text);
+        return acc;
+      }
+      const diff = cur.avgY - newList[index - 1].avgY;
+      diff <= 10 ? (acc[acc.length - 1] += cur.text) : acc.push(cur.text);
+      return acc;
+    }, []);
+    console.log(lastArr);
+    const { itemName, brandName, expiresAt, barcode } = await sendImageInfo({ texts: lastArr });
 
     changeHeader('white');
     gifticonData = setGifticonData(gifticonData, 'itemName', itemName);
@@ -235,7 +263,7 @@ const initiatePostPage = () => {
     CalendarControl(gifticonData, setGifticonData),
     () => appendCalendar());
 
-  header({color: 'mint'})()
+  header({color: 'mint'})();
 }
 
 export default initiatePostPage;

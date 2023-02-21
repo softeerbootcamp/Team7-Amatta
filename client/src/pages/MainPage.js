@@ -1,6 +1,6 @@
 import JsBarcode from 'jsbarcode';
 import { SERVER_URL } from '@/constants/constant';
-import { cardDetail, cardList } from '@/components/main';
+import { cardDetail, searchCard } from '@/components/main';
 import { dropdownMenu, header } from '@/components/common';
 import { IO, $, slider } from '@/utils';
 import { _ } from '@/utils/customFx';
@@ -13,7 +13,6 @@ const PLUS_ICON_URL = `${SERVER_URL.IMG}icon/plus.svg`;
 
 let touchStartX = 0;
 let touchEndX = 0;
-// let idx = 0;
 let isSwipping = false;
 let cardDatas = [];
 
@@ -81,7 +80,7 @@ const handleSortClick = ({ target }, dropdownSection) => {
   dropdownSection.innerHTML = dropdownMenu(sortOption);
   $.on('click', toggleDropdown)($.qs('.main-dropdown-button'));
   dropdownSection.classList.remove('drop');
-  changeCardData(cardDatas);
+  // changeCardData(cardDatas);
 };
 
 const toggleDropdown = () => {
@@ -95,30 +94,10 @@ const toggleDropdown = () => {
   dropDownTarget.addEventListener('click', (e) => handleSortClick(e, dropdownSection));
 };
 
-const toggleHidden = (target) => target.classList.toggle('hidden');
-const addHidden = (target) => target.classList.add('hidden');
-const removeHidden = (target) => target.classList.remove('hidden');
-
-const changeToDetail = (cardsSection) => cardsSection.classList.remove('list');
-
 const makeGrayScale = (target) => target.closest('.one-card-section').classList.add('gray');
 
 const makeUsedState = (targets) =>
   targets.forEach((button) => button.addEventListener('click', (e) => makeGrayScale(e.target)));
-
-// prettier-ignore
-const renderDetail = () =>
-  _.go(
-    detailTemp(),
-    $.el,
-    $.replace($.qs('.cards-section')),
-    () => $.find('.cards-section')(),
-    changeToDetail,
-    () => slider()(),
-    () => $.qsa('.mark-used-button'),
-    makeUsedState,
-    () => $.qs('.main-dropdown-section'),
-    addHidden);
 
 const listEvent = (targets) => {
   targets.forEach((card) => {
@@ -154,83 +133,12 @@ const handleTouchEnd = (e) => {
 };
 
 const switchLayout = ({ target }) => {
-  console.log(target);
-  if (target.className === 'one-card-button') {
-    $.qs('.cards-section').classList.remove('list');
-    // $.qs('.card-barcode').style.display = 'none';
-    // $.qs('.card-image').style.display = 'flex';
-  } else {
-    // $.qs('.card-barcode').style.display = 'flex';
-    $.qs('.cards-section').classList.add('list');
-    // $.qs('.card-image').style.display = 'none';
-  }
-};
-const changeCardData = (cardDatas) => {
-  const newCardDatas = [...cardDatas];
-  const target = $.qs('.cards-section');
-
-  target.innerHTML = detailTemp(newCardDatas);
-};
-const changeToList = (cardsSection) => cardsSection.classList.add('list');
-
-const renderListTpl = () =>
-  _.go(cardDatas.map(cardList).join(''), $.el, $.replace($.qs('.cards-section')));
-
-// prettier-ignore
-const renderList = () => 
-  _.go(
-    renderListTpl(),
-    () => $.find('.cards-section')(),
-    changeToList,
-    () => $.qs('.main-dropdown-section'),
-    removeHidden,
-    () => $.qsa('.one-list-section'),
-    listEvent,
-    () => $.qsa('.card-delete-button'),
-    deleteListEvent,
-    () => $.qsa('.card-used-button'),
-    usedCardEvent,
-    () => $.qs('.price-button'),
-    $.on('click', priceComparison),
-    () => $.qs('.due-date-button'),
-    $.on('click', dateComparison));
-
-const findCardIndex = (target) => {
-  const cards = [...$.qsa('.one-list-section')];
-  const card = target.closest('.one-list-section');
-  const idx = cards.findIndex((ele) => ele === card);
-  return idx;
+  if (target.className === 'one-card-button') $.qs('.cards-section').classList.remove('list');
+  else $.qs('.cards-section').classList.add('list');
 };
 
-const deleteCard = (target) => {
-  const index = findCardIndex(target);
-  target.closest('.one-list-section').remove();
-  cardDatas.splice(index, 1);
-};
-
-const deleteListEvent = (targets) => {
-  targets.forEach((target) => target.addEventListener('click', (e) => deleteCard(e.target)));
-};
-
-const usedStateCard = (target) => {
-  const list = target.closest('.one-list-section');
-  list.classList.add('gray');
-  list.style.transform = 'translateX(0)';
-  target.closest('.card-actions-section').remove();
-};
-
-const usedCardEvent = (targets) =>
-  targets.forEach((target) => target.addEventListener('click', (e) => usedStateCard(e.target)));
-
-const priceComparison = () => {
-  cardDatas.sort((comp1, comp2) => comp1.itemPrice - comp2.itemPrice);
-  renderListTpl();
-};
-
-const dateComparison = () => {
-  cardDatas.sort((comp1, comp2) => new Date(comp1.dateOfUse) - new Date(comp2.dateOfUse));
-  // renderListTpl();
-};
+const dateComparison = () =>
+  cardDatas.sort((comp1, comp2) => new Date(comp1.expiresAt) - new Date(comp2.expiresAt));
 
 const findTarget = (child, parent) => () => $.qsa(child, parent);
 const eventTrigger = (type, targets, fn) => () =>
@@ -281,14 +189,13 @@ const navigateMain = async () => {
     $.on('click', toggleDropdown),
     () => $.qs('.one-card-button'),
     $.on('click', switchLayout),
-    // $.on('click', renderDetail),
     () => $.qs('.list-card-button'),
     $.on('click', switchLayout),
-    // $.on('click', renderList),
     () => MainPage.handleClickaddCard());
 
   header({color: 'mint'})();
   createBarcode();
+  searchCard()();
 }
 
 export default navigateMain;

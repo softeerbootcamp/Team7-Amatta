@@ -90,7 +90,6 @@ const login = () => {
       _.go(
         INPUT,
         _.filter(loginInputs),
-        // console.log,
         ([passwordCheck, password, email]) => [password, email] ,
         _.map(addInputForm(fragment)),
         _.flatOne);
