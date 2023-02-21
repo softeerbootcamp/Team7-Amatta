@@ -127,9 +127,9 @@ const register = () => {
     const { name, email, password, phoneNumber } = userData;
     const data = { name, email, password, phoneNumber };
 
-    navigate('/card');
+    await navigate('/card');
     await regiseterUser(data);
-    await notification('회원가입', 'register')();
+    notification('회원가입에 성공하였습니다.', 'register')();
   };
 
   const addInputForm = (fragment) => (input) => inputForm({ ...input, target: fragment })();

@@ -44,9 +44,10 @@ const login = () => {
     e.stopPropagation();
     e.preventDefault();
 
+    //await loginU({ email: 'test@test.com', password: 'testPassword' });
     await loginU(userData);
-    navigate('/card');
-    await notification('로그인 성공', 'login');
+    await navigate('/card');
+    notification('로그인에 성공하였습니다.', 'login')();
 
     const firebaseConfig = {
       apiKey: 'AIzaSyCsLBsvozvTnYlDH-5cS0A8X_AjV5o4jjM',
@@ -70,15 +71,15 @@ const login = () => {
           fcmToken(tokens);
         });
       }
-      if (res === 'denied') window.alert('알림을 받으시려면 알림을 허용해주세요');
+      // if (res === 'denied') window.alert('알림을 받으시려면 알림을 허용해주세요');
     });
   };
 
   // prettier-ignore
   const handleSubmission = (target) => 
-    _.pipe(
+    _.go(
       handleSubmitData(target),
-      notification('로그인', 'login'));
+      () => notification('로그인', 'login')());
 
   // prettier-ignore
   const handleSubmitData = (target) => 
@@ -110,7 +111,7 @@ const login = () => {
       appendInputForm,
       () => handleChangeInput(document),
       () => handleSubmitData(fragment),
-      // () => handleSubmission(fragment),
+      //() => handleSubmission(fragment),
       () => fragment);
 
   return appendLogin;

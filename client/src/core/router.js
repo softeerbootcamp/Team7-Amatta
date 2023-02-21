@@ -26,7 +26,7 @@ const setData = (data) => (path) => {
 
 // prettier-ignore
 const navigate = 
-  (path, data = {}) =>
+  async (path, data = {}) =>
     _.go(
       path,
       setData(data),

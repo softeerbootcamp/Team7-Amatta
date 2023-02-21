@@ -9,22 +9,25 @@
 }
 
 .notification-container {
-  background: rgba(0, 0, 0, 0.3);
-  border-radius: 1rem 1rem 0 0;
-  padding: 1.5rem 0;
-  width: 100%;
+  background: rgba(83, 72, 78, 0.8);
+  color: $white-color;
+  border-radius: 0.75rem;
+  padding: 1rem 0;
+  width: 80%;
+  margin-left: 10%;
   position: absolute;
-  bottom: calc(-50px - 1.1rem);
-  transition: transform 0.3s ease-in-out;
+  top: -5rem;
+  // bottom: calc(-50px - 1.1rem);
+  transition: transform 0.5s ease-in-out;
   z-index: 15;
 
   p {
-    font-size: 1.5rem;
+    font-size: 1rem;
     text-align: center;
   }
 
   &.show {
-    transform: translateY(calc(-50px - 1.1rem));
+    transform: translateY(6rem);
   }
 }
 

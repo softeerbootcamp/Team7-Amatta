@@ -8,29 +8,29 @@ const notification = (label, classname) => {
         </div>
     `;
 
-  //prettier-ignore
+  // prettier-ignore
   const renderNotification = () => 
     _.go(
         notificationTpl, 
-        $.el, 
+        $.el,
         $.append($.qs('#root')));
-
-  const toggleShow = (target) => target.classList.toggle('show');
 
   const showNotification = () => {
     const notificationDiv = $.qs('.notification-container');
-    toggleShow(notificationDiv);
     setTimeout(() => {
-      toggleShow(notificationDiv);
+      notificationDiv.classList.add('show');
+    }, 50);
+    setTimeout(() => {
+      notificationDiv.classList.remove('show');
     }, 2000);
   };
 
-  //prettier-ignore
-  const notificationEvent = async () => {
+  // prettier-ignore
+  const notificationEvent = ()  => 
     _.go(
-        renderNotification(), 
-        () => showNotification);
-  };
+        renderNotification(),
+        () => showNotification(),
+        );
 
   return notificationEvent;
 };

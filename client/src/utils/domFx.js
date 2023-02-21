@@ -35,8 +35,9 @@ $.prepend = _.curry((child, parent) => {
 
 $.append = _.curry((parent, child) => {
   parent.appendChild(child);
+  // console.log(parent, child);
 
-  return parent;
+  return child;
 });
 
 $.closest = _.curry((sel, el) => el.closest(sel));
