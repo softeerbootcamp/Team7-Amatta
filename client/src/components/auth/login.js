@@ -76,12 +76,6 @@ const login = () => {
   };
 
   // prettier-ignore
-  const handleSubmission = (target) => 
-    _.go(
-      handleSubmitData(target),
-      () => notification('로그인', 'login')());
-
-  // prettier-ignore
   const handleSubmitData = (target) => 
     _.pipe(
       $.find('.auth-button'),
@@ -111,7 +105,6 @@ const login = () => {
       appendInputForm,
       () => handleChangeInput(document),
       () => handleSubmitData(fragment),
-      //() => handleSubmission(fragment),
       () => fragment);
 
   return appendLogin;

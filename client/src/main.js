@@ -2,7 +2,14 @@ import '@/styles/global.scss';
 import { initializeApp } from 'firebase/app';
 import { getMessaging, onMessage } from 'firebase/messaging';
 import { setScreenSize } from '@/utils';
-import { navigateHome, navigateAuth, navigateMain, initiatePostPage } from '@/pages';
+import {
+  navigateHome,
+  navigateMyPage,
+  navigateUsed,
+  navigateAuth,
+  navigateMain,
+  initiatePostPage,
+} from '@/pages';
 import { routes, navigate } from '@/core/router';
 
 routes.push(
@@ -11,6 +18,8 @@ routes.push(
   { path: '/login', component: navigateAuth },
   { path: '/card', component: navigateMain },
   { path: '/post', component: initiatePostPage },
+  { path: '/used', component: navigateUsed },
+  { path: '/mypage', component: navigateMyPage },
 );
 const path = window.location.pathname;
 
