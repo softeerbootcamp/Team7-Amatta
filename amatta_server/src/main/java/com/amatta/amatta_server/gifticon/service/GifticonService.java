@@ -66,7 +66,7 @@ public class GifticonService {
         );
     }
 
-    public Gifticon mapTextToGifticon(GifticonTextDto dto) throws GifticonParseException {
+    public Gifticon mapTextToGifticon(GifticonTextDto dto) throws GifticonParseException, GifticonNotSupportedException {
         GifticonMapper mapper = GifticonMapperFactory.getGifticonMapper(dto.getTexts());
         return mapper.map(dto.getTexts());
     }
