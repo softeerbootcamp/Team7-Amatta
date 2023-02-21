@@ -1,5 +1,9 @@
 package com.amatta.amatta_server.user;
 
+import com.amatta.amatta_server.fcm.controller.FCMController;
+import com.amatta.amatta_server.fcm.dto.TokenRegisterDto;
+import com.amatta.amatta_server.fcm.model.FCMToken;
+import com.amatta.amatta_server.fcm.repository.DeviceTokenRepository;
 import com.amatta.amatta_server.user.controller.UserController;
 import com.amatta.amatta_server.user.dto.UserChangePasswordReq;
 import com.amatta.amatta_server.user.dto.UserFindPasswordByEmailReq;
@@ -8,6 +12,7 @@ import com.amatta.amatta_server.user.dto.UserLoginReq;
 import com.amatta.amatta_server.user.repository.UserRepository;
 import com.amatta.amatta_server.user.service.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,9 +22,13 @@ import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -34,9 +43,13 @@ public class UserControllerTest {
     @Autowired
     UserController userController;
     @Autowired
+    FCMController fcmController;
+    @Autowired
     UserService userService;
     @Autowired
     UserRepository userRepository;
+    @Autowired
+    DeviceTokenRepository tokenRepository;
     @Autowired
     MockMvc mockMvc;
     @Autowired
@@ -339,6 +352,58 @@ public class UserControllerTest {
                 .andExpect(jsonPath("success").value(true))
                 .andExpect(status().isOk())
                 .andDo(print());
+    }
 
+    @Test
+    @Transactional
+    @DisplayName("로그아웃 테스트")
+    void logoutTest() throws Exception {
+        String email = "ktykty0722@naver.com";
+        String password = "testPassword";
+        String name = "taewan";
+        String phoneNumber = "010-0000-0000";
+        UserJoinReq userJoinReq = new UserJoinReq(
+                email,
+                password,
+                name,
+                phoneNumber
+        );
+        mockMvc.perform(post("/user/join")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(userJoinReq)))
+                .andExpect(status().isCreated())
+                .andDo(print());
+
+        long id = userRepository.last_insert_id();
+
+        UserLoginReq userLoginReq = new UserLoginReq(email, password);
+        MockHttpSession httpSession = new MockHttpSession();
+
+        mockMvc.perform(post("/user/login")
+                        .session(httpSession)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(userLoginReq)))
+                .andExpect(jsonPath("success").value(true))
+                .andExpect(status().isOk())
+                .andDo(print());
+
+        String requestBody = "{\"token\": \"testtoken\"}";
+
+        mockMvc.perform(post("/fcm/token")
+                .session(httpSession)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(requestBody)
+        ).andExpect(status().is2xxSuccessful()).andDo(print());
+
+        List<FCMToken> list = tokenRepository.findByUid(id);
+
+        assertEquals(list.size(), 1);
+
+        mockMvc.perform(post("/user/logout")
+                .session(httpSession)).andExpect(status().is2xxSuccessful());
+
+        List<FCMToken> list2 = tokenRepository.findByUid(id);
+
+        assertEquals(list2.size(), 0);
     }
 }
