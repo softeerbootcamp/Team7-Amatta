@@ -58,6 +58,11 @@ public class GifticonController {
         return new ResponseEntity<>(gifticonService.findGifticons(keyword), HttpStatus.OK);
     }
 
+    @GetMapping("/used")
+    public ResponseEntity<?> usedGifticonList() {
+        return new ResponseEntity<>(gifticonService.usedTest(), HttpStatus.OK);
+    }
+
     @PutMapping("/used")
     public ResponseEntity<?> useGifticon(@RequestBody GifticonUseDto dto) {
         gifticonService.useGifticon(dto);
