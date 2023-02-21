@@ -54,8 +54,8 @@ public class GifticonController {
     }
 
     @GetMapping("/list")
-    public ResponseEntity<?> gifticonList() {
-        return new ResponseEntity<>(gifticonService.findGifticons(), HttpStatus.OK);
+    public ResponseEntity<?> gifticonList(@RequestParam(name = "keyword", required = false, defaultValue = "") String keyword) {
+        return new ResponseEntity<>(gifticonService.findGifticons(keyword), HttpStatus.OK);
     }
 
     @PutMapping("/used")
@@ -95,7 +95,7 @@ public class GifticonController {
     }
 
     @GetMapping("/test")
-    public ResponseEntity<?> test() {
-        return new ResponseEntity<>(gifticonService.test(), HttpStatus.OK);
+    public ResponseEntity<?> test(@RequestParam(name = "keyword", required = false, defaultValue = "") String keyword) {
+        return new ResponseEntity<>(gifticonService.test(keyword), HttpStatus.OK);
     }
 }
