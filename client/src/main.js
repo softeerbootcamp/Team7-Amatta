@@ -31,6 +31,19 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const messaging = getMessaging(app);
 
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker
+      .register('../service-worker.js')
+      .then((reg) => {
+        console.log('Service worker registered.', reg);
+      })
+      .catch((error) => {
+        console.log('Service worker registration failed:', error);
+      });
+  });
+}
+
 navigator.serviceWorker.register('../firebase-messaging-sw.js').then((res) => {
   onMessage(messaging, (payload) => {
     const option = {
