@@ -79,7 +79,7 @@ export const INPUT = [
     label: '이메일',
     required: true,
     dataType: 'email',
-    pattern: EMAIL_REG,
+    // pattern: EMAIL_REG,
   },
   {
     type: 'userName',

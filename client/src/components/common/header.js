@@ -4,7 +4,7 @@ import { logoutU } from '@/apis/auth';
 import { _ } from '@/utils/customFx';
 import { IO, $ } from '@/utils';
 import { sideMenu, modal } from '@/components/common';
-// search-button
+// search-button //
 const header = (props) => {
   const { color, label, path } = props;
   const MINT_LOGO_URL = `${SERVER_URL.IMG}logo/logo-mint.png`;
@@ -67,6 +67,11 @@ const header = (props) => {
     closeModal();
     logoutModal();
   };
+
+  const mypageEvent = () => navigate('/mypage');
+
+  const usedPageEvent = () => navigate('/used');
+
   // async
   const openMenuEvent = () => {
     const trigger = $.qs('.trigger');
@@ -75,7 +80,14 @@ const header = (props) => {
     const menuTarget = $.qs('.menu-section');
     toggleActive(menuTarget);
 
-    $.on('click', logoutEvent)($.qs('.logout-button'));
+    _.go(
+      $.qs('.logout-button'),
+      $.on('click', logoutEvent),
+      () => $.qs('.mypage-button'),
+      $.on('click', mypageEvent),
+      () => $.qs('.usedList-button'),
+      $.on('click', usedPageEvent),
+    );
   };
   // async
   const toggleActive = (target) => target.classList.toggle('active');
