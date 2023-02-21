@@ -46,7 +46,7 @@ const login = () => {
 
     await loginU(userData);
     navigate('/card');
-    await notification('로그인', 'login')();
+    await notification('로그인 성공', 'login');
 
     const firebaseConfig = {
       apiKey: 'AIzaSyCsLBsvozvTnYlDH-5cS0A8X_AjV5o4jjM',

@@ -4,7 +4,7 @@ import { _ } from '@/utils/customFx';
 const notification = (label, classname) => {
   const notificationTpl = `
         <div class='notification-container ${classname}'>
-            <p>${label} 되었습니다.</p>
+            <p>${label}</p>
         </div>
     `;
 

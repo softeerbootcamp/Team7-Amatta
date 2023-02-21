@@ -24,7 +24,8 @@ const logout = (label, classname) => {
     _.go(
       logoutTpl, 
       $.el, 
-      $.replace($.qs('.main-card-box')));
+      // $.replace($.qs('.main-card-box'))
+      $.append($.qs('.menu-section')));
 
   return renderLogoutModal;
 };
