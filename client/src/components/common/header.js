@@ -67,16 +67,17 @@ const header = (props) => {
     closeModal();
     logoutModal();
   };
-
+  // async
   const openMenuEvent = () => {
     const trigger = $.qs('.trigger');
-    const menuTarget = $.qs('.menu-section');
+    // await
     toggleActive(trigger);
+    const menuTarget = $.qs('.menu-section');
     toggleActive(menuTarget);
 
-    //$.on('click', logoutEvent)($.qs('.modal-button'));
+    $.on('click', logoutEvent)($.qs('.logout-button'));
   };
-
+  // async
   const toggleActive = (target) => target.classList.toggle('active');
 
   const navigatePath = (fragment, target, path) =>
@@ -114,12 +115,15 @@ const header = (props) => {
       (fragment) => $.prepend(fragment, $.qs('#root')),
       handleEvent);
 
-
-    // color === 'mint' && _.go(
-    //   sideMenu(),
-    //   () => $.qs('.trigger'),
-    //   $.on('click', openMenuEvent));
-    // addEvents(document);
+    color === 'mint' && 
+    _.go(
+      //sideMenu(),
+      sideMenu(),
+      $.el,
+      $.append($.qs('.header-main')),
+      () => $.qs('.trigger'),
+      $.on('click', openMenuEvent));
+    //addEvents(document);
   }
   return appendHeader;
 };

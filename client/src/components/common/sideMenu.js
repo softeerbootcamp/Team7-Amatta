@@ -24,14 +24,15 @@ const sideMenu = () => {
   // const toggleActive = (target) => target.classList.toggle('active');
 
   // prettier-ignore
-  const renderSideMenu = () => 
-    _.go(
-      sideMenuTpl,
-      $.el,
-      $.append($.qs('.header-main'))
-    );
+  // const renderSideMenu = () =>
+  //   _.go(
+  //     sideMenuTpl,
+  //     $.el,
+  //     $.append($.qs('.header-main'))
+  //   );
 
-  return renderSideMenu;
+  // return renderSideMenu;
+  return sideMenuTpl;
 };
 
 export default sideMenu;
