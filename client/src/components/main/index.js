@@ -1,2 +1,2 @@
 export { default as cardDetail } from './cardDetail';
-export { default as cardList } from './cardList';
+export { default as searchCard } from './cardSearch';

@@ -156,15 +156,6 @@ export default function CalendarControl(gifticonData, setGifticonData) {
       const changedMonth = calendar.getMonth() + 1;
       const currentYear = calendarControl.localDate.getFullYear();
       const changedYear = calendar.getFullYear();
-      if (
-        currentYear === changedYear &&
-        currentMonth === changedMonth &&
-        document.querySelectorAll('.number-item')
-      ) {
-        document
-          .querySelectorAll('.number-item')
-          [calendar.getDate() - 1].classList.add('calendar-today');
-      }
     },
     plotPrevMonthDates(dates) {
       dates.reverse();

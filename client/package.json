@@ -21,6 +21,7 @@
   },
   "dependencies": {
     "firebase": "^9.17.1",
+    "jsbarcode": "^3.11.5",
     "typescript": "^4.9.5"
   }
 }
