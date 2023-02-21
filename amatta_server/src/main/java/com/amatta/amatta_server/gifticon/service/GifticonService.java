@@ -3,6 +3,7 @@ package com.amatta.amatta_server.gifticon.service;
 import com.amatta.amatta_server.aop.ClassRequiresAuth;
 import com.amatta.amatta_server.exception.DuplicateGifticonException;
 import com.amatta.amatta_server.exception.GifticonNotSupportedException;
+import com.amatta.amatta_server.exception.GifticonParseException;
 import com.amatta.amatta_server.exception.NotAuthenticatedException;
 import com.amatta.amatta_server.gifticon.dto.GifticonDto;
 import com.amatta.amatta_server.gifticon.dto.GifticonImageDto;
@@ -65,7 +66,7 @@ public class GifticonService {
         );
     }
 
-    public Gifticon mapTextToGifticon(GifticonTextDto dto) throws NullPointerException, IndexOutOfBoundsException, GifticonNotSupportedException {
+    public Gifticon mapTextToGifticon(GifticonTextDto dto) throws GifticonParseException {
         GifticonMapper mapper = GifticonMapperFactory.getGifticonMapper(dto.getTexts());
         return mapper.map(dto.getTexts());
     }
