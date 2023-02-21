@@ -2,6 +2,7 @@ package com.amatta.amatta_server.gifticon.controller;
 
 import com.amatta.amatta_server.exception.DuplicateGifticonException;
 import com.amatta.amatta_server.exception.GifticonNotSupportedException;
+import com.amatta.amatta_server.exception.GifticonParseException;
 import com.amatta.amatta_server.exception.NotAuthenticatedException;
 import com.amatta.amatta_server.fcm.service.FCMService;
 import com.amatta.amatta_server.gifticon.dto.GifticonUseDto;
@@ -70,12 +71,12 @@ public class GifticonController {
 
     @ExceptionHandler(GifticonNotSupportedException.class)
     public ResponseEntity<?> gifticonNotSupportedExceptionHandler() {
-        return new ResponseEntity<>(GifticonNotSupportedException.message, HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>("", HttpStatus.OK);
     }
 
-    @ExceptionHandler(IndexOutOfBoundsException.class)
-    public ResponseEntity<?> indexOutOfBoundExceptionHandler() {
-        return new ResponseEntity<>("잘못된 형식의 이미지입니다", HttpStatus.BAD_REQUEST);
+    @ExceptionHandler(GifticonParseException.class)
+    public ResponseEntity<?> gifticonParseExceptionHandler() {
+        return new ResponseEntity<>("", HttpStatus.OK);
     }
 
     @ExceptionHandler(DuplicateGifticonException.class)

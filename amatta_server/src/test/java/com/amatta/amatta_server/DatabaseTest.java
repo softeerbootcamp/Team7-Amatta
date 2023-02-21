@@ -55,7 +55,7 @@ public class DatabaseTest {
         LocalDate now = LocalDate.now();
         userRepository.addUser("testest@naver.com", "testest1234", "테스트", "010-1111-1111");
         long id = userRepository.last_insert_id();
-        gifticonRepository.addGifticon(id, "test".getBytes(), "test".getBytes(), "test brand", "test item", "12341234",
+        gifticonRepository.addGifticon(id, "test", "test", "test brand", "test item", "12341234",
                 now.plusDays(2), now.plusYears(100), 2000);
         tokenRepository.addToken(id, "testtoken");
         List<String> list = tokenRepository.findTokensByUidsOfGifticonsAboutToExpire(now.plusDays(Gifticon.expirationThresholdDays));

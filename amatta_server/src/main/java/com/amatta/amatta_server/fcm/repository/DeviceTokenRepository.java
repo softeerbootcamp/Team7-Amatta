@@ -29,4 +29,8 @@ public interface DeviceTokenRepository extends CrudRepository<FCMToken, Long> {
     @Query("SELECT token FROM device_token WHERE uid IN " +
             "(SELECT uid FROM gifticon WHERE expiresat BETWEEN (SELECT now()) AND :expirationThresholdDays AND usedat > (SELECT now()))")
     List<String> findTokensByUidsOfGifticonsAboutToExpire(@Param("expirationThresholdDays") LocalDate date);
+
+    @Modifying
+    @Query("DELETE FROM device_token WHERE uid = :uid")
+    void deleteTokenByUid(@Param("uid") long uid);
 }
