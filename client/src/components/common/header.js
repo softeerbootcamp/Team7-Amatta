@@ -4,6 +4,7 @@ import { logoutU } from '@/apis/auth';
 import { _ } from '@/utils/customFx';
 import { IO, $ } from '@/utils';
 import { sideMenu, modal } from '@/components/common';
+
 // search-button
 const header = (props) => {
   const { color, label, path } = props;
@@ -14,6 +15,7 @@ const header = (props) => {
 
   const mintTemp = `
     <img class='small-logo-white' src='${WHITE_LOGO_URL}' alt='amatta-small-logo'/>
+    <input class='search-card-input' autofocus placeholder='검색어를 입력해주세요.'/>
     <section class='header-button-section'>
       <img class="search-button" src='${SEARCH_ICON_URL}' alt='search-button' />
       <section class="trigger">
@@ -96,9 +98,20 @@ const header = (props) => {
   const setEvent = (type, fn) => (target) => IO.of(eventTrigger(type, target, fn));
   const findTarget = (child, parent) => () => $.qs(child, parent);
   const handleClickSearchIcon = (target) => (e) => {
-    target.style.filter =
-      'invert(0%) sepia(0%) saturate(7445%) hue-rotate(197deg) brightness(86%) contrast(93%)';
-    target.style.transform = 'translateY(50px)';
+    const inputTarget = $.qs('.search-card-input');
+
+    if (!target.classList.contains('searching')) {
+      target.style.filter =
+        'invert(66%) sepia(2%) saturate(19%) hue-rotate(334deg) brightness(97%) contrast(82%)';
+      inputTarget.style.animation = 'search 0.5s ease-in-out forwards';
+      target.classList.add('searching');
+    } else {
+      target.style.filter =
+        'invert(100%) sepia(0%) saturate(0%) hue-rotate(113deg) brightness(104%) contrast(101%)';
+      target.classList.remove('searching');
+      inputTarget.style.opacity = '0';
+      inputTarget.style.animation = '';
+    }
   };
 
   const addEvents = (target) => {
@@ -123,7 +136,7 @@ const header = (props) => {
       $.append($.qs('.header-main')),
       () => $.qs('.trigger'),
       $.on('click', openMenuEvent));
-    //addEvents(document);
+    addEvents(document);
   }
   return appendHeader;
 };

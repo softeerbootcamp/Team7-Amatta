@@ -1,6 +1,6 @@
 import JsBarcode from 'jsbarcode';
 import { SERVER_URL } from '@/constants/constant';
-import { cardDetail, searchCard } from '@/components/main';
+import { cardDetail } from '@/components/main';
 import { dropdownMenu, header, notification } from '@/components/common';
 import { IO, $, slider } from '@/utils';
 import { _ } from '@/utils/customFx';
@@ -83,6 +83,15 @@ const handleSortClick = ({ target }, dropdownSection) => {
   // changeCardData(cardDatas);
 };
 
+const handleClickSearchIcon = (target) => async (e) => {
+  const inputTarget = $.qs('.search-card-input');
+
+  if (target.classList.contains('searching')) return;
+  const newData = await getCardList(inputTarget.value);
+  setCardDatas(newData);
+  
+};
+
 const toggleDropdown = () => {
   const dropdownSection = $.qs('.main-dropdown-section');
   const dropdownImage = $.qs('.main-dropdown-image', dropdownSection);
@@ -150,6 +159,10 @@ const addEvents = (target) => {
   IO.of(findTarget('.card-lists', target))
     .chain(setEvent('click', handleClickOneCard))
     .run();
+
+  IO.of(findTarget('.search-button', target))
+    .chain(setEvent('click', handleClickSearchIcon($.qs('.search-button'))))
+    .run();
 };
 
 const handleClickOneCard = ({ target }) => {
@@ -178,10 +191,9 @@ MainPage.render = () =>
 const navigateMain = async () => {
   setCardDatas(await getCardList());
   dateComparison();
-
+  
   _.go(
     MainPage.render(),
-    addEvents,
     slider(),
     //() => notification("logout", "logout")(),
     () => $.qsa('.mark-used-button'),
@@ -193,10 +205,10 @@ const navigateMain = async () => {
     () => $.qs('.list-card-button'),
     $.on('click', switchLayout),
     () => MainPage.handleClickaddCard());
-
-  header({color: 'mint'})();
-  createBarcode();
-  searchCard()();
+    
+    createBarcode();
+    header({color: 'mint'})();
+    addEvents(document);
 }
 
 export default navigateMain;
