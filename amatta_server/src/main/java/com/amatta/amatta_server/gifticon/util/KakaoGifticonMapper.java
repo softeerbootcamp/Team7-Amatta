@@ -1,5 +1,6 @@
 package com.amatta.amatta_server.gifticon.util;
 
+import com.amatta.amatta_server.exception.GifticonParseException;
 import com.amatta.amatta_server.gifticon.model.Gifticon;
 
 import java.sql.Date;
@@ -22,66 +23,30 @@ public class KakaoGifticonMapper implements GifticonMapper {
     }
 
     @Override
-    public Gifticon map(List<String> list) throws IndexOutOfBoundsException {
-        int brandNameIndex = list.lastIndexOf("교환처");
-        int expirationDateIndex = list.lastIndexOf("유효기간");
-        int orderIdIndex = list.lastIndexOf("주문번호");
+    public Gifticon map(List<String> list) throws GifticonParseException {
+        try {
+            Date expireDate = Date.valueOf(LocalDate.parse(list.get(list.size() - 3)
+                    .replace("유효기간", "").replace(" ", ""), DateTimeFormatter.ofPattern("yyyy년MM월dd일")));
+            String brandName = list.get(list.size() - 4).replace("교환처", "");
+            String barcode = list.get(list.size() - 5).replace(" ", "");
 
-        String brandName = list.get(brandNameIndex+1);
-        String itemName = getItemName(list, brandName);
-        String barcode = getBarcode(list, brandNameIndex);
-
-        java.sql.Date expiretionDate = Date.valueOf(getExpirationDate(list, expirationDateIndex, orderIdIndex));
-
-        return Gifticon.builder()
-                .brandname(brandName)
-                .expiresat(expiretionDate)
-                .itemname(itemName)
-                .barcode(barcode)
-                .build();
-    }
-
-    private String getBarcode(List<String> list, int brandNameIndex) {
-        int barcodeStartIdx = 0;
-        for(int i = brandNameIndex - 1; i >= 0; i--) {
-            if(list.get(i).matches("^\\d{4}$")) {
-                barcodeStartIdx = i;
+            StringBuilder stringBuilder = new StringBuilder();
+            for (int i = list.size() - 6; !list.get(i).equals(brandName); i--) {
+                if (i == 0 && !list.get(i).equals(brandName)) {
+                    stringBuilder.delete(0, stringBuilder.toString().length());
+                    break;
+                }
+                stringBuilder.insert(0, list.get(i));
             }
-            if(!list.get(i).matches("^\\d{4}$")) {
-                break;
-            }
-        }
 
-        StringBuilder st = new StringBuilder();
-        for(int i = barcodeStartIdx; i < brandNameIndex; i++) {
-            st.append(list.get(i));
+            return Gifticon.builder()
+                    .brandname(brandName)
+                    .expiresat(expireDate)
+                    .itemname(stringBuilder.toString())
+                    .barcode(barcode)
+                    .build();
+        } catch(Exception e) {
+            throw new GifticonParseException();
         }
-        return st.toString();
-    }
-
-    private LocalDate getExpirationDate(List<String> list, int expirationDateIndex, int orderIdIndex) throws IndexOutOfBoundsException {
-        StringBuilder expirationDate = new StringBuilder();
-        for(String date : list.subList(expirationDateIndex+1, orderIdIndex)) {
-            expirationDate.append(date);
-        }
-
-        return LocalDate.parse(expirationDate.toString(), DateTimeFormatter.ofPattern("yyyy년MM월dd일"));
-    }
-
-    private String getItemName(List<String> list, String brandName) throws IndexOutOfBoundsException {
-        int itemNameStartIndex = list.indexOf(brandName) + 1;
-        int itemNameEndIndex = 0;
-        for(int i = list.lastIndexOf(brandName) - 2; i >= 0; i--) {
-            if(!list.get(i).matches("^\\d{4}$")) {
-                itemNameEndIndex = i+1;
-                break;
-            }
-        }
-        StringBuilder itemName = new StringBuilder();
-        for(String name : list.subList(itemNameStartIndex, itemNameEndIndex)) {
-            itemName.append(name).append(" ");
-        }
-
-        return itemName.toString().trim();
     }
 }
