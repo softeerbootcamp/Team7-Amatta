@@ -57,13 +57,27 @@ public interface GifticonRepository extends CrudRepository<Gifticon, Long> {
             "barcode, " +
             "expiresAt, " +
             "usedAt, " +
-            "price FROM gifticon WHERE uid = :uid")
-    List<Gifticon> findByUid(@Param("uid") long uid);
+            "price FROM gifticon WHERE uid = :uid AND (usedAt >= (select now())) AND " +
+            "(itemName LIKE concat('%', :keyword, '%') OR brandName LIKE concat('%', :keyword, '%'))")
+    List<Gifticon> findByUid(@Param("uid") long uid, @Param("keyword") String keyword);
 
     @Modifying
     @Query("UPDATE gifticon SET usedAt = (SELECT now()) WHERE id = :id")
     void useGifticon(@Param("id") long id);
 
-    @Query("SELECT * FROM gifticon")
-    List<Gifticon> test();
+    @Query("SELECT * FROM gifticon where (usedAt >= (select now())) AND (itemName LIKE concat('%', :keyword, '%') OR brandName LIKE concat('%', :keyword, '%'))")
+    List<Gifticon> test(@Param("keyword") String keyword);
+
+    @Query("SELECT " +
+            "id, " +
+            "uid, " +
+            "itemName, " +
+            "brandName, " +
+            "image,  " +
+            "thumbnail, " +
+            "barcode, " +
+            "expiresAt, " +
+            "usedAt, " +
+            "price FROM gifticon WHERE uid = :uid AND usedAt <= (select now())")
+    List<Gifticon> findUsedByUid(@Param("uid") long uid);
 }
