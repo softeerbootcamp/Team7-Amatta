@@ -1,0 +1,31 @@
+{
+  "name": "아 맞다!",
+  "short_name": "Amatta",
+  "icons": [
+    {
+      "src": "https://amatta-icons.s3.ap-northeast-2.amazonaws.com/app/icon-x128.png",
+      "sizes": "128x128",
+      "type": "image/png"
+    },
+    {
+      "src": "https://amatta-icons.s3.ap-northeast-2.amazonaws.com/app/icon-x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "https://amatta-icons.s3.ap-northeast-2.amazonaws.com/app/icon-x384.png",
+      "sizes": "384x384",
+      "type": "image/png"
+    },
+    {
+      "src": "https://amatta-icons.s3.ap-northeast-2.amazonaws.com/app/icon-x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "start_url": "https://amatta.site/",
+  "display": "fullscreen",
+  "background_color": "#92b8b1",
+  "theme_color": "#ffffff"
+}

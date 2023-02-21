@@ -85,11 +85,12 @@ public class UserController {
     }
 
     @GetMapping("/mypage")
-    public ResponseEntity<?> mypage(@SessionAttribute(value = "User", required = false) Users user) {
-        if (Objects.isNull(user)) {
-            return new ResponseEntity<>(new UserMypageRes(false), HttpStatus.UNAUTHORIZED);
-        }
-        return new ResponseEntity<>(new UserMypageRes(true, user.getEmail(), user.getPassword(), user.getName(), user.getPhoneNumber()), HttpStatus.OK);
+    public ResponseEntity<?> mypage(/*@SessionAttribute(value = "User", required = false) Users user*/) {
+//        if (Objects.isNull(user)) {
+//            return new ResponseEntity<>(new UserMypageRes(false), HttpStatus.UNAUTHORIZED);
+//        }
+        return new ResponseEntity<>(new UserMypageRes(true, "test@test.com", "testPassword", "test", "010-0000-0000"), HttpStatus.OK);
+//        return new ResponseEntity<>(new UserMypageRes(true, user.getEmail(), user.getPassword(), user.getName(), user.getPhoneNumber()), HttpStatus.OK);
     }
 
     @PutMapping("/password")

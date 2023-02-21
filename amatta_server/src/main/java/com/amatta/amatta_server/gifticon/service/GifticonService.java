@@ -120,12 +120,12 @@ public class GifticonService {
     }
 
     @Transactional(readOnly = true)
-    public List<Gifticon> findGifticons() {
+    public List<Gifticon> findGifticons(String keyword) {
         Users user = getUserBySessionId();
         if(user == null) {
             throw new NotAuthenticatedException();
         }
-        return gifticonRepository.findByUid(user.getId());
+        return gifticonRepository.findByUid(user.getId(), keyword);
     }
 
     @Transactional
@@ -141,13 +141,26 @@ public class GifticonService {
         gifticonRepository.useGifticon(dto.getGifticonId());
     }
 
+    @Transactional
+    public List<Gifticon> usedGifticonList() {
+        Users user = getUserBySessionId();
+        if(user == null) {
+            throw new NotAuthenticatedException();
+        }
+        return gifticonRepository.findUsedByUid(user.getId());
+    }
+
     private Users getUserBySessionId() {
         HttpServletRequest request = ((ServletRequestAttributes) Objects.requireNonNull(RequestContextHolder.getRequestAttributes())).getRequest();
         HttpSession session = request.getSession(false);
         return (Users) session.getAttribute("User");
     }
 
-    public List<Gifticon> test() {
-        return gifticonRepository.test();
+    public List<Gifticon> test(String keyword) {
+        return gifticonRepository.test(keyword);
+    }
+
+    public List<Gifticon> usedTest() {
+        return gifticonRepository.findUsedByUid(2);
     }
 }
