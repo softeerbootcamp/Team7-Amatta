@@ -2,9 +2,9 @@
 .auth-article {
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
   padding-top: 4.5rem;
+  height: calc(calc(var(--vh, 1vh) * 100) - 4.5rem);
 
   .auth-form-section {
     width: 80%;

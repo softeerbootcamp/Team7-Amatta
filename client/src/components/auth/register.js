@@ -11,12 +11,12 @@ const register = () => {
   const codeReg = /^[0-9]{6}$/i;
 
   let userData = {
-    name: '',
-    email: '',
-    verificationCode: '',
-    phoneNumber: '',
-    password: '',
-    passwordCheck: '',
+    name: 'softeer',
+    email: 'softeer@hyundai.com',
+    verificationCode: '123456',
+    phoneNumber: '010-1234-5678',
+    password: 'softeer',
+    passwordCheck: 'softeer',
   };
 
   const registerTemp = `
@@ -24,6 +24,29 @@ const register = () => {
     <h4>Amatta 가입하기</h4>
     <h5>기프티콘을 효율적으로 관리해보세요.</h5>
   `;
+
+  // 데모용
+  const setInput = (fragment) => {
+    $.qs('#user-name-input', fragment).value = userData.name;
+    $.qs('#email-input', fragment).value = userData.email;
+    $.qs('#verification-code-input', fragment).value = userData.verificationCode;
+    $.qs('#phone-input', fragment).value = userData.phoneNumber;
+    $.qs('#password-input', fragment).value = userData.password;
+    $.qs('#password-check-input', fragment).value = userData.passwordCheck;
+    $.qs('.auth-button', fragment).classList.add('active');
+
+    const formTarget = $.qs('#verification-code-input-section', fragment);
+    formTarget.classList.add('visible');
+
+    const buttonTargets = $.qsa('button', fragment);
+    buttonTargets.forEach((button) => (button.disabled = false));
+
+    const buttonTarget = $.qs('.confirm-button', fragment);
+    $.on('click', () => {
+      closeCodeForm(formTarget)();
+      formTarget.style.display = 'none';
+    })(buttonTarget);
+  };
 
   const setUserData = (userData, target) => {
     const newUserData = { ...userData };
@@ -38,30 +61,6 @@ const register = () => {
     const updatedUserData = setUserData(userData, target);
     userData = updatedUserData;
   });
-
-  // const setUserData = (userData, { target }, targets) => {
-  //   if (!target.validity.valid) return;
-
-  //   const dataType = _.getDataset(target, 'data-input');
-  //   const newUserData = { ...userData };
-
-  //   newUserData[dataType] = target.value;
-  //   userData = newUserData;
-
-  //   checkValidateAll(targets);
-
-  //   return userData;
-  // };
-
-  // const checkValidateAll = (targets) => {
-  //   const $targetClass = $.qs('.auth-button').classList;
-
-  //   if (![...targets].every((target) => target.validity.valid))
-  //     return $targetClass.remove('active');
-  //   if (userData.password !== userData.passwordCheck) return $targetClass.remove('active');
-
-  //   $targetClass.add('active');
-  // };
 
   const closeCodeForm = (target) => () => target.classList.remove('visible');
 
@@ -178,14 +177,6 @@ const register = () => {
         $.find('.verify-button'),
         $.on('click',  (e) => checkEmail(e, userData.email)));
 
-  // // prettier-ignore
-  // const sendVerificationCode = (fragment) =>
-  //   new Promise((resolve) =>
-  //     _.go(
-  //       fragment,
-  //       $.find('.verify-button'),
-  //       $.on('click', (e) => addCodeForm(e, resolve))));
-
   // prettier-ignore
   const validateCode = (target) => 
     _.pipe(
@@ -246,6 +237,7 @@ const register = () => {
       () => sendVerificationCode(fragment),
       () => validateCode(fragment),
       () => submitData(fragment),
+      () => setInput(fragment),
       () => fragment);
 
   return appendRegister;

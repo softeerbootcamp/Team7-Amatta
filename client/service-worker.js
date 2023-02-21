@@ -15,8 +15,8 @@ self.addEventListener('install', (event) => {
       .open(CACHE)
       .then((cache) =>
         cache.addAll([
-          '/',
-          '/offline.html',
+          'https://amatta.site/',
+          './offline.html',
           'https://amatta-icons.s3.ap-northeast-2.amazonaws.com/app/icon-x128.png',
           'https://amatta-icons.s3.ap-northeast-2.amazonaws.com/app/icon-x192.png',
           'https://amatta-icons.s3.ap-northeast-2.amazonaws.com/app/icon-x384.png',
