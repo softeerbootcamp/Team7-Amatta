@@ -66,4 +66,17 @@ public interface GifticonRepository extends CrudRepository<Gifticon, Long> {
 
     @Query("SELECT * FROM gifticon where itemName LIKE concat('%', :keyword, '%') OR brandName LIKE concat('%', :keyword, '%')")
     List<Gifticon> test(@Param("keyword") String keyword);
+
+    @Query("SELECT " +
+            "id, " +
+            "uid, " +
+            "itemName, " +
+            "brandName, " +
+            "image,  " +
+            "thumbnail, " +
+            "barcode, " +
+            "expiresAt, " +
+            "usedAt, " +
+            "price FROM gifticon WHERE uid = :uid AND usedAt <= (select now())")
+    List<Gifticon> findUsedByUid(@Param("uid") long uid);
 }
