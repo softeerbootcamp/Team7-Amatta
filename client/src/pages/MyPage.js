@@ -68,7 +68,7 @@ const submitData = async () => {
   const password = $.qs('#password-input');
 
   if (password.value === $.qs('#password-check-input').value) {
-    changePassword(password.value);
+    changePassword({ password: password.value });
     mainpageEvent();
   }
 };
