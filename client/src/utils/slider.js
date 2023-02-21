@@ -39,8 +39,6 @@ const slider = () => {
       (parent.style.transform = `translateX(-${rightMargin}px)`);
   };
 
-  // const left = index * (childWidth + spaceBetweenChildren);
-
   // prettier-ignore
   const cardSlider = () => 
     _.go(

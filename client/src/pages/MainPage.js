@@ -1,5 +1,6 @@
+import JsBarcode from 'jsbarcode';
 import { SERVER_URL } from '@/constants/constant';
-import { cardDetail, cardList } from '@/components/main';
+import { cardDetail, searchCard } from '@/components/main';
 import { dropdownMenu, header } from '@/components/common';
 import { IO, $, slider } from '@/utils';
 import { _ } from '@/utils/customFx';
@@ -12,21 +13,35 @@ const PLUS_ICON_URL = `${SERVER_URL.IMG}icon/plus.svg`;
 
 let touchStartX = 0;
 let touchEndX = 0;
-let idx = 0;
 let isSwipping = false;
 let cardDatas = [];
 
 const setCardDatas = (cardData) => (cardDatas = [...cardData]);
+const sortOption = { 0: '마감순', 1: '등록순', 2: '금액순' };
 
-const detailTemp = () => `
-  <div class='cards-detail-container'>
+const detailTemp = (newCardDatas) => {
+  let idx = 0;
+
+  return `
     ${_.go(
-      cardDatas,
+      newCardDatas,
       _.map((card) => cardDetail(card)(idx++)),
       _.reduce((a, b) => `${a}${b}`),
     )}
-  </div>
 `;
+};
+
+// 바코드 생성
+const createBarcode = () =>
+  cardDatas.forEach((data) =>
+    JsBarcode(`[data-barcode="${data.barcode}"]`, data.barcode, {
+      format: 'CODE128',
+      displayValue: true,
+      fontSize: 20,
+      width: 2,
+      height: 50,
+    }),
+  );
 
 const MainPage = {};
 
@@ -39,14 +54,13 @@ MainPage.temp = () => `
               <img class='one-card-button' src='${ONE_CARD_ICON_URL}' alt='square-card-button' />
               <img class='list-card-button' src='${LIST_ICON_URL}' alt='list-card-button' />
             </section>
-            <section class='main-dropdown-section hidden'>
-            ${dropdownMenu()}
+            <section class='main-dropdown-section'>
+              ${dropdownMenu(sortOption)}
             </section>
           </div>
           <section class='cards-section'>
-            ${detailTemp()}
+            ${detailTemp(cardDatas)}
           </section>
-          <ul class="card-pagination"></ul>
           <button type="button" id="plus-button">
             <img class='plus-button-image' src='${PLUS_ICON_URL}' alt='plus-button' />
           </button>
@@ -55,38 +69,35 @@ MainPage.temp = () => `
     </article>
   `;
 
-const toggleDropdown = () => {
-  const dropdownSection = $.qs('.main-dropdown-section');
-  dropdownSection.classList.toggle('drop');
+const handleSortClick = ({ target }, dropdownSection) => {
+  const clickedText = target.textContent;
+  const clickedIndex = Object.values(sortOption).indexOf(clickedText);
 
-  const dropdownList = $.qs('.dropdown-list');
-  toggleHidden(dropdownList);
+  const temp = sortOption[clickedIndex];
+  sortOption[clickedIndex] = sortOption[0];
+  sortOption[0] = temp;
+
+  dropdownSection.innerHTML = dropdownMenu(sortOption);
+  $.on('click', toggleDropdown)($.qs('.main-dropdown-button'));
+  dropdownSection.classList.remove('drop');
+  // changeCardData(cardDatas);
 };
 
-const toggleHidden = (target) => target.classList.toggle('hidden');
-const addHidden = (target) => target.classList.add('hidden');
-const removeHidden = (target) => target.classList.remove('hidden');
+const toggleDropdown = () => {
+  const dropdownSection = $.qs('.main-dropdown-section');
+  const dropdownImage = $.qs('.main-dropdown-image', dropdownSection);
+  const dropDownTarget = $.qs('.dropdown-list');
 
-const changeToDetail = (cardsSection) => cardsSection.classList.remove('list');
+  dropdownImage.classList.toggle('active');
+  dropdownSection.classList.toggle('drop');
+
+  dropDownTarget.addEventListener('click', (e) => handleSortClick(e, dropdownSection));
+};
 
 const makeGrayScale = (target) => target.closest('.one-card-section').classList.add('gray');
 
 const makeUsedState = (targets) =>
   targets.forEach((button) => button.addEventListener('click', (e) => makeGrayScale(e.target)));
-
-// prettier-ignore
-const renderDetail = () =>
-  _.go(
-    detailTemp,
-    $.el,
-    $.replace($.qs('.cards-section')),
-    () => $.find('.cards-section')(),
-    changeToDetail,
-    () => slider()(),
-    () => $.qsa('.mark-used-button'),
-    makeUsedState,
-    () => $.qs('.main-dropdown-section'),
-    addHidden);
 
 const listEvent = (targets) => {
   targets.forEach((card) => {
@@ -121,66 +132,13 @@ const handleTouchEnd = (e) => {
   }
 };
 
-const changeToList = (cardsSection) => cardsSection.classList.add('list');
-
-const renderListTpl = () =>
-  _.go(cardDatas.map(cardList).join(''), $.el, $.replace($.qs('.cards-section')));
-
-// prettier-ignore
-const renderList = () => 
-  _.go(
-    renderListTpl(),
-    () => $.find('.cards-section')(),
-    changeToList,
-    () => $.qs('.main-dropdown-section'),
-    removeHidden,
-    () => $.qsa('.one-list-section'),
-    listEvent,
-    () => $.qsa('.card-delete-button'),
-    deleteListEvent,
-    () => $.qsa('.card-used-button'),
-    usedCardEvent,
-    () => $.qs('.price-button'),
-    $.on('click', priceComparison),
-    () => $.qs('.due-date-button'),
-    $.on('click', dateComparison));
-
-const findCardIndex = (target) => {
-  const cards = [...$.qsa('.one-list-section')];
-  const card = target.closest('.one-list-section');
-  const idx = cards.findIndex((ele) => ele === card);
-  return idx;
+const switchLayout = ({ target }) => {
+  if (target.className === 'one-card-button') $.qs('.cards-section').classList.remove('list');
+  else $.qs('.cards-section').classList.add('list');
 };
 
-const deleteCard = (target) => {
-  const index = findCardIndex(target);
-  target.closest('.one-list-section').remove();
-  cardDatas.splice(index, 1);
-};
-
-const deleteListEvent = (targets) => {
-  targets.forEach((target) => target.addEventListener('click', (e) => deleteCard(e.target)));
-};
-
-const usedStateCard = (target) => {
-  const list = target.closest('.one-list-section');
-  list.classList.add('gray');
-  list.style.transform = 'translateX(0)';
-  target.closest('.card-actions-section').remove();
-};
-
-const usedCardEvent = (targets) =>
-  targets.forEach((target) => target.addEventListener('click', (e) => usedStateCard(e.target)));
-
-const priceComparison = () => {
-  cardDatas.sort((comp1, comp2) => comp1.itemPrice - comp2.itemPrice);
-  renderListTpl();
-};
-
-const dateComparison = () => {
-  cardDatas.sort((comp1, comp2) => new Date(comp1.dateOfUse) - new Date(comp2.dateOfUse));
-  renderListTpl();
-};
+const dateComparison = () =>
+  cardDatas.sort((comp1, comp2) => new Date(comp1.expiresAt) - new Date(comp2.expiresAt));
 
 const findTarget = (child, parent) => () => $.qsa(child, parent);
 const eventTrigger = (type, targets, fn) => () =>
@@ -192,18 +150,13 @@ const addEvents = (target) => {
   IO.of(findTarget('.card-lists', target))
     .chain(setEvent('click', handleClickOneCard))
     .run();
-
-  IO.of(findTarget('.one-list-section', target))
-    .chain(setEvent('click', handleClickListCard))
-    .run();
 };
 
-const handleClickOneCard = (e) => {
-  const a = e.target.closest('.card-lists');
-  a.classList.toggle('is-flipped');
-};
-const handleClickListCard = () => {
-  console.log(2);
+const handleClickOneCard = ({ target }) => {
+  if (target.closest('.mark-used-button')) return;
+
+  const cardTarget = target.closest('.card-lists');
+  cardTarget.classList.toggle('is-flipped');
 };
 
 const navigateToPost = () => navigate('/post');
@@ -224,6 +177,7 @@ MainPage.render = () =>
 // prettier-ignore
 const navigateMain = async () => {
   setCardDatas(await getCardList());
+  dateComparison();
 
   _.go(
     MainPage.render(),
@@ -234,14 +188,14 @@ const navigateMain = async () => {
     () => $.qs('.main-dropdown-button'),
     $.on('click', toggleDropdown),
     () => $.qs('.one-card-button'),
-    $.on('click', renderDetail),
+    $.on('click', switchLayout),
     () => $.qs('.list-card-button'),
-    $.on('click', renderList),
+    $.on('click', switchLayout),
     () => MainPage.handleClickaddCard());
 
   header({color: 'mint'})();
+  createBarcode();
+  searchCard()();
 }
 
 export default navigateMain;
-// one - list - section;
-// one - card - section;
