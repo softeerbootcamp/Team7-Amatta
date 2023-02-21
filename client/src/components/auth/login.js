@@ -44,10 +44,8 @@ const login = () => {
     e.stopPropagation();
     e.preventDefault();
 
-    //await loginU({ email: 'test@test.com', password: 'testPassword' });
-    await loginU(userData);
-    await navigate('/card');
-    notification('로그인에 성공하였습니다.', 'login')();
+    await loginU({ email: 'test@test.com', password: 'testPassword' });
+    // await loginU(userData);
 
     const firebaseConfig = {
       apiKey: 'AIzaSyCsLBsvozvTnYlDH-5cS0A8X_AjV5o4jjM',
@@ -73,6 +71,8 @@ const login = () => {
       }
       // if (res === 'denied') window.alert('알림을 받으시려면 알림을 허용해주세요');
     });
+    await navigate('/card');
+    notification('로그인에 성공하였습니다.', 'login')();
   };
 
   // prettier-ignore
