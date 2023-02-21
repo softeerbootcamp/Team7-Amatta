@@ -1,11 +1,17 @@
 package com.amatta.amatta_server.user.service;
 
+import com.amatta.amatta_server.fcm.repository.DeviceTokenRepository;
 import com.amatta.amatta_server.user.dto.*;
 import com.amatta.amatta_server.user.model.Users;
 import com.amatta.amatta_server.user.repository.UserRepository;
 import org.mindrot.jbcrypt.BCrypt;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.Objects;
 
 @Service
@@ -13,10 +19,14 @@ public class UserService {
 
     private final UserRepository userRepository;
 
+    private final DeviceTokenRepository tokenRepository;
+
     private final MailService mailService;
 
-    public UserService(UserRepository userRepository, MailService mailService) {
+    @Autowired
+    public UserService(UserRepository userRepository, DeviceTokenRepository tokenRepository, MailService mailService) {
         this.userRepository = userRepository;
+        this.tokenRepository = tokenRepository;
         this.mailService = mailService;
     }
 
@@ -47,6 +57,22 @@ public class UserService {
             return users;
         }
         return null;
+    }
+
+    public void logout() {
+        HttpServletRequest request = ((ServletRequestAttributes) Objects.requireNonNull(RequestContextHolder.getRequestAttributes())).getRequest();
+        HttpSession session = request.getSession(false);
+
+        if(session == null) {
+            return;
+        }
+
+        Users user = (Users) session.getAttribute("User");
+
+        if(user == null) {
+            return;
+        }
+        tokenRepository.deleteTokenByUid(user.getId());
     }
 
     public UserFindEmailRes findEmail(UserFindEmailReq userFindEmailReq) {

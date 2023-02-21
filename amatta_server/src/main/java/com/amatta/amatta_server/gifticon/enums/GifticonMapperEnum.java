@@ -10,11 +10,8 @@ public enum GifticonMapperEnum {
     KAKAO(KakaoGifticonMapper.getInstance()) {
         @Override
         public boolean matches(List<String> texts) {
-            Pattern pattern = Pattern.compile("(?i)kakaotalk");
-            for(String text : texts) {
-                if(pattern.matcher(text).matches()) {
-                    return true;
-                }
+            if(texts.get(texts.size()-1).matches("(?i)^kakaotalk.*")) {
+                return true;
             }
             return false;
         }

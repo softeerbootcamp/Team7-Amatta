@@ -19,7 +19,7 @@ public class NoMatchMapper implements GifticonMapper {
         return instance;
     }
     @Override
-    public Gifticon map(List<String> list) throws IndexOutOfBoundsException, GifticonNotSupportedException {
+    public Gifticon map(List<String> list) throws GifticonNotSupportedException {
         throw new GifticonNotSupportedException();
     }
 }
