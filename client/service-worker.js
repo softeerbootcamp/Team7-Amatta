@@ -24,9 +24,7 @@ self.addEventListener('fetch', (event) => {
           return response;
         });
       })
-      .catch(() => {
-        return caches.match('/offline.html');
-      }),
+      .catch(() => caches.match('/offline.html')),
   );
 });
 
@@ -34,7 +32,7 @@ self.addEventListener('beforeinstallprompt', (event) => {
   event.preventDefault();
   const promptEvent = event;
   const installButton = document.createElement('button');
-  installButton.textContent = 'Add to Home Screen';
+  installButton.textContent = '홈 화면에 Amatta 추가하기';
   document.body.appendChild(installButton);
   installButton.addEventListener('click', () => {
     promptEvent.prompt();
