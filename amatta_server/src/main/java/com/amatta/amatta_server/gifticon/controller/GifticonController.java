@@ -5,10 +5,7 @@ import com.amatta.amatta_server.exception.GifticonNotSupportedException;
 import com.amatta.amatta_server.exception.GifticonParseException;
 import com.amatta.amatta_server.exception.NotAuthenticatedException;
 import com.amatta.amatta_server.fcm.service.FCMService;
-import com.amatta.amatta_server.gifticon.dto.GifticonUseDto;
-import com.amatta.amatta_server.gifticon.dto.GifticonDto;
-import com.amatta.amatta_server.gifticon.dto.GifticonImageDto;
-import com.amatta.amatta_server.gifticon.dto.GifticonTextDto;
+import com.amatta.amatta_server.gifticon.dto.*;
 import com.amatta.amatta_server.gifticon.model.Gifticon;
 import com.amatta.amatta_server.gifticon.service.GifticonService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,6 +47,12 @@ public class GifticonController {
     public ResponseEntity<?> gifticonAdd(@Valid @RequestPart GifticonDto dto,
                                          @RequestPart MultipartFile image, @RequestPart MultipartFile thumbnail) throws IOException {
         gifticonService.addGifticon(dto, image, thumbnail);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @DeleteMapping("")
+    public ResponseEntity<?> gifticonDelete(@RequestBody GifticonDeleteDto dto) {
+        gifticonService.deleteGifticon(dto);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
