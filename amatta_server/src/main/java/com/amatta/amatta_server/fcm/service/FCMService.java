@@ -82,7 +82,7 @@ public class FCMService {
         FirebaseMessaging.getInstance().send(message);
     }
 
-    @Scheduled(cron = "0 0 0/1 * * *")
+    @Scheduled(cron = "0/10 * * * * *")
     @Transactional(readOnly = true)
     public void scheduleExpirationAlarmMessage() {
         LocalDateTime now = LocalDateTime.now();
