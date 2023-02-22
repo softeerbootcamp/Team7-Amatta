@@ -21,7 +21,6 @@ const sortOption = { 0: '마감순', 1: '등록순', 2: '금액순' };
 
 const detailTemp = (newCardDatas) => {
   let idx = 0;
-
   return `
     ${_.go(
       newCardDatas,
@@ -78,6 +77,9 @@ const handleSortClick = ({ target }, dropdownSection) => {
   sortOption[0] = temp;
 
   dropdownSection.innerHTML = dropdownMenu(sortOption);
+
+  comparison();
+
   $.on('click', toggleDropdown)($.qs('.main-dropdown-button'));
   dropdownSection.classList.remove('drop');
 };
@@ -88,7 +90,9 @@ const handleClickSearchIcon = (target) => async (e) => {
 
   if (target.classList.contains('searching')) return;
   const newData = await getCardList(inputTarget.value);
-  navigateMain(newData);
+  setCardDatas(newData);
+  console.log();
+  navigateMain(cardDatas);
 };
 
 const toggleDropdown = () => {
@@ -148,6 +152,20 @@ const switchLayout = ({ target }) => {
 const dateComparison = () =>
   cardDatas.sort((comp1, comp2) => new Date(comp1.expiresAt) - new Date(comp2.expiresAt));
 
+const priceComparison = () => cardDatas.sort((comp1, comp2) => comp1.price - comp2.price);
+
+const registerDateComparison = () => cardDatas.sort((comp1, comp2) => comp2.id - comp1.id);
+
+// prettier-ignore
+const comparison = () => {
+  const buttonText = $.qs('.main-dropdown-button').innerText;
+
+    buttonText === '금액순' && priceComparison();
+    buttonText === '마감순' && dateComparison();
+    buttonText === '등록순' && registerDateComparison();
+    navigateMain(cardDatas);
+};
+
 const findTarget = (child, parent) => () => $.qsa(child, parent);
 const eventTrigger = (type, targets, fn) => () =>
   targets.forEach((target) => $.on(type, fn)(target));
@@ -187,11 +205,15 @@ MainPage.render = () =>
       $.replace($.qs('#root')));
 
 // prettier-ignore
-const navigateMain = async (newData = '') => {
-  newData = '/card' && (newData = '');
-  setCardDatas(await getCardList(newData));
-  dateComparison();
-  
+// const navigateMain = async (newData = '') => {
+const navigateMain = async (newData) => {
+  if(newData === '/card') {
+    newData = '';
+
+    setCardDatas(await getCardList(newData));
+    dateComparison();
+  };
+
   _.go(
     MainPage.render(),
     slider(),
