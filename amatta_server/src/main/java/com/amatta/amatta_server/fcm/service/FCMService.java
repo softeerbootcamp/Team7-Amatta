@@ -1,5 +1,6 @@
 package com.amatta.amatta_server.fcm.service;
 
+import com.amatta.amatta_server.aop.MethodRequiresAuth;
 import com.amatta.amatta_server.fcm.dto.TokenRegisterDto;
 import com.amatta.amatta_server.fcm.model.FCMToken;
 import com.amatta.amatta_server.fcm.repository.DeviceTokenRepository;
@@ -15,6 +16,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -28,10 +30,10 @@ public class FCMService {
         this.tokenRepository = tokenRepository;
     }
 
-    //    @MethodRequiresAuth
+    @MethodRequiresAuth
     public void addToken(TokenRegisterDto tokenRegisterDto) {
-//        Users user = getUserBySessionId();
-        tokenRepository.addToken(2, tokenRegisterDto.getToken());
+        Users user = getUserBySessionId();
+        tokenRepository.addToken(user.getId(), tokenRegisterDto.getToken());
     }
 
     private void sendMessage(List<String> tokens, String title, String body) throws FirebaseMessagingException {
@@ -80,18 +82,20 @@ public class FCMService {
         FirebaseMessaging.getInstance().send(message);
     }
 
-    @Scheduled(cron = "*/10 * * * * *")
+    @Scheduled(cron = "0 0 0/1 * * *")
     @Transactional(readOnly = true)
     public void scheduleExpirationAlarmMessage() {
-        System.out.println("expire");
-        LocalDate now = LocalDate.now();
+        LocalDateTime now = LocalDateTime.now();
+        System.out.println(now + "   [스케줄러 실행]");
 //        List<String> tokens = tokenRepository.findTokensByUidsOfGifticonsAboutToExpire(now.plusDays(Gifticon.expirationThresholdDays));
         List<FCMToken> tokens = tokenRepository.findAllTokens();
         if (!tokens.isEmpty()) {
-            try {
-                sendMessage(tokens.get(0).getToken(), "A! matta", "만료 기간이 얼마 남지 않은 기프티콘이 있습니다!!");
-            } catch (FirebaseMessagingException e) {
-                e.printStackTrace();
+            for(FCMToken token : tokens) {
+                try {
+                    sendMessage(token.getToken(), "A! matta", "만료 기간이 얼마 남지 않은 기프티콘이 있습니다!!");
+                } catch (FirebaseMessagingException e) {
+                    e.printStackTrace();
+                }
             }
         }
     }
