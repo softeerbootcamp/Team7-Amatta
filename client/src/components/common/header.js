@@ -69,6 +69,11 @@ const header = (props) => {
     closeModal();
     logoutModal();
   };
+
+  const mypageEvent = () => navigate('/mypage');
+
+  const usedPageEvent = () => navigate('/used');
+
   // async
   const openMenuEvent = () => {
     const trigger = $.qs('.trigger');
@@ -77,7 +82,14 @@ const header = (props) => {
     const menuTarget = $.qs('.menu-section');
     toggleActive(menuTarget);
 
-    $.on('click', logoutEvent)($.qs('.logout-button'));
+    _.go(
+      $.qs('.logout-button'),
+      $.on('click', logoutEvent),
+      () => $.qs('.mypage-button'),
+      $.on('click', mypageEvent),
+      () => $.qs('.usedList-button'),
+      $.on('click', usedPageEvent),
+    );
   };
   // async
   const toggleActive = (target) => target.classList.toggle('active');

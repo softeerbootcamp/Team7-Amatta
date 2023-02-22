@@ -14,6 +14,7 @@ AuthPage.temp = `
             <input type="submit" class="auth-button" name="auth-button" value="완료" />
           </div>
         </form>
+      </section>
     </article>
   `;
 

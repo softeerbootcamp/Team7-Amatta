@@ -11,8 +11,8 @@ const sideMenu = () => {
       <section class='side-menu-section'>
         <section class="container">
           <ul class='menu-button'>
-            <li>마이페이지</li>
-            <li>사용 내역</li>
+            <li class='mypage-button'>마이페이지</li>
+            <li class='usedList-button'>사용 내역</li>
             <li class='logout-button'>로그아웃</li>
           </ul>
         </section>
