@@ -60,7 +60,7 @@ public class GifticonController {
 
     @GetMapping("/used")
     public ResponseEntity<?> usedGifticonList() {
-        return new ResponseEntity<>(gifticonService.usedTest(), HttpStatus.OK);
+        return new ResponseEntity<>(gifticonService.usedGifticonList(), HttpStatus.OK);
     }
 
     @PutMapping("/used")
