@@ -5,7 +5,7 @@ import { dropdownMenu, header, notification } from '@/components/common';
 import { IO, $, slider } from '@/utils';
 import { _ } from '@/utils/customFx';
 import { navigate } from '@/core/router';
-import { getCardList } from '@/apis/card';
+import { getCardList, deleteACard } from '@/apis/card';
 
 const ONE_CARD_ICON_URL = `${SERVER_URL.IMG}icon/image-icon.svg`;
 const LIST_ICON_URL = `${SERVER_URL.IMG}icon/list-icon.svg`;
@@ -15,6 +15,7 @@ let touchStartX = 0;
 let touchEndX = 0;
 let isSwipping = false;
 let cardDatas = [];
+let sortOpt = '';
 
 const setCardDatas = (cardData) => (cardDatas = [...cardData]);
 const sortOption = { 0: '마감순', 1: '등록순', 2: '금액순' };
@@ -106,10 +107,37 @@ const toggleDropdown = () => {
   dropDownTarget.addEventListener('click', (e) => handleSortClick(e, dropdownSection));
 };
 
-const makeGrayScale = (target) => target.closest('.one-card-section').classList.add('gray');
+// const makeGrayScale = (target) => target.closest('.one-card-section').classList.add('gray');
+const makeGrayScale = (target) => {
+  const list = target.closest('.card-lists');
+  list.querySelector('.one-card-section').classList.add('gray');
+};
 
 const makeUsedState = (targets) =>
   targets.forEach((button) => button.addEventListener('click', (e) => makeGrayScale(e.target)));
+
+const swipeButtonTpl = `
+  <section class="card-actions-section">
+    <div class="card-used-button">
+      사용완료
+    </div>
+    <div class="card-delete-button">
+      삭제하기
+    </div>
+  </section>
+  `;
+
+// prettier-ignore
+const renderButton = (target) => 
+  _.go(
+    swipeButtonTpl, 
+    $.el, 
+    $.append(target));
+
+const renderButtons = (targets) => {
+  if ($.qs('.card-actions-section')) return;
+  targets.forEach((list) => renderButton(list));
+};
 
 const listEvent = (targets) => {
   targets.forEach((card) => {
@@ -121,32 +149,65 @@ const listEvent = (targets) => {
 
 const handleTouchStart = (e) => (touchStartX = e.touches[0].clientX);
 
-const handleTouchMove = (e) => (touchEndX = e.touches[0].clientX);
+const handleTouchEnd = () => {
+  touchStartX = 0;
+};
 
-const handleTouchEnd = (e) => {
+// const handleTouchMove = (e) => (touchEndX = e.touches[0].clientX);
+
+// const handleTouchEnd = (e) => {
+const handleTouchMove = (e) => {
   const touchDeltaX = touchEndX - touchStartX;
   const card = e.currentTarget;
   const isSwippingRight = card.classList.contains('swiped-right');
   const isSwippingLeft = card.classList.contains('swiped-left');
 
-  if (touchDeltaX > 20 && !isSwipping && !isSwippingLeft) {
-    isSwipping = true;
-    card.classList.add('swiped-right');
-  } else if (touchDeltaX < -20 && !isSwipping && !isSwippingRight) {
+  console.log(touchStartX, e.touches[0].clientX);
+
+  if (touchStartX - e.touches[0].clientX > 7 && !isSwipping && !isSwippingRight) {
     isSwipping = true;
     card.classList.add('swiped-left');
-  } else if (touchDeltaX < -20 && isSwipping && !isSwippingLeft) {
-    card.classList.remove('swiped-right');
-    isSwipping = false;
-  } else if (touchDeltaX > 20 && isSwipping && !isSwippingRight) {
+  } else if (e.touches[0].clientX - touchStartX > -7 && !isSwipping && !isSwippingLeft) {
+    isSwipping = true;
+    card.classList.add('swiped-right');
+  } else if (e.touches[0].clientX - touchStartX > -7 && isSwipping && !isSwippingRight) {
     card.classList.remove('swiped-left');
+    isSwipping = false;
+  } else if (touchStartX - e.touches[0].clientX > 7 && isSwipping && !isSwippingLeft) {
+    card.classList.remove('swiped-right');
     isSwipping = false;
   }
 };
 
+const deleteCard = async (e) => {
+  const list = e.target.closest('.card-lists');
+  const id = list.querySelector('.card-id').innerText;
+  console.log(id);
+  await deleteACard(id);
+  navigateMain('/card');
+};
+
+const deleteCardEvent = (targets) =>
+  targets.forEach((button) => button.addEventListener('click', (e) => deleteCard(e)));
+
 const switchLayout = ({ target }) => {
   if (target.className === 'one-card-button') $.qs('.cards-section').classList.remove('list');
-  else $.qs('.cards-section').classList.add('list');
+  else {
+    $.qs('.cards-section').classList.add('list');
+
+    if ($.qs('.cards-section').classList.contains('list')) {
+      const cardLists = $.qsa('.card-lists');
+      listEvent(cardLists);
+      renderButtons(cardLists);
+
+      const usedButtons = $.qsa('.card-used-button');
+      console.log(usedButtons);
+      makeUsedState(usedButtons);
+
+      const deleteButtons = $.qsa('.card-delete-button');
+      deleteCardEvent(deleteButtons);
+    }
+  }
 };
 
 const dateComparison = () =>

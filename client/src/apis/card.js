@@ -29,3 +29,15 @@ export const getUsedCard = async () => {
     console.error(e);
   }
 };
+
+export const deleteACard = async (gifticonId) => {
+  if (typeof gifticonId === 'string') parseInt(gifticonId, 10);
+
+  try {
+    const response = await client.delete(`gifticon`, { data: { gifticonId } });
+
+    return response.data;
+  } catch (e) {
+    console.error(e);
+  }
+};

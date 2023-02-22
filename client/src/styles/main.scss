@@ -155,7 +155,6 @@
         perspective: 800px;
 
         &.is-flipped {
-          height: 100%;
           .one-card-section {
             transform: rotateY(-180deg);
           }
@@ -238,6 +237,10 @@
             font-size: 1rem;
             color: $gray600;
           }
+
+          .card-id {
+            display: none;
+          }
         }
 
         .mark-used-button {
@@ -264,6 +267,7 @@
         scrollbar-width: none;
         transition: 0s;
         transform: translateX(0px) !important;
+        touch-action: none;
 
         &::-webkit-scrollbar {
           display: none;
@@ -367,6 +371,10 @@
               display: flex;
             }
 
+            .card-id {
+              display: none;
+            }
+
             .date-of-use {
               font-size: 0.5rem;
               color: #757575;
@@ -386,6 +394,67 @@
             .item-price {
               font-size: 0.75rem;
               margin: 0;
+            }
+          }
+
+          &.swiped-right {
+            transform: translateX(64px);
+            // transform: translateX(60px);
+            transition: transform 0.5s;
+          }
+
+          &.swiped-left {
+            transform: translateX(-64px);
+            // transform: translateX(-60px);
+            transition: transform 0.5s;
+          }
+
+          &.gray {
+            filter: grayscale(1);
+          }
+
+          .card-actions-section {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: calc(90vw - 2.5rem - 2px + 128px);
+            height: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: transform 0.2s ease-in-out;
+            margin-left: -64px;
+
+            .card-used-button {
+              background-color: $primary-color;
+              width: 4rem;
+              height: 100%;
+              color: black;
+              font-size: 1rem;
+              cursor: pointer;
+              transition: transform 0.2s ease-in-out;
+              text-align: center;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              color: $white-color;
+              border-radius: 0.5rem;
+              text-align: center;
+            }
+
+            .card-delete-button {
+              background-color: $pink-color;
+              width: 4rem;
+              height: 100%;
+              font-size: 1rem;
+              cursor: pointer;
+              transition: transform 0.2s ease-in-out;
+              text-align: center;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              border-radius: 0.5rem;
+              color: $white-color;
             }
           }
         }
