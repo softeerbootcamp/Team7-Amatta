@@ -71,7 +71,7 @@ const login = () => {
       // if (res === 'denied') window.alert('알림을 받으시려면 알림을 허용해주세요');
     });
     await navigate('/card');
-    notification('로그인에 성공하였습니다.', 'login')();
+    notification('로그인에 성공하였습니다.', 'login', true)();
   };
 
   // prettier-ignore

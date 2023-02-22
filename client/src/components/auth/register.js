@@ -128,7 +128,7 @@ const register = () => {
 
     await navigate('/card');
     await regiseterUser(data);
-    notification('회원가입에 성공하였습니다.', 'register')();
+    notification('회원가입에 성공하였습니다.', 'register', true)();
   };
 
   const addInputForm = (fragment) => (input) => inputForm({ ...input, target: fragment })();

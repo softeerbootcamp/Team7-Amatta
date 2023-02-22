@@ -24,10 +24,26 @@
   p {
     font-size: 1rem;
     text-align: center;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
   }
 
   &.show {
     transform: translateY(6rem);
+  }
+
+  img {
+    height: 1.25rem;
+  }
+
+  .circle-check-icon {
+    filter: invert(72%) sepia(86%) saturate(5280%) hue-rotate(87deg) brightness(126%) contrast(121%);
+  }
+
+  .circle-x-icon {
+    filter: invert(21%) sepia(100%) saturate(6748%) hue-rotate(358deg) brightness(119%)
+      contrast(115%);
   }
 }
 

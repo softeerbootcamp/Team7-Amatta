@@ -18,16 +18,16 @@ client.interceptors.response.use(
       switch (error.response.status) {
         case 401:
           navigate('/');
-          notification('로그인이 필요합니다.', 'login')();
+          notification('로그인이 필요합니다.', 'login', false)();
           return new Promise(() => {});
         case 400:
-          notification(`${error.response.data}`, 'login')();
+          notification(`${error.response.data}`, 'login', false)();
           return new Promise(() => {});
         default:
           return Promise.reject(error);
       }
     } else if (error.code === 'ERR_NETWORK') {
-      notification('올바르지 않은 이미지 형식입니다.', 'login')();
+      notification('올바르지 않은 이미지 형식입니다.', 'login', false)();
     }
     return Promise.reject(error);
   },

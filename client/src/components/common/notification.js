@@ -1,10 +1,17 @@
+import { SERVER_URL } from '@/constants/constant';
 import { $ } from '@/utils';
 import { _ } from '@/utils/customFx';
 
-const notification = (label, classname) => {
+const notification = (label, classname, isSuccess) => {
+  const CIRCLE_CHECK_URL = `${SERVER_URL.IMG}icon/circle-check.svg`;
+  const CIRCLE_X_URL = `${SERVER_URL.IMG}icon/circle-xmark.svg`;
+
+  const CircleCheckTpl = `<img class="circle-check-icon" src='${CIRCLE_CHECK_URL}' alt='circle-check-icon' />`;
+  const CircleXTpl = `<img class="circle-x-icon" src='${CIRCLE_X_URL}' alt='circle-x-icon' />`;
+
   const notificationTpl = `
         <div class='notification-container ${classname}'>
-            <p>${label}</p>
+            <p>${isSuccess ? CircleCheckTpl : CircleXTpl} &nbsp; ${label} </p>
         </div>
     `;
 
