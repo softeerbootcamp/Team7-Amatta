@@ -73,7 +73,11 @@ public class GifticonService {
 
     @Transactional
     public void addGifticon(GifticonDto dto, MultipartFile image, MultipartFile thumbnail) throws DuplicateGifticonException, IOException {
-        long uid = 2;
+        Users user = getUserBySessionId();
+        if(user == null) {
+            throw new NotAuthenticatedException();
+        }
+        long uid = user.getId();
         String brandName = dto.getBrandName();
         String itemName = dto.getItemName();
         String barcode = dto.getBarcode();
@@ -84,32 +88,13 @@ public class GifticonService {
         if(gifticonRepository.findByBarcode(barcode).isPresent()) {
             throw new DuplicateGifticonException();
         }
-        String originalName = String.valueOf(System.currentTimeMillis()); // 파일 이름
-        long size = image.getSize(); // 파일 크기
-        ObjectMetadata objectMetaData = new ObjectMetadata();
-        objectMetaData.setContentType(image.getContentType());
-        objectMetaData.setContentLength(size);
-        amazonS3Client.putObject(
-                new PutObjectRequest(S3Bucket, originalName, image.getInputStream(), objectMetaData)
-                        .withCannedAcl(CannedAccessControlList.PublicRead)
-        );
-        String imagePath = amazonS3Client.getUrl(S3Bucket, originalName).toString();
-
-        String originalName2 = String.valueOf(System.currentTimeMillis()); // 파일 이름
-        long size2 = thumbnail.getSize(); // 파일 크기
-        ObjectMetadata objectMetaData2 = new ObjectMetadata();
-        objectMetaData2.setContentType(thumbnail.getContentType());
-        objectMetaData2.setContentLength(size2);
-        amazonS3Client.putObject(
-                new PutObjectRequest(S3Bucket, originalName2, thumbnail.getInputStream(), objectMetaData2)
-                        .withCannedAcl(CannedAccessControlList.PublicRead)
-        );
-        String imagePath2 = amazonS3Client.getUrl(S3Bucket, originalName2).toString();
+        String imagePath = sendToS3(image, String.valueOf(System.currentTimeMillis()));
+        String thumbnailPath = sendToS3(thumbnail, String.valueOf(System.currentTimeMillis()));
 
         gifticonRepository.addGifticon(
                 uid,
                 imagePath,
-                imagePath2,
+                thumbnailPath,
                 brandName,
                 itemName,
                 barcode,
@@ -154,6 +139,18 @@ public class GifticonService {
         HttpServletRequest request = ((ServletRequestAttributes) Objects.requireNonNull(RequestContextHolder.getRequestAttributes())).getRequest();
         HttpSession session = request.getSession(false);
         return (Users) session.getAttribute("User");
+    }
+
+    private String sendToS3(MultipartFile image, String name) throws IOException {
+        long size = image.getSize();
+        ObjectMetadata objectMetaData = new ObjectMetadata();
+        objectMetaData.setContentType(image.getContentType());
+        objectMetaData.setContentLength(size);
+        amazonS3Client.putObject(
+                new PutObjectRequest(S3Bucket, name, image.getInputStream(), objectMetaData)
+                        .withCannedAcl(CannedAccessControlList.PublicRead)
+        );
+        return amazonS3Client.getUrl(S3Bucket, name).toString();
     }
 
     public List<Gifticon> test(String keyword) {
