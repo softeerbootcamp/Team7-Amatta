@@ -24,6 +24,26 @@ MyPage.temp = `
     </article>
   `;
 
+//데모용
+const setInput = (target) => {
+  target.classList.add('active');
+};
+
+const changeVisibility = ({ target }) => {
+  const inputTarget = target.closest('.input-section').querySelector('input');
+
+  if (target.src.includes('open')) {
+    target.src = target.src.replace('open', 'close');
+    inputTarget.type = 'password';
+  } else {
+    target.src = target.src.replace('close', 'open');
+    inputTarget.type = 'text';
+  }
+};
+
+const clickEyeEvent = (targets) =>
+  targets.forEach((element) => element.addEventListener('click', (e) => changeVisibility(e)));
+
 // prettier-ignore
 const setInputValue = async () =>{
   const userData = await getUserInfo();
@@ -97,7 +117,11 @@ const navigateMyPage = () => {
     $.el,
     $.replace($.qs('#root')),
     appendInputForm,
-    () => setInputValue());
+    () => setInputValue(),
+    () => $.qsa('.eye-icon'),
+    clickEyeEvent,
+    () => $.qs('.auth-button'),
+    setInput);
 
     header({color: 'white', label:'마이페이지', path:'/card' })();
 }
