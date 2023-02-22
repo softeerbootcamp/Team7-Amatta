@@ -2,7 +2,7 @@ import client from './client';
 
 export const getCardList = async (query = '') => {
   try {
-    const response = await client.get(`gifticon/test?keyword=${query}`);
+    const response = await client.get(`gifticon/list?keyword=${query}`);
 
     return response.data;
   } catch (e) {

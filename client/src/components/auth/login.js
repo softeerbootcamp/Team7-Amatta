@@ -12,8 +12,8 @@ const login = () => {
   const LOGIN_INPUT_TYPE = ['email', 'password'];
 
   let userData = {
-    email: '',
-    password: '',
+    email: 'test@test.com',
+    password: 'testPassword',
   };
 
   const loginTemp = `
@@ -40,11 +40,38 @@ const login = () => {
     userData = updatedUserData;
   };
 
+  //데모용
+  const setInput = (fragment) => {
+    $.qs('#email-input', fragment).value = userData.email;
+    $.qs('#password-input', fragment).value = userData.password;
+
+    $.qs('.auth-button', fragment).classList.add('active');
+  };
+
+  const changeVisibility = ({ target }) => {
+    const inputTarget = target.closest('.input-section').querySelector('input');
+
+    if (target.src.includes('open')) {
+      target.src = target.src.replace('open', 'close');
+      inputTarget.type = 'password';
+    } else {
+      target.src = target.src.replace('close', 'open');
+      inputTarget.type = 'text';
+    }
+  };
+
+  const clickEyeEvent = (fragment) => {
+    _.go(
+      $.qs('.eye-icon', fragment),
+      $.on('click', (e) => changeVisibility(e)),
+    );
+  };
+
   const submitData = async (e) => {
     e.stopPropagation();
     e.preventDefault();
-    await loginU({ email: 'test@test.com', password: 'testPassword' });
-    // await loginU(userData);
+    //await loginU({ email: 'test@test.com', password: 'testPassword' });
+    await loginU(userData);
 
     const firebaseConfig = {
       apiKey: 'AIzaSyCsLBsvozvTnYlDH-5cS0A8X_AjV5o4jjM',
@@ -73,6 +100,8 @@ const login = () => {
     await navigate('/card');
     notification('로그인에 성공하였습니다.', 'login', true)();
   };
+
+  const deleteVerifyButton = (fragment) => $.qs('.verify-button', fragment).remove();
 
   // prettier-ignore
   const handleSubmitData = (target) => 
@@ -103,6 +132,9 @@ const login = () => {
       $.insert(loginTemp),
       appendInputForm,
       () => handleChangeInput(document),
+      () => deleteVerifyButton(fragment),
+      () => setInput(fragment),
+      () => clickEyeEvent(fragment),
       () => handleSubmitData(fragment),
       () => fragment);
 
