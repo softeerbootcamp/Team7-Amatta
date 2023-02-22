@@ -109,7 +109,6 @@ const uploadImg = (file) => {
     const imageData = { gifticonBase64: base64URL, format: imageType.replace('data:image/', '') };
     const list = [];
     const response = await sendImage(imageData);
-    console.log(response);
     response.images[0].fields.forEach((field) => {
       if (field.inferConfidence >= 0.92) {
         const object = {};
@@ -143,7 +142,6 @@ const uploadImg = (file) => {
       diff <= 10 ? (acc[acc.length - 1] += cur.text) : acc.push(cur.text);
       return acc;
     }, []);
-    console.log(lastArr);
     const { itemName, brandName, expiresAt, barcode } = await sendImageInfo({ texts: lastArr });
 
     changeHeader('white');

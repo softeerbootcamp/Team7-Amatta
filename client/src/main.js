@@ -43,7 +43,7 @@ const messaging = getMessaging(app);
 // if ('serviceWorker' in navigator) {
 //   window.addEventListener('load', () => {
 //     navigator.serviceWorker
-//       .register('../service-worker.js')
+//       .register('./service-worker.js')
 //       .then((reg) => {
 //         console.log('Service worker registered!!!!!!!.', reg);
 //       })
@@ -53,7 +53,7 @@ const messaging = getMessaging(app);
 //   });
 // }
 
-navigator.serviceWorker.register('../firebase-messaging-sw.js').then((res) => {
+navigator.serviceWorker.register('./firebase-messaging-sw.js').then((res) => {
   onMessage(messaging, (payload) => {
     const option = {
       body: payload.notification.body,

@@ -1,8 +1,8 @@
 import client from './client';
 
-export const getCardList = async () => {
+export const getCardList = async (query = '') => {
   try {
-    const response = await client.get(`gifticon/test`);
+    const response = await client.get(`gifticon/test?keyword=${query}`);
 
     return response.data;
   } catch (e) {

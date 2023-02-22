@@ -1,6 +1,6 @@
 import JsBarcode from 'jsbarcode';
 import { SERVER_URL } from '@/constants/constant';
-import { cardDetail, searchCard } from '@/components/main';
+import { cardDetail } from '@/components/main';
 import { dropdownMenu, header, notification } from '@/components/common';
 import { IO, $, slider } from '@/utils';
 import { _ } from '@/utils/customFx';
@@ -80,7 +80,15 @@ const handleSortClick = ({ target }, dropdownSection) => {
   dropdownSection.innerHTML = dropdownMenu(sortOption);
   $.on('click', toggleDropdown)($.qs('.main-dropdown-button'));
   dropdownSection.classList.remove('drop');
-  // changeCardData(cardDatas);
+};
+
+const handleClickSearchIcon = (target) => async (e) => {
+  e.preventDefault();
+  const inputTarget = $.qs('.search-card-input');
+
+  if (target.classList.contains('searching')) return;
+  const newData = await getCardList(inputTarget.value);
+  navigateMain(newData);
 };
 
 const toggleDropdown = () => {
@@ -150,6 +158,10 @@ const addEvents = (target) => {
   IO.of(findTarget('.card-lists', target))
     .chain(setEvent('click', handleClickOneCard))
     .run();
+
+  IO.of(findTarget('.search-button', target))
+    .chain(setEvent('click', handleClickSearchIcon($.qs('.search-button'))))
+    .run();
 };
 
 const handleClickOneCard = ({ target }) => {
@@ -175,13 +187,13 @@ MainPage.render = () =>
       $.replace($.qs('#root')));
 
 // prettier-ignore
-const navigateMain = async () => {
-  setCardDatas(await getCardList());
+const navigateMain = async (newData = '') => {
+  newData = '/card' && (newData = '');
+  setCardDatas(await getCardList(newData));
   dateComparison();
-
+  
   _.go(
     MainPage.render(),
-    addEvents,
     slider(),
     () => $.qsa('.mark-used-button'),
     makeUsedState,
@@ -192,10 +204,10 @@ const navigateMain = async () => {
     () => $.qs('.list-card-button'),
     $.on('click', switchLayout),
     () => MainPage.handleClickaddCard());
-
-  header({color: 'mint'})();
-  createBarcode();
-  searchCard()();
+    
+    createBarcode();
+    header({color: 'mint'})();
+    addEvents(document);
 }
 
 export default navigateMain;

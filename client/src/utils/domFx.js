@@ -35,7 +35,6 @@ $.prepend = _.curry((child, parent) => {
 
 $.append = _.curry((parent, child) => {
   parent.appendChild(child);
-  // console.log(parent, child);
 
   return child;
 });

@@ -534,30 +534,3 @@
     }
   }
 }
-
-.search-card {
-  width: 100vw;
-  padding-top: 4.5rem;
-  position: fixed;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: $white-color;
-  border-radius: 5rem;
-  height: 2rem;
-
-  .search-filter {
-    display: flex;
-    flex-direction: column;
-    width: 15%;
-  }
-
-  input {
-    width: 80%;
-    outline: none;
-  }
-
-  .search-icon {
-    width: 2rem;
-  }
-}
