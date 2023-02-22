@@ -5,7 +5,7 @@ import { _ } from '@/utils/customFx';
 import { IO, $ } from '@/utils';
 import { sideMenu, modal } from '@/components/common';
 
-// search-button
+// search-button //
 const header = (props) => {
   const { color, label, path } = props;
   const MINT_LOGO_URL = `${SERVER_URL.IMG}logo/logo-mint.png`;
@@ -99,7 +99,6 @@ const header = (props) => {
   const findTarget = (child, parent) => () => $.qs(child, parent);
   const handleClickSearchIcon = (target) => (e) => {
     const inputTarget = $.qs('.search-card-input');
-
     if (!target.classList.contains('searching')) {
       target.style.filter =
         'invert(66%) sepia(2%) saturate(19%) hue-rotate(334deg) brightness(97%) contrast(82%)';
@@ -115,6 +114,8 @@ const header = (props) => {
   };
 
   const addEvents = (target) => {
+    if (!$.qs('.search-button')) return;
+
     IO.of(findTarget('.search-button', target))
       .chain(setEvent('click', handleClickSearchIcon($.qs('.search-button'))))
       .run();

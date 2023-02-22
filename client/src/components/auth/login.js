@@ -43,7 +43,6 @@ const login = () => {
   const submitData = async (e) => {
     e.stopPropagation();
     e.preventDefault();
-    console.log('뭔데');
     await loginU({ email: 'test@test.com', password: 'testPassword' });
     // await loginU(userData);
 

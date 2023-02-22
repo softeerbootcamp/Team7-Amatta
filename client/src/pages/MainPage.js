@@ -80,16 +80,15 @@ const handleSortClick = ({ target }, dropdownSection) => {
   dropdownSection.innerHTML = dropdownMenu(sortOption);
   $.on('click', toggleDropdown)($.qs('.main-dropdown-button'));
   dropdownSection.classList.remove('drop');
-  // changeCardData(cardDatas);
 };
 
 const handleClickSearchIcon = (target) => async (e) => {
+  e.preventDefault();
   const inputTarget = $.qs('.search-card-input');
 
   if (target.classList.contains('searching')) return;
   const newData = await getCardList(inputTarget.value);
-  setCardDatas(newData);
-  
+  navigateMain(newData);
 };
 
 const toggleDropdown = () => {
@@ -188,8 +187,9 @@ MainPage.render = () =>
       $.replace($.qs('#root')));
 
 // prettier-ignore
-const navigateMain = async () => {
-  setCardDatas(await getCardList());
+const navigateMain = async (newData = '') => {
+  newData = '/card' && (newData = '');
+  setCardDatas(await getCardList(newData));
   dateComparison();
   
   _.go(
