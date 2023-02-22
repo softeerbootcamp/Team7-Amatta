@@ -29,7 +29,7 @@ public interface GifticonRepository extends CrudRepository<Gifticon, Long> {
             "barcode, " +
             "expiresAt, " +
             "usedAt, " +
-            "price FROM gifticon WHERE id = :id")
+            "price FROM gifticon WHERE id = :id AND deleted = 0")
     Optional<Gifticon> findById(@Param("id") long id);
 
     @Modifying
@@ -58,7 +58,7 @@ public interface GifticonRepository extends CrudRepository<Gifticon, Long> {
             "expiresAt, " +
             "usedAt, " +
             "price FROM gifticon WHERE uid = :uid AND (usedAt >= (select now())) AND " +
-            "(itemName LIKE concat('%', :keyword, '%') OR brandName LIKE concat('%', :keyword, '%'))")
+            "(itemName LIKE concat('%', :keyword, '%') OR brandName LIKE concat('%', :keyword, '%')) AND deleted = 0")
     List<Gifticon> findByUid(@Param("uid") long uid, @Param("keyword") String keyword);
 
     @Modifying
@@ -78,6 +78,10 @@ public interface GifticonRepository extends CrudRepository<Gifticon, Long> {
             "barcode, " +
             "expiresAt, " +
             "usedAt, " +
-            "price FROM gifticon WHERE uid = :uid AND usedAt <= (select now())")
+            "price FROM gifticon WHERE uid = :uid AND usedAt <= (select now()) AND deleted = 0")
     List<Gifticon> findUsedByUid(@Param("uid") long uid);
+
+    @Modifying
+    @Query("UPDATE gifticon SET deleted = 1 WHERE id = :id")
+    void deleteGifticon(@Param("id") long id);
 }
