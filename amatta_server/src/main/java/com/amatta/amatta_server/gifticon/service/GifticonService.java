@@ -5,10 +5,7 @@ import com.amatta.amatta_server.exception.DuplicateGifticonException;
 import com.amatta.amatta_server.exception.GifticonNotSupportedException;
 import com.amatta.amatta_server.exception.GifticonParseException;
 import com.amatta.amatta_server.exception.NotAuthenticatedException;
-import com.amatta.amatta_server.gifticon.dto.GifticonDto;
-import com.amatta.amatta_server.gifticon.dto.GifticonImageDto;
-import com.amatta.amatta_server.gifticon.dto.GifticonTextDto;
-import com.amatta.amatta_server.gifticon.dto.GifticonUseDto;
+import com.amatta.amatta_server.gifticon.dto.*;
 import com.amatta.amatta_server.gifticon.model.Gifticon;
 import com.amatta.amatta_server.gifticon.repository.GifticonRepository;
 import com.amatta.amatta_server.gifticon.util.GifticonMapper;
@@ -39,7 +36,7 @@ import java.util.List;
 import java.util.Objects;
 
 @Service
-@ClassRequiresAuth
+//@ClassRequiresAuth
 public class GifticonService {
     private final GifticonRepository gifticonRepository;
     private final RequestGenerator requestGenerator;
@@ -159,5 +156,18 @@ public class GifticonService {
 
     public List<Gifticon> usedTest() {
         return gifticonRepository.findUsedByUid(2);
+    }
+
+    @Transactional
+    public void deleteGifticon(GifticonDeleteDto dto) throws IllegalArgumentException{
+//        Users user = getUserBySessionId();
+//        if(user == null) {
+//            throw new NotAuthenticatedException();
+//        }
+        Gifticon gifticon = gifticonRepository.findById(dto.getGifticonId()).orElseThrow(()-> new IllegalArgumentException("기프티콘을 찾을 수 없습니다"));
+        if(gifticon.getUid() != 2) {
+            throw new IllegalArgumentException("잘못된 요청입니다");
+        }
+        gifticonRepository.deleteGifticon(dto.getGifticonId());
     }
 }
