@@ -1,7 +1,7 @@
 import { SERVER_URL } from '@/constants/constant.js';
 
 const cardDetail = (props) => (idx) => {
-  const { image, thumbnail, brandName, itemName, expiresAt, price, barcode } = props;
+  const { image, thumbnail, brandName, itemName, expiresAt, price, barcode, id } = props;
   const DOTS_ICON_URL = `${SERVER_URL.IMG}icon/dots.svg`;
 
   const cardDetailTemplate = `
@@ -11,6 +11,7 @@ const cardDetail = (props) => (idx) => {
         <section class='card-info'>
           <div class='card-text'>
             <img class='more-dots-button' src='${DOTS_ICON_URL}' alt='more-dots-button' />
+            <div class='card-id'>${id}</div>
             <div class='date-of-use'>${expiresAt} </div>
             <div class='shop-name'> ${brandName} </div>
             <div class='item-name'> ${itemName} </div>
