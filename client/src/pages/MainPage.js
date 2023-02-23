@@ -146,6 +146,7 @@ const renderButton = (target) =>
 
 const renderButtons = (targets) => {
   if ($.qs('.card-actions-section')) return;
+  console.log('버튼어디감?');
   targets.forEach((list) => renderButton(list));
 };
 
@@ -326,6 +327,17 @@ const navigateMain = async (newData, isList) => {
     if(isList) {
       const cardsSection = $.qs('.cards-section');
       cardsSection.classList.add('list');
+
+
+      const cardsList = $.qsa('.card-lists');
+      listEvent(cardsList);
+      renderButtons(cardsList);
+
+      const usedButtons = $.qsa('.card-used-button');
+      makeUsedState(usedButtons);
+
+      const deleteButtons = $.qsa('.card-delete-button');
+      deleteCardEvent(deleteButtons);
     }
     
     createBarcode();
