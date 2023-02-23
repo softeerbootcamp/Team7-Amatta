@@ -3,6 +3,12 @@ import { _ } from '@/utils/customFx';
 
 const slider = () => {
   const parent = document.querySelector('.cards-section');
+
+  if (parent.classList.contains('list')) {
+    parent.style.transform = 'translateX(0px)';
+    return;
+  }
+
   const children = parent.querySelectorAll('.card-lists');
   const childrenCount = children.length;
   const parentWidth = parent.offsetWidth;

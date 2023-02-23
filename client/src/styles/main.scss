@@ -262,12 +262,11 @@
 
       &.list {
         flex-direction: column;
-        overflow-x: scroll;
+        overflow-x: hidden;
         -ms-overflow-style: none;
         scrollbar-width: none;
         transition: 0s;
         transform: translateX(0px) !important;
-        touch-action: none;
 
         &::-webkit-scrollbar {
           display: none;
@@ -287,6 +286,7 @@
           border-radius: 10px;
           box-shadow: inset -3px -2px 3px 0px rgb(0 0 0 / 16%), 0 3px 6px rgba(0, 0, 0, 0.23);
           padding: 1rem;
+          // overflow-x: scroll;
           // touch-action: none;
           transition: transform 0.2s ease-in-out;
 

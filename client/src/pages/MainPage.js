@@ -12,10 +12,10 @@ const LIST_ICON_URL = `${SERVER_URL.IMG}icon/list-icon.svg`;
 const PLUS_ICON_URL = `${SERVER_URL.IMG}icon/plus.svg`;
 
 let touchStartX = 0;
-let touchEndX = 0;
+const touchEndX = 0;
 let isSwipping = false;
 let cardDatas = [];
-let sortOpt = '';
+const sortOpt = '';
 
 const setCardDatas = (cardData) => (cardDatas = [...cardData]);
 const sortOption = { 0: '마감순', 1: '등록순', 2: '금액순' };
@@ -164,18 +164,19 @@ const handleTouchMove = (e) => {
 };
 
 const handleTouchEnd = (e) => {
+  if (!$.qs('.cards-section').classList.contains('list')) return;
   const card = e.currentTarget;
 
-  if (rightSwipe > 7 && !isSwipping && !isSwippingRight) {
+  if (rightSwipe > 20 && !isSwipping && !isSwippingRight) {
     isSwipping = true;
     card.classList.add('swiped-left');
-  } else if (leftSwipe > -7 && !isSwipping && !isSwippingLeft) {
+  } else if (leftSwipe > -20 && !isSwipping && !isSwippingLeft) {
     isSwipping = true;
     card.classList.add('swiped-right');
-  } else if (leftSwipe > -7 && isSwipping && !isSwippingRight) {
+  } else if (leftSwipe > -20 && isSwipping && !isSwippingRight) {
     card.classList.remove('swiped-left');
     isSwipping = false;
-  } else if (rightSwipe > 7 && isSwipping && !isSwippingLeft) {
+  } else if (rightSwipe > 20 && isSwipping && !isSwippingLeft) {
     card.classList.remove('swiped-right');
     isSwipping = false;
   }
@@ -207,6 +208,7 @@ const switchLayout = ({ target }) => {
 
     if ($.qs('.cards-section').classList.contains('list')) {
       const cardLists = $.qsa('.card-lists');
+
       listEvent(cardLists);
       renderButtons(cardLists);
 
@@ -216,7 +218,7 @@ const switchLayout = ({ target }) => {
       const deleteButtons = $.qsa('.card-delete-button');
       deleteCardEvent(deleteButtons);
 
-      //const oneCardButton = $.qs('.one-card-button');
+      // const oneCardButton = $.qs('.one-card-button');
       // oneCardButton.addEventListener('click', deleteActionSection(cardLists));
     }
   }
