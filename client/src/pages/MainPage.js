@@ -193,9 +193,16 @@ const deleteCard = async (e) => {
 const deleteCardEvent = (targets) =>
   targets.forEach((button) => button.addEventListener('click', (e) => deleteCard(e)));
 
+const deleteActionSection = (targets) => {
+  targets.forEach((element) => element.querySelector('.card-actions-section').remove());
+};
+
 const switchLayout = ({ target }) => {
-  if (target.className === 'one-card-button') $.qs('.cards-section').classList.remove('list');
-  else {
+  if (target.className === 'one-card-button') {
+    const cardLists = $.qsa('.card-lists');
+    $.qs('.cards-section').classList.remove('list');
+    target.addEventListener('click', deleteActionSection(cardLists));
+  } else {
     $.qs('.cards-section').classList.add('list');
 
     if ($.qs('.cards-section').classList.contains('list')) {
@@ -208,6 +215,9 @@ const switchLayout = ({ target }) => {
 
       const deleteButtons = $.qsa('.card-delete-button');
       deleteCardEvent(deleteButtons);
+
+      //const oneCardButton = $.qs('.one-card-button');
+      // oneCardButton.addEventListener('click', deleteActionSection(cardLists));
     }
   }
 };
