@@ -134,7 +134,9 @@
 
 - <h3>ERD</h3>
   <br>
-    <img width="1141" alt="erd" src="https://user-images.githubusercontent.com/65708461/218037413-a551fc8d-16a2-4308-a6f1-66eaea9778a0.png">
+  <img width="470" alt="erd" src="https://user-images.githubusercontent.com/65708461/220893597-ef75e8a4-1013-40b3-b8bf-a1efab0fac2c.png">
+
+    
     
 
 ### :wrench: Structures
