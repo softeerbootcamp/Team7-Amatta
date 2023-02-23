@@ -165,11 +165,16 @@ const uploadImg = (file) => {
 };
 
 const sendCardData = async () => {
+  const date = $.qs('#date-input').value;
+  let [year, month, day] = date.split('-');
+  month.length === 1 && (month = `0${month}`);
+  day.length === 1 && (day = `0${day}`);
+
   const cardData = {
     itemName: gifticonData.itemName,
     brandName: gifticonData.brandName,
     barcode: gifticonData.barcode,
-    expiresAtInString: $.qs('#date-input').value,
+    expiresAtInString: `${year}-${month}-${day}`,
     price: '5000',
   };
 
