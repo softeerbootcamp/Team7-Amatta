@@ -175,7 +175,7 @@ const sendCardData = async () => {
     brandName: gifticonData.brandName,
     barcode: gifticonData.barcode,
     expiresAtInString: `${year}-${month}-${day}`,
-    price: '5000',
+    price: gifticonData.price, //'5000',
   };
 
   formData.append(
