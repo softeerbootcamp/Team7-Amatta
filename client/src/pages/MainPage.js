@@ -92,7 +92,11 @@ const handleClickSearchIcon = (target) => async (e) => {
   if (target.classList.contains('searching')) return;
   const newData = await getCardList(inputTarget.value);
   setCardDatas(newData);
-  navigateMain(cardDatas);
+
+  const cardsSection = $.qs('.cards-section');
+  let isList = false;
+  if (cardsSection.classList.contains('list')) isList = true;
+  navigateMain(cardDatas, isList);
 };
 
 const toggleDropdown = () => {
@@ -111,7 +115,12 @@ const makeGrayScale = async ({ target }) => {
   const list = target.closest('.card-lists');
   const id = list.querySelector('.card-id').innerText;
   await usedCard({ gifticonId: id });
-  navigateMain('/card');
+
+  const cardsSection = $.qs('.cards-section');
+  let isList = false;
+  if (cardsSection.classList.contains('list')) isList = true;
+
+  navigateMain('/card', isList);
 };
 
 const makeUsedState = (targets) =>
@@ -188,7 +197,12 @@ const deleteCard = async (e) => {
   const list = e.target.closest('.card-lists');
   const id = list.querySelector('.card-id').innerText;
   await deleteACard(id);
-  navigateMain('/card');
+
+  const cardsSection = $.qs('.cards-section');
+  let isList = false;
+  if (cardsSection.classList.contains('list')) isList = true;
+
+  navigateMain('/card', isList);
 };
 
 const deleteCardEvent = (targets) =>
@@ -238,7 +252,14 @@ const comparison = () => {
     buttonText === '금액순' && priceComparison();
     buttonText === '마감순' && dateComparison();
     buttonText === '등록순' && registerDateComparison();
-    navigateMain(cardDatas);
+    
+    const cardsSection = $.qs('.cards-section');
+    let isList = false;
+    if(cardsSection.classList.contains('list')) isList = true;
+  
+    navigateMain(cardDatas, isList);
+
+    
 };
 
 const findTarget = (child, parent) => () => $.qsa(child, parent);
@@ -281,7 +302,7 @@ MainPage.render = () =>
 
 // prettier-ignore
 // const navigateMain = async (newData = '') => {
-const navigateMain = async (newData) => {
+const navigateMain = async (newData, isList) => {
   if(newData === '/card') {
     newData = '';
 
@@ -301,6 +322,11 @@ const navigateMain = async (newData) => {
     () => $.qs('.list-card-button'),
     $.on('click', switchLayout),
     () => MainPage.handleClickaddCard());
+
+    if(isList) {
+      const cardsSection = $.qs('.cards-section');
+      cardsSection.classList.add('list');
+    }
     
     createBarcode();
     header({color: 'mint'})();
