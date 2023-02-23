@@ -160,12 +160,12 @@ public class GifticonService {
 
     @Transactional
     public void deleteGifticon(GifticonDeleteDto dto) throws IllegalArgumentException{
-//        Users user = getUserBySessionId();
-//        if(user == null) {
-//            throw new NotAuthenticatedException();
-//        }
+        Users user = getUserBySessionId();
+        if(user == null) {
+            throw new NotAuthenticatedException();
+        }
         Gifticon gifticon = gifticonRepository.findById(dto.getGifticonId()).orElseThrow(()-> new IllegalArgumentException("기프티콘을 찾을 수 없습니다"));
-        if(gifticon.getUid() != 2) {
+        if(gifticon.getUid() != user.getId()) {
             throw new IllegalArgumentException("잘못된 요청입니다");
         }
         gifticonRepository.deleteGifticon(dto.getGifticonId());
