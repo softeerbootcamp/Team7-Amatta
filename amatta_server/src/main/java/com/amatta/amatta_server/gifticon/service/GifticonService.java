@@ -36,7 +36,7 @@ import java.util.List;
 import java.util.Objects;
 
 @Service
-//@ClassRequiresAuth
+@ClassRequiresAuth
 public class GifticonService {
     private final GifticonRepository gifticonRepository;
     private final RequestGenerator requestGenerator;
