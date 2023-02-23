@@ -35,23 +35,24 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
-  if (navigator.onLine && event.request.url.match(/\.(jpg|jpeg|png|gif|css|js|svg)$/)) {
-    event.respondWith(
-      caches.open('amatta').then((cache) =>
-        cache.match(event.request).then(
-          (response) =>
-            response ||
-            fetch(event.request).then((response) => {
-              cache.put(event.request, response.clone());
-              return response;
-            }),
-        ),
-      ),
-    );
-  } else if (!navigator.onLine) {
+  if (navigator.onLine) {
+    // event.respondWith(
+    //   fetch(event.request)
+    //     .then((response) => {
+    //       const clonedResponse = response.clone();
+    //       if (event.request.method === 'GET') {
+    //         caches.open(CACHE_NAME).then((cache) => {
+    //           const newRequest = new Request(event.request.url, { method: 'GET' });
+    //           cache.put(newRequest, clonedResponse);
+    //         });
+    //       }
+    //       return response;
+    //     })
+    //     .catch(() => caches.match(event.request)),
+    // );
+  } else {
     event.respondWith(caches.match(event.request).then((response) => response));
   }
-  return;
 });
 
 self.addEventListener('beforeinstallprompt', (event) => {

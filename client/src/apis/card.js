@@ -10,9 +10,10 @@ export const getCardList = async (query = '') => {
   }
 };
 
-export const usedCard = (data) => {
+export const usedCard = (gifticonId) => {
+  parseInt(gifticonId);
   try {
-    const response = client.put('gifticon/used', data);
+    const response = client.put('gifticon/used', gifticonId);
 
     return response.data;
   } catch (e) {

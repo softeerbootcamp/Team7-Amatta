@@ -107,12 +107,11 @@ const toggleDropdown = () => {
 };
 
 // const makeGrayScale = (target) => target.closest('.one-card-section').classList.add('gray');
-const makeGrayScale = ({ target }) => {
-  console.log('11');
+const makeGrayScale = async ({ target }) => {
   const list = target.closest('.card-lists');
   const id = list.querySelector('.card-id').innerText;
-  usedCard(id);
-  // list.querySelector('.one-card-section').classList.add('gray');
+  await usedCard({ gifticonId: id });
+  navigateMain('/card');
 };
 
 const makeUsedState = (targets) =>
