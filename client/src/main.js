@@ -1,5 +1,4 @@
 import '@/styles/global.scss';
-import { registerSW } from 'virtual:pwa-register';
 import { initializeApp } from 'firebase/app';
 import { getMessaging, onMessage } from 'firebase/messaging';
 import { setScreenSize } from '@/utils';
@@ -42,15 +41,13 @@ const app = initializeApp(firebaseConfig);
 const messaging = getMessaging(app);
 
 if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('/service-worker.js').then(
-      (registration) => {
-        console.log('ServiceWorker registration successful with scope: ', registration.scope);
-      },
-      (err) => {
-        console.log('ServiceWorker registration failed: ', err);
-      },
-    );
+  window.addEventListener('load', async () => {
+    try {
+      const registration = await navigator.serviceWorker.register('/service-worker.js');
+      console.log(`ServiceWorker registration successful with scope: ${registration.scope}`);
+    } catch (error) {
+      console.log(`ServiceWorker registration failed: ${error}`);
+    }
     navigator.serviceWorker.register('./firebase-messaging-sw.js').then((res) => {
       onMessage(messaging, (payload) => {
         const option = {

@@ -5,7 +5,7 @@ import { dropdownMenu, header, notification } from '@/components/common';
 import { IO, $, slider } from '@/utils';
 import { _ } from '@/utils/customFx';
 import { navigate } from '@/core/router';
-import { getCardList, deleteACard } from '@/apis/card';
+import { getCardList, deleteACard, usedCard } from '@/apis/card';
 
 const ONE_CARD_ICON_URL = `${SERVER_URL.IMG}icon/image-icon.svg`;
 const LIST_ICON_URL = `${SERVER_URL.IMG}icon/list-icon.svg`;
@@ -92,7 +92,6 @@ const handleClickSearchIcon = (target) => async (e) => {
   if (target.classList.contains('searching')) return;
   const newData = await getCardList(inputTarget.value);
   setCardDatas(newData);
-  console.log();
   navigateMain(cardDatas);
 };
 
@@ -108,13 +107,16 @@ const toggleDropdown = () => {
 };
 
 // const makeGrayScale = (target) => target.closest('.one-card-section').classList.add('gray');
-const makeGrayScale = (target) => {
+const makeGrayScale = ({ target }) => {
+  console.log('11');
   const list = target.closest('.card-lists');
-  list.querySelector('.one-card-section').classList.add('gray');
+  const id = list.querySelector('.card-id').innerText;
+  usedCard(id);
+  // list.querySelector('.one-card-section').classList.add('gray');
 };
 
 const makeUsedState = (targets) =>
-  targets.forEach((button) => button.addEventListener('click', (e) => makeGrayScale(e.target)));
+  targets.forEach((button) => button.addEventListener('click', makeGrayScale));
 
 const swipeButtonTpl = `
   <section class="card-actions-section">
@@ -147,42 +149,44 @@ const listEvent = (targets) => {
   });
 };
 
+let isSwippingRight = false;
+let isSwippingLeft = false;
+let leftSwipe = 0;
+let rightSwipe = 0;
 const handleTouchStart = (e) => (touchStartX = e.touches[0].clientX);
 
-const handleTouchEnd = () => {
-  touchStartX = 0;
+const handleTouchMove = (e) => {
+  const card = e.currentTarget;
+
+  leftSwipe = e.touches[0].clientX - touchStartX;
+  rightSwipe = touchStartX - e.touches[0].clientX;
+  isSwippingRight = card.classList.contains('swiped-right');
+  isSwippingLeft = card.classList.contains('swiped-left');
 };
 
-// const handleTouchMove = (e) => (touchEndX = e.touches[0].clientX);
-
-// const handleTouchEnd = (e) => {
-const handleTouchMove = (e) => {
-  const touchDeltaX = touchEndX - touchStartX;
+const handleTouchEnd = (e) => {
   const card = e.currentTarget;
-  const isSwippingRight = card.classList.contains('swiped-right');
-  const isSwippingLeft = card.classList.contains('swiped-left');
 
-  console.log(touchStartX, e.touches[0].clientX);
-
-  if (touchStartX - e.touches[0].clientX > 7 && !isSwipping && !isSwippingRight) {
+  if (rightSwipe > 7 && !isSwipping && !isSwippingRight) {
     isSwipping = true;
     card.classList.add('swiped-left');
-  } else if (e.touches[0].clientX - touchStartX > -7 && !isSwipping && !isSwippingLeft) {
+  } else if (leftSwipe > -7 && !isSwipping && !isSwippingLeft) {
     isSwipping = true;
     card.classList.add('swiped-right');
-  } else if (e.touches[0].clientX - touchStartX > -7 && isSwipping && !isSwippingRight) {
+  } else if (leftSwipe > -7 && isSwipping && !isSwippingRight) {
     card.classList.remove('swiped-left');
     isSwipping = false;
-  } else if (touchStartX - e.touches[0].clientX > 7 && isSwipping && !isSwippingLeft) {
+  } else if (rightSwipe > 7 && isSwipping && !isSwippingLeft) {
     card.classList.remove('swiped-right');
     isSwipping = false;
   }
+
+  touchStartX = 0;
 };
 
 const deleteCard = async (e) => {
   const list = e.target.closest('.card-lists');
   const id = list.querySelector('.card-id').innerText;
-  console.log(id);
   await deleteACard(id);
   navigateMain('/card');
 };
@@ -201,7 +205,6 @@ const switchLayout = ({ target }) => {
       renderButtons(cardLists);
 
       const usedButtons = $.qsa('.card-used-button');
-      console.log(usedButtons);
       makeUsedState(usedButtons);
 
       const deleteButtons = $.qsa('.card-delete-button');

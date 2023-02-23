@@ -1,9 +1,21 @@
+import axios from 'axios';
 import client from './client';
 
 export const getUserInfo = async () => {
-  const response = await client.get(`user/mypage`);
+  try {
+    const response = await caches.match('https://backend.amatta.site/user/mypage');
 
-  return response.data;
+    if (response) {
+      console.log('response from cache:', response);
+      return response;
+    }
+
+    const fetchResponse = await client.get('user/mypage');
+    console.log('response from fetch:', fetchResponse);
+    return fetchResponse.data;
+  } catch (error) {
+    console.error(error);
+  }
 };
 
 export const changePassword = (data) => {

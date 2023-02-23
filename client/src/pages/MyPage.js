@@ -24,7 +24,7 @@ MyPage.temp = `
     </article>
   `;
 
-//데모용
+// 데모용
 const setInput = (target) => {
   target.classList.add('active');
 };
@@ -47,8 +47,6 @@ const clickEyeEvent = (targets) =>
 // prettier-ignore
 const setInputValue = async () =>{
   const userData = await getUserInfo();
-  console.log(userData);
-
   const changeColor = (type, target) => {
     type === 'input' 
     ? target.style.borderBottom = '1px solid #92b8b1'
